@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Login</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="/webjars/materializecss/0.95.3/css/materialize.min.css" rel="stylesheet"
+          th:href="@{/webjars/materializecss/0.95.3/css/materialize.min.css}" media="screen"/>
+    <script src="/webjars/jquery/2.1.1/jquery.min.js" th:href="@{/webjars/jquery/2.1.1/jquery.min.js}" type="text/javascript"></script>
+    <script src="/webjars/materializecss/0.95.3/js/materialize.min.js"
+            th:href="@{/webjars/materializecss/0.95.3/js/materialize.min.js}" type="text/javascript"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col s12 m6 offset-m3">
+            <div class="card">
+                <div class="card-content white-text">
+                    <div class="card-title orange-text text-accent-3"><h1>Login</h1></div>
+
+                    <div th:if="${param.error}" class="col s12">
+                        <div class="card-panel red">
+                            <span class="white-text">Invalid username and password.</span>
+                        </div>
+                    </div>
+
+                    <div th:if="${param.logout}" class="col s12">
+                        <div class="card-panel light-blue lighten-1">
+                            <span class="white-text">You have been logged out.</span>
+                        </div>
+                    </div>
+
+                    <form th:action="@{/login}" method="post" id="loginForm">
+                        <button type="submit" style="visibility: hidden"></button>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="username" type="text" name="username" class="grey-text text-darken-3"/>
+                                <label for="username">Username</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="password" type="password" name="password" class="grey-text text-darken-3"/>
+                                <label for="password">Password</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-action">
+                    <a href="#" id="loginButton">Login</a>
+                    <a href="/register">Register</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#loginButton").click(function(){
+       $("#loginForm").submit();
+    });
+</script>
+
+</body>
+</html>
