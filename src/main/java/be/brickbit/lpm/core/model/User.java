@@ -70,6 +70,10 @@ public class User implements UserDetails{
         return lastName;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     @Override
     public Set<Authority> getAuthorities() {
         return authorities;

@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.function.Supplier;
 
 @Service
 public class UserService implements IUserService{
@@ -24,11 +25,6 @@ public class UserService implements IUserService{
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    @Override
-    public UserDetails getUserByName(String username) throws UsernameNotFoundException{
-        return userRepository.findByUsername(username);
-    }
 
     @Override
     public void createUser(NewUserCommand userCommand){
@@ -53,6 +49,10 @@ public class UserService implements IUserService{
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username);
+        return userRepository.findByUsername(username).orElseThrow(this::getUserNotFoundException);
+    }
+
+    private UsernameNotFoundException getUserNotFoundException(){
+        throw new UsernameNotFoundException("User not found");
     }
 }
