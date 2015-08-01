@@ -4,17 +4,12 @@ import be.brickbit.lpm.core.validation.annotation.FieldMatch;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
-@FieldMatch.List({
-        @FieldMatch(first = "password", second = "matchingPassword", message = "Passwords don't match!")
-})
 public class NewUserCommand {
     @NotBlank(message = "Username may not be empty")
     private String username;
     @NotBlank(message = "Password may not be empty")
     private String password;
     @NotBlank(message = "Matching password may not be empty")
-    private String matchingPassword;
-    @NotBlank(message = "First Name may not be empty")
     private String firstName;
     @NotBlank(message = "Last Name may not be empty")
     private String lastName;
@@ -37,14 +32,6 @@ public class NewUserCommand {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getMatchingPassword() {
-        return matchingPassword;
-    }
-
-    public void setMatchingPassword(String matchingPassword) {
-        this.matchingPassword = matchingPassword;
     }
 
     public String getFirstName() {

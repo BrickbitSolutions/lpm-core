@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.web.servlet.DispatcherServlet;
 
 import javax.sql.DataSource;
 
@@ -37,6 +38,13 @@ public class Application {
         ds.setUsername(databaseUsername);
         ds.setPassword(databasePassword);
 
+        return ds;
+    }
+
+    @Bean
+    public DispatcherServlet dispatcherServlet() {
+        DispatcherServlet ds = new DispatcherServlet();
+        ds.setThrowExceptionIfNoHandlerFound(true);
         return ds;
     }
 }
