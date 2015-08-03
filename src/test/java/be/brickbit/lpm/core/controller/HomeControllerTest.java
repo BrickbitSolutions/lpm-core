@@ -1,5 +1,7 @@
 package be.brickbit.lpm.core.controller;
 
+import be.brickbit.lpm.core.command.home.NewUserCommand;
+import be.brickbit.lpm.core.model.User;
 import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,15 +30,21 @@ public class HomeControllerTest {
     @Test
     public void getHello() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/"))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isOk());
     }
 
     @Test
-    @Ignore
     public void getRegister() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/register"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("registerForm"))
-                .andExpect(model().attributeExists("newUserCommand"));
+
+        NewUserCommand newUserCommand = new NewUserCommand();
+        newUserCommand.setUsername("jay");
+        newUserCommand.setPassword("pwd");
+        newUserCommand.setFirstName("Jonas");
+        newUserCommand.setLastName("Liekens");
+        newUserCommand.setEmail("soulscammer@gmail.com");
+
+        mvc.perform(MockMvcRequestBuilders.post("/register")
+                .sessionAttr("newUserCommand", newUserCommand))
+                .andExpect(status().isCreated());
     }
 }
