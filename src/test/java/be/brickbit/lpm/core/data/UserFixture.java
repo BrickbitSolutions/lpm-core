@@ -3,7 +3,6 @@ package be.brickbit.lpm.core.data;
 import be.brickbit.lpm.core.model.Authority;
 import be.brickbit.lpm.core.model.User;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Set;
 

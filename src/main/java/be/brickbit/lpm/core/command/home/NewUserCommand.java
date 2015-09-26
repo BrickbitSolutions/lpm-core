@@ -1,6 +1,5 @@
 package be.brickbit.lpm.core.command.home;
 
-import be.brickbit.lpm.core.validation.annotation.FieldMatch;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
