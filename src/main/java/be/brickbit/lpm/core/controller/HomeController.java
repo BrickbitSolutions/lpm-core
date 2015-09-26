@@ -27,6 +27,4 @@ public class HomeController {
     public void postRegisterForm(@RequestBody @Valid NewUserCommand newUserCommand) {
         userService.createUser(newUserCommand);
     }
-
-
 }
