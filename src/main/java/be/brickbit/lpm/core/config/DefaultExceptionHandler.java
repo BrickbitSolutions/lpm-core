@@ -106,6 +106,7 @@ public class DefaultExceptionHandler {
         Map<String, Object> map = new HashMap<>();
 
         map.put("error", "Access Denied");
+        map.put("cause", ex.getMessage());
 
         return map;
     }
