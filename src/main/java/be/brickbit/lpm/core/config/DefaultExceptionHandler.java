@@ -14,6 +14,7 @@ import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.UnsatisfiedServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@EnableWebMvc
 @ControllerAdvice
 public class DefaultExceptionHandler {
 
@@ -56,7 +58,7 @@ public class DefaultExceptionHandler {
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public @ResponseBody Map<String, Object> handleUncaughtException(Exception ex) throws IOException {
         Map<String, Object>  map = new HashMap<>();
-        map.put("error", "Unknown Error");
+        map.put("error", "Internal Server Error");
         if (ex.getCause() != null) {
             map.put("cause", ex.getCause().getMessage());
         } else {
@@ -87,25 +89,23 @@ public class DefaultExceptionHandler {
     @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ExceptionHandler({NoHandlerFoundException.class})
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
-    public @ResponseBody Map<String, Object> handleNotFoundException(Exception ex) throws IOException{
+    public @ResponseBody
+    Map<String, Object> handleNotFoundException(Exception ex) throws IOException{
         Map<String, Object> map = new HashMap<>();
 
-        map.put("error", "Unauthorized");
+        map.put("error", "Resource not found");
 
         return map;
     }
 
     @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ExceptionHandler({AccessDeniedException.class})
-    public @ResponseBody Map<String, Object> handleUnAuthorized(Exception ex) throws IOException {
+    public @ResponseBody
+    Map<String, Object> handleUnAuthorized(Exception ex) throws IOException {
+
         Map<String, Object> map = new HashMap<>();
 
-        map.put("error", "Resource not found");
-        if (ex.getCause() != null) {
-            map.put("cause", ex.getCause().getMessage());
-        } else {
-            map.put("cause", ex.getMessage());
-        }
+        map.put("error", "Access Denied");
 
         return map;
     }
