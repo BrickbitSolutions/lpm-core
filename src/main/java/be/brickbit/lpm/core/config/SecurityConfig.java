@@ -22,9 +22,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private IUserService userService;
 
     @Autowired
-    private DataSource datasource;
-
-    @Autowired
     private RESTAuthenticationEntryPoint restAuthenticationEntryPoint;
 
     @Override

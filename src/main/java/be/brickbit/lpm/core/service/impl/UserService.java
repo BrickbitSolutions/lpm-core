@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -28,6 +29,7 @@ public class UserService implements IUserService{
     private PasswordEncoder passwordEncoder;
 
     @Override
+    @Transactional
     public void createUser(NewUserCommand userCommand){
         if(userRepository.findByUsername(userCommand.getUsername()).isPresent()){
             throw new UserExistsException("Username already taken");
@@ -48,6 +50,7 @@ public class UserService implements IUserService{
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username).orElseThrow(this::getUserNotFoundException);
     }
