@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 @Service
@@ -28,12 +29,11 @@ public class UserService implements IUserService{
 
     @Override
     public void createUser(NewUserCommand userCommand){
-
-        if(userRepository.findByUsername(userCommand.getUsername()) != null){
+        if(userRepository.findByUsername(userCommand.getUsername()).isPresent()){
             throw new UserExistsException("Username already taken");
         }
 
-        if(userRepository.findByEmail(userCommand.getEmail()) != null){
+        if(userRepository.findByEmail(userCommand.getEmail()).isPresent()){
             throw new UserExistsException("A user was already registered with the given email");
         }
 

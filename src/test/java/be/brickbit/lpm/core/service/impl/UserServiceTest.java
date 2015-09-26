@@ -48,6 +48,8 @@ public class UserServiceTest {
         command.setUsername("user");
 
         when(passwordEncoder.encode("pwd")).thenReturn("pwd");
+        when(userRepository.findByUsername(command.getUsername())).thenReturn(Optional.<User>empty());
+        when(userRepository.findByEmail(command.getEmail())).thenReturn(Optional.<User>empty());
 
         userService.createUser(command);
 
