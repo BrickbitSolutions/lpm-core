@@ -12,17 +12,10 @@ import org.springframework.web.servlet.DispatcherServlet;
 import javax.sql.DataSource;
 
 @SpringBootApplication
-@EnableJpaRepositories
 public class Application {
 
     public static void main(String[] args) {
         ApplicationContext ctx = SpringApplication.run(Application.class, args);
-    }
-
-    @Bean
-    @ConfigurationProperties(prefix = "datasource")
-    public DataSource datasource() {
-        return DataSourceBuilder.create().build();
     }
 
     @Bean

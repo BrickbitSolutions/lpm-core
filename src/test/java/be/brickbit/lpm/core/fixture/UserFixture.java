@@ -1,7 +1,7 @@
-package be.brickbit.lpm.core.data;
+package be.brickbit.lpm.core.fixture;
 
-import be.brickbit.lpm.core.model.Authority;
-import be.brickbit.lpm.core.model.User;
+import be.brickbit.lpm.core.domain.Authority;
+import be.brickbit.lpm.core.domain.User;
 
 import java.util.Collections;
 import java.util.Set;

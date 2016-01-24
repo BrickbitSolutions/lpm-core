@@ -1,6 +1,6 @@
 package be.brickbit.lpm.core.repository;
 
-import be.brickbit.lpm.core.model.User;
+import be.brickbit.lpm.core.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

@@ -2,7 +2,7 @@ package be.brickbit.lpm.core.service.impl;
 
 import be.brickbit.lpm.core.auth.exceptions.UserExistsException;
 import be.brickbit.lpm.core.command.home.NewUserCommand;
-import be.brickbit.lpm.core.model.User;
+import be.brickbit.lpm.core.domain.User;
 import be.brickbit.lpm.core.repository.AuthorityRepository;
 import be.brickbit.lpm.core.repository.UserRepository;
 import be.brickbit.lpm.core.service.IUserService;

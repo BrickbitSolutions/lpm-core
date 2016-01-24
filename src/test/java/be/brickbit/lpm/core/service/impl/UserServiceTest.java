@@ -1,9 +1,9 @@
 package be.brickbit.lpm.core.service.impl;
 
 import be.brickbit.lpm.core.command.home.NewUserCommand;
-import be.brickbit.lpm.core.data.UserFixture;
-import be.brickbit.lpm.core.model.Authority;
-import be.brickbit.lpm.core.model.User;
+import be.brickbit.lpm.core.fixture.UserFixture;
+import be.brickbit.lpm.core.domain.Authority;
+import be.brickbit.lpm.core.domain.User;
 import be.brickbit.lpm.core.repository.AuthorityRepository;
 import be.brickbit.lpm.core.repository.UserRepository;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package be.brickbit.lpm.core.model;
+package be.brickbit.lpm.core.domain;
 
 import org.springframework.security.core.userdetails.UserDetails;
 
