@@ -6,6 +6,8 @@ import be.brickbit.lpm.core.domain.User;
 import be.brickbit.lpm.core.repository.AuthorityRepository;
 import be.brickbit.lpm.core.repository.UserRepository;
 import be.brickbit.lpm.core.service.IUserService;
+import be.brickbit.lpm.core.service.mapper.UserMapper;
+import be.brickbit.lpm.infrastructure.AbstractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collections;
 
 @Service
-public class UserService implements IUserService{
+public class UserService extends AbstractService<User> implements IUserService{
     @Autowired
     private UserRepository userRepository;
 
@@ -48,6 +50,13 @@ public class UserService implements IUserService{
     }
 
     @Override
+    public <T> T findByUsername(String username, UserMapper<T> dtoMapper) {
+        return dtoMapper.map(
+                getRepository().findByUsername(username).orElseThrow(this::getUserNotFoundException)
+        );
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username).orElseThrow(this::getUserNotFoundException);
@@ -55,5 +64,10 @@ public class UserService implements IUserService{
 
     private UsernameNotFoundException getUserNotFoundException(){
         throw new UsernameNotFoundException("User not found");
+    }
+
+    @Override
+    protected UserRepository getRepository() {
+        return userRepository;
     }
 }

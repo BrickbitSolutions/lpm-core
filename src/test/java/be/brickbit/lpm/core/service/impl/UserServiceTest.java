@@ -6,6 +6,8 @@ import be.brickbit.lpm.core.domain.Authority;
 import be.brickbit.lpm.core.domain.User;
 import be.brickbit.lpm.core.repository.AuthorityRepository;
 import be.brickbit.lpm.core.repository.UserRepository;
+import be.brickbit.lpm.core.service.dto.UserPrincipalDto;
+import be.brickbit.lpm.core.service.mapper.UserPrincipalDtoMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -31,6 +33,9 @@ public class UserServiceTest {
 
     @Mock
     private PasswordEncoder passwordEncoder;
+
+    @Mock
+    private UserPrincipalDtoMapper dtoMapper;
 
     @InjectMocks
     private UserService userService;
@@ -72,5 +77,17 @@ public class UserServiceTest {
 
         when(userRepository.findByUsername(username)).thenReturn(user);
         assertThat(userService.loadUserByUsername(username)).isEqualTo(user.get());
+    }
+
+    @Test
+    public void findByUsername() throws Exception {
+        String username = "soulscammer";
+        Optional<User> user = Optional.of(UserFixture.getUser());
+        UserPrincipalDto dto = new UserPrincipalDto();
+
+        when(userRepository.findByUsername(username)).thenReturn(user);
+        when(dtoMapper.map(user.get())).thenReturn(dto);
+
+        assertThat(userService.findByUsername(username, dtoMapper)).isSameAs(dto);
     }
 }
