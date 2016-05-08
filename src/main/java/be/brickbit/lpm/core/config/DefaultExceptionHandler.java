@@ -72,7 +72,8 @@ public class DefaultExceptionHandler {
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public @ResponseBody Map<String, Object> handleValidationError(MethodArgumentNotValidException ex) throws IOException {
         Map<String, Object>  map = new HashMap<>();
-        map.put("error", "Validation of object failed");
+        map.put("error", "Bad Request");
+        map.put("cause", "Validation of object failed");
         List<ValidationError> validationErrors = new ArrayList<>();
         for(ObjectError objectError : ex.getBindingResult().getAllErrors()){
             if(objectError instanceof FieldError) {

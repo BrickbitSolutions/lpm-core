@@ -20,7 +20,7 @@ public class User implements UserDetails{
     private String email;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "USER_AUTHORITY", joinColumns = {
-            @JoinColumn(name = "user_id", nullable = false),
+            @JoinColumn(name = "lpm_user_id", nullable = false),
     }, inverseJoinColumns = {
             @JoinColumn(name = "authority_id", nullable = false)
     })
