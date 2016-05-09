@@ -8,14 +8,13 @@ public class NewUserCommand {
     private String username;
     @NotBlank(message = "Password may not be empty")
     private String password;
-    @NotBlank(message = "Matching password may not be empty")
+    @NotBlank(message = "First Name may not be empty")
     private String firstName;
     @NotBlank(message = "Last Name may not be empty")
     private String lastName;
     @Email
     @NotBlank(message = "Email may not be empty")
     private String email;
-
 
     public String getUsername() {
         return username;
