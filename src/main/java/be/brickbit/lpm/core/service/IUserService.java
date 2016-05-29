@@ -8,5 +8,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface IUserService extends UserDetailsService, Service<User> {
     void createUser(NewUserCommand userCommand);
+    <T> T findByUserId(Long userId, UserMapper<T> dtoMapper);
     <T> T findByUsername(String username, UserMapper<T> dtoMapper);
 }

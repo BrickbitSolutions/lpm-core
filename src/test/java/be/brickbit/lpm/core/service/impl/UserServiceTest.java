@@ -15,6 +15,7 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
@@ -89,5 +90,24 @@ public class UserServiceTest {
         when(dtoMapper.map(user.get())).thenReturn(dto);
 
         assertThat(userService.findByUsername(username, dtoMapper)).isSameAs(dto);
+    }
+
+    @Test
+    public void findsUserById() throws Exception {
+        Long userId = 1L;
+        User user = UserFixture.getUser();
+        UserPrincipalDto dto = new UserPrincipalDto();
+
+        when(userRepository.findOne(userId)).thenReturn(user);
+        when(dtoMapper.map(user)).thenReturn(dto);
+
+        assertThat(userService.findByUserId(userId, dtoMapper)).isSameAs(dto);
+    }
+
+    @Test(expected = UsernameNotFoundException.class)
+    public void doesntFindUserById() throws Exception {
+        Long userId = 1L;
+        when(userRepository.findOne(userId)).thenReturn(null);
+        userService.findByUserId(userId, dtoMapper);
     }
 }
