@@ -15,7 +15,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Collections;
+import java.util.Optional;
 
 @Service
 public class UserService extends AbstractService<User> implements IUserService{
@@ -44,9 +46,17 @@ public class UserService extends AbstractService<User> implements IUserService{
                 passwordEncoder.encode(userCommand.getPassword()),
                 userCommand.getFirstName(),
                 userCommand.getLastName(),
+                userCommand.getBirthDate(),
                 userCommand.getEmail(),
                 Collections.singleton(authorityRepository.findByAuthority("ROLE_USER"))
         ));
+    }
+
+    @Override
+    public <T> T findByUserId(Long userId, UserMapper<T> dtoMapper){
+        return dtoMapper.map(
+                Optional.ofNullable(getRepository().findOne(userId)).orElseThrow(this::getUserNotFoundException)
+        );
     }
 
     @Override

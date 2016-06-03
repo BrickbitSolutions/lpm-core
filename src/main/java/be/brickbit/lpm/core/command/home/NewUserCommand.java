@@ -1,7 +1,12 @@
 package be.brickbit.lpm.core.command.home;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 
 public class NewUserCommand {
     @NotBlank(message = "Username may not be empty")
@@ -15,6 +20,9 @@ public class NewUserCommand {
     @Email
     @NotBlank(message = "Email may not be empty")
     private String email;
+    @NotNull(message = "Birthdate may not be empty")
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    private LocalDate birthDate;
 
     public String getUsername() {
         return username;
@@ -54,5 +62,13 @@ public class NewUserCommand {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
     }
 }
