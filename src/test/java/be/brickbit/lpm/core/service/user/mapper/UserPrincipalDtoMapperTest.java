@@ -1,8 +1,8 @@
-package be.brickbit.lpm.core.service.mapper;
+package be.brickbit.lpm.core.service.user.mapper;
 
 import be.brickbit.lpm.core.domain.User;
 import be.brickbit.lpm.core.fixture.UserFixture;
-import be.brickbit.lpm.core.service.dto.UserPrincipalDto;
+import be.brickbit.lpm.core.service.user.dto.UserPrincipalDto;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,11 +19,11 @@ public class UserPrincipalDtoMapperTest {
 
     @Test
     public void testMap() throws Exception {
-        User user = UserFixture.getUser();
+        User user = UserFixture.mutable();
         UserPrincipalDto result = mapper.map(user);
 
         assertThat(result.getUsername()).isEqualTo(user.getUsername());
-        assertThat(result.getMood()).isEqualTo("I will rule the universe");
+        assertThat(result.getMood()).isEqualTo(user.getMood());
         assertThat(result.getAuthorities()).hasSize(user.getAuthorities().size());
     }
 }

@@ -1,7 +1,7 @@
 package be.brickbit.lpm.core.controller;
 
 import be.brickbit.lpm.core.command.home.NewUserCommand;
-import be.brickbit.lpm.core.service.IUserService;
+import be.brickbit.lpm.core.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,14 +14,14 @@ import java.io.IOException;
 @RestController
 public class HomeController {
     @Autowired
-    private IUserService userService;
+    private UserService userService;
 
     @RequestMapping("/")
-    public String index(HttpServletResponse someHttpServletResponse) throws IOException{
+    public String index() throws IOException{
         return "{\"status\":\"UP\"}";
     }
 
-    @PreAuthorize("isAnonymous()")
+    @PreAuthorize("permitAll")
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public void postRegisterForm(@RequestBody @Valid NewUserCommand newUserCommand) {

@@ -1,8 +1,8 @@
-package be.brickbit.lpm.core.service.mapper;
+package be.brickbit.lpm.core.service.user.mapper;
 
 import be.brickbit.lpm.core.domain.Authority;
 import be.brickbit.lpm.core.domain.User;
-import be.brickbit.lpm.core.service.dto.UserPrincipalDto;
+import be.brickbit.lpm.core.service.user.dto.UserPrincipalDto;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
@@ -14,7 +14,7 @@ public class UserPrincipalDtoMapper implements UserMapper<UserPrincipalDto> {
         UserPrincipalDto dto = new UserPrincipalDto();
 
         dto.setAuthorities(user.getAuthorities().stream().map(Authority::getAuthority).collect(Collectors.toList()));
-        dto.setMood("I will rule the universe");
+        dto.setMood(user.getMood());
         dto.setUsername(user.getUsername());
 
         return dto;

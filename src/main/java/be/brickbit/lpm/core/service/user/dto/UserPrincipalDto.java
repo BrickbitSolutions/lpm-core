@@ -1,4 +1,4 @@
-package be.brickbit.lpm.core.service.dto;
+package be.brickbit.lpm.core.service.user.dto;
 
 import java.util.List;
 

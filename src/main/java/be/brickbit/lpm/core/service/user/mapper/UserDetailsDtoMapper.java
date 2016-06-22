@@ -1,7 +1,7 @@
-package be.brickbit.lpm.core.service.mapper;
+package be.brickbit.lpm.core.service.user.mapper;
 
 import be.brickbit.lpm.core.domain.User;
-import be.brickbit.lpm.core.service.dto.UserDetailsDto;
+import be.brickbit.lpm.core.service.user.dto.UserDetailsDto;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;

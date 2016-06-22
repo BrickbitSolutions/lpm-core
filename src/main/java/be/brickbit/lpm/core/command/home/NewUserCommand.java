@@ -28,47 +28,53 @@ public class NewUserCommand {
         return username;
     }
 
-    public void setUsername(String username) {
+    public NewUserCommand setUsername(String username) {
         this.username = username;
+        return this;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public NewUserCommand setPassword(String password) {
         this.password = password;
+        return this;
     }
 
     public String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    public NewUserCommand setFirstName(String firstName) {
         this.firstName = firstName;
+        return this;
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    public NewUserCommand setLastName(String lastName) {
         this.lastName = lastName;
+        return this;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public NewUserCommand setEmail(String email) {
         this.email = email;
+        return this;
     }
 
     public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(LocalDate birthDate) {
+    public NewUserCommand setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
+        return this;
     }
 }

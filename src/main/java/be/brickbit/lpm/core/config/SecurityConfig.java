@@ -1,6 +1,6 @@
 package be.brickbit.lpm.core.config;
 
-import be.brickbit.lpm.core.service.IUserService;
+import be.brickbit.lpm.core.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private IUserService userService;
+    private UserService userService;
 
     @Autowired
     private RESTAuthenticationEntryPoint restAuthenticationEntryPoint;

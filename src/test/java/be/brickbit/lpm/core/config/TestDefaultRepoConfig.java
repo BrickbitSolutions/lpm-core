@@ -1,5 +1,6 @@
 package be.brickbit.lpm.core.config;
 
+import org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.orm.jpa.EntityScan;
@@ -10,7 +11,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @Configuration
 @EnableJpaRepositories(basePackages = "be.brickbit.lpm.core.repository")
 @EntityScan(basePackages = "be.brickbit.lpm.core.domain")
-@Import({ DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class })
+@Import({ DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class, FlywayAutoConfiguration.class})
 public class TestDefaultRepoConfig {
 
 }

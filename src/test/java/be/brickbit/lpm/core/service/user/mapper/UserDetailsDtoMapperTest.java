@@ -1,12 +1,11 @@
-package be.brickbit.lpm.core.service.mapper;
+package be.brickbit.lpm.core.service.user.mapper;
 
 import be.brickbit.lpm.core.domain.User;
 import be.brickbit.lpm.core.fixture.UserFixture;
-import be.brickbit.lpm.core.service.dto.UserDetailsDto;
+import be.brickbit.lpm.core.service.user.dto.UserDetailsDto;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,7 +20,7 @@ public class UserDetailsDtoMapperTest {
 
     @Test
     public void map() throws Exception {
-        User user = UserFixture.getUser();
+        User user = UserFixture.mutable();
         user.setBirthDate(LocalDate.now().minusYears(18));
 
         UserDetailsDto result = mapper.map(user);
