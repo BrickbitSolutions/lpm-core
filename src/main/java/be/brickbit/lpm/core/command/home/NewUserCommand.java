@@ -21,7 +21,6 @@ public class NewUserCommand {
     @NotBlank(message = "Email may not be empty")
     private String email;
     @NotNull(message = "Birthdate may not be empty")
-    @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate birthDate;
 
     public String getUsername() {

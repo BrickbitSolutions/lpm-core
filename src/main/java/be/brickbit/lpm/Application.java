@@ -10,15 +10,10 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.DispatcherServlet;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import java.text.SimpleDateFormat;
 
 @SpringBootApplication
-@EnableWebMvc
 @EnableTransactionManagement
 public class Application {
     public static void main(String[] args) {
@@ -44,13 +39,5 @@ public class Application {
         config.addExposedHeader("Content-Type, x-requested-with, X-Custom-Header");
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
-    }
-
-    @Bean
-    public Jackson2ObjectMapperBuilder jacksonBuilder() {
-        Jackson2ObjectMapperBuilder b = new Jackson2ObjectMapperBuilder();
-        b.failOnUnknownProperties(false);
-        b.indentOutput(true).dateFormat(new SimpleDateFormat("yyyy-MM-dd"));
-        return b;
     }
 }
