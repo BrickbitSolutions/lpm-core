@@ -63,6 +63,14 @@ public abstract class AbstractControllerIT extends AbstractIT{
 				.content(convertToJson(command)));
 	}
 
+    protected ResultActions performPut(String url, Object command) throws Exception {
+        return mvc().perform(MockMvcRequestBuilders.put(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Basic YWRtaW46YWRtaW4=")
+                .accept(MediaType.APPLICATION_JSON)
+                .content(convertToJson(command)));
+    }
+
 	protected MockMvc mvc() {
 		return mvc;
 	}

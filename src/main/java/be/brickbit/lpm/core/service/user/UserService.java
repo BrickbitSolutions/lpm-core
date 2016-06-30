@@ -9,4 +9,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 public interface UserService extends UserDetailsService, Service<User> {
     void createUser(NewUserCommand userCommand);
     <T> T findByUsername(String username, UserMapper<T> dtoMapper);
+    void enableUser(Long id);
+    void disableUser(Long id);
+    void lockUser(Long id);
+    void unlockUser(Long id);
 }

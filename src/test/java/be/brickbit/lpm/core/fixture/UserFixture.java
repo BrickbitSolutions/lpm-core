@@ -35,11 +35,11 @@ public class UserFixture {
     public static User testUser() {
         User user = new User();
 
-        user.setEmail("admin@lpm.be");
+        user.setEmail("mail@mail.be");
         user.setUsername("admin");
         user.setPassword("$2a$10$asqus3jJEvovoibX5vyhGe.kk65OMkKRv19bzlKLczxJM7Xs0dBY6");
-        user.setFirstName("Jonas");
-        user.setLastName("Liekens");
+        user.setFirstName("Default");
+        user.setLastName("Admin");
         user.setBirthDate(LocalDate.of(1991, 5, 4));
         user.setAccountNonExpired(true);
         user.setAccountNonLocked(true);

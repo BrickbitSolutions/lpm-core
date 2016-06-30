@@ -21,10 +21,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
+import static be.brickbit.lpm.core.util.RandomValueUtil.randomLong;
 import static be.brickbit.lpm.core.util.RandomValueUtil.randomString;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceImplTest {
@@ -88,5 +90,116 @@ public class UserServiceImplTest {
         when(dtoMapper.map(user.get())).thenReturn(dto);
 
         assertThat(userService.findByUsername(username, dtoMapper)).isSameAs(dto);
+    }
+
+    @Test
+    public void testEnableUser() throws Exception {
+        User user = UserFixture.mutable();
+        user.setId(randomLong());
+        user.setEnabled(false);
+
+        when(userRepository.findOne(user.getId())).thenReturn(user);
+
+        userService.enableUser(user.getId());
+
+        verify(userRepository, times(1)).save(user);
+        assertThat(user.isEnabled()).isTrue();
+    }
+
+    @Test
+    public void testEnableUser__userAlreadyEnabled() throws Exception {
+        User user = UserFixture.mutable();
+        user.setId(randomLong());
+        user.setEnabled(true);
+
+        when(userRepository.findOne(user.getId())).thenReturn(user);
+
+        userService.enableUser(user.getId());
+
+        verify(userRepository, times(0)).save(user);
+        assertThat(user.isEnabled()).isTrue();
+    }
+
+    @Test
+    public void testDisableUser() throws Exception {
+        User user = UserFixture.mutable();
+        user.setId(randomLong());
+
+        when(userRepository.findOne(user.getId())).thenReturn(user);
+
+        userService.disableUser(user.getId());
+
+        verify(userRepository, times(1)).save(user);
+        assertThat(user.isEnabled()).isFalse();
+    }
+
+    @Test
+    public void testDisableUser__alreadyDisabled() throws Exception {
+        User user = UserFixture.mutable();
+        user.setId(randomLong());
+        user.setEnabled(false);
+
+        when(userRepository.findOne(user.getId())).thenReturn(user);
+
+        userService.disableUser(user.getId());
+
+        verify(userRepository, times(0)).save(user);
+        assertThat(user.isEnabled()).isFalse();
+    }
+
+    @Test
+    public void testLockUser() throws Exception {
+        User user = UserFixture.mutable();
+        user.setId(randomLong());
+        user.setAccountNonLocked(true);
+
+        when(userRepository.findOne(user.getId())).thenReturn(user);
+
+        userService.lockUser(user.getId());
+
+        verify(userRepository, times(1)).save(user);
+        assertThat(user.isAccountNonLocked()).isFalse();
+    }
+
+    @Test
+    public void testLockUser__AlreadyLocked() throws Exception {
+        User user = UserFixture.mutable();
+        user.setId(randomLong());
+        user.setAccountNonLocked(false);
+
+        when(userRepository.findOne(user.getId())).thenReturn(user);
+
+        userService.lockUser(user.getId());
+
+        verify(userRepository, times(0)).save(user);
+        assertThat(user.isAccountNonLocked()).isFalse();
+    }
+
+    @Test
+    public void testUnlockUser() throws Exception {
+        User user = UserFixture.mutable();
+        user.setId(randomLong());
+        user.setAccountNonLocked(false);
+
+        when(userRepository.findOne(user.getId())).thenReturn(user);
+
+        userService.unlockUser(user.getId());
+
+        verify(userRepository, times(1)).save(user);
+        assertThat(user.isAccountNonLocked()).isTrue();
+    }
+
+    @Test
+    public void testUnlockUser__AlreadyUnlocked() throws Exception {
+        User user = UserFixture.mutable();
+        user.setId(randomLong());
+        user.setAccountNonLocked(true);
+
+        when(userRepository.findOne(user.getId())).thenReturn(user);
+
+        userService.unlockUser(user.getId());
+
+        verify(userRepository, times(0)).save(user);
+        assertThat(user.isAccountNonLocked()).isTrue();
     }
 }

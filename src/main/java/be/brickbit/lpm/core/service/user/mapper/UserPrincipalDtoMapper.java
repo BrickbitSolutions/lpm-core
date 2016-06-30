@@ -11,12 +11,10 @@ import java.util.stream.Collectors;
 public class UserPrincipalDtoMapper implements UserMapper<UserPrincipalDto> {
     @Override
     public UserPrincipalDto map(User user) {
-        UserPrincipalDto dto = new UserPrincipalDto();
-
-        dto.setAuthorities(user.getAuthorities().stream().map(Authority::getAuthority).collect(Collectors.toList()));
-        dto.setMood(user.getMood());
-        dto.setUsername(user.getUsername());
-
-        return dto;
+        return new UserPrincipalDto(
+                user.getUsername(),
+                user.getMood(),
+                user.getAuthorities().stream().map(Authority::getAuthority).collect(Collectors.toList())
+        );
     }
 }

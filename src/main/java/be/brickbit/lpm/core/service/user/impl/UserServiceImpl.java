@@ -69,6 +69,42 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     }
 
     @Override
+    public void enableUser(Long id) {
+        User user = userRepository.findOne(id);
+        if(!user.isEnabled()){
+            user.setEnabled(true);
+            userRepository.save(user);
+        }
+    }
+
+    @Override
+    public void disableUser(Long id) {
+        User user = userRepository.findOne(id);
+        if(user.isEnabled()){
+            user.setEnabled(false);
+            userRepository.save(user);
+        }
+    }
+
+    @Override
+    public void lockUser(Long id) {
+        User user = userRepository.findOne(id);
+        if(user.isAccountNonLocked()){
+            user.setAccountNonLocked(false);
+            userRepository.save(user);
+        }
+    }
+
+    @Override
+    public void unlockUser(Long id) {
+        User user = userRepository.findOne(id);
+        if(!user.isAccountNonLocked()){
+            user.setAccountNonLocked(true);
+            userRepository.save(user);
+        }
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username).orElseThrow(this::getUserNotFoundException);
