@@ -26,18 +26,4 @@ public class Application {
         ds.setThrowExceptionIfNoHandlerFound(true);
         return ds;
     }
-
-    @Bean
-    public CorsFilter corsFilter() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        config.addAllowedOrigin("*");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
-        config.addExposedHeader("Access-Control-Allow-Headers");
-        config.addExposedHeader("Content-Type, x-requested-with, X-Custom-Header");
-        source.registerCorsConfiguration("/**", config);
-        return new CorsFilter(source);
-    }
 }

@@ -19,6 +19,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import static be.brickbit.lpm.core.util.RandomValueUtil.randomLong;
@@ -69,6 +70,12 @@ public class UserServiceImplTest {
         assertThat(user.getPassword()).isEqualTo(hashedPassword);
         assertThat(user.getUsername()).isEqualTo(command.getUsername());
         assertThat(user.getAuthorities().contains(AuthorityFixture.user()));
+        assertThat(user.isEnabled()).isFalse();
+        assertThat(user.isAccountNonExpired()).isTrue();
+        assertThat(user.isAccountNonLocked()).isTrue();
+        assertThat(user.isCredentialsNonExpired()).isTrue();
+        assertThat(user.getMood()).isEqualTo("Hello LPM.");
+        assertThat(user.getWallet()).isEqualTo(BigDecimal.ZERO);
     }
 
     @Test
