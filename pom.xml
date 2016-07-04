@@ -17,7 +17,7 @@
     <properties>
         <hibernate.version>5.0.5.Final</hibernate.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <start-class>be.brickbit.lpm.core.Application</start-class>
+        <start-class>be.brickbit.lpm.Application</start-class>
         <java.version>1.8</java.version>
     </properties>
 
