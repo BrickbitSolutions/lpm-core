@@ -1,6 +1,7 @@
 package be.brickbit.lpm.core.service.user.impl;
 
 import be.brickbit.lpm.core.command.home.NewUserCommand;
+import be.brickbit.lpm.core.command.user.UpdateAccountDetailsCommand;
 import be.brickbit.lpm.core.fixture.AuthorityFixture;
 import be.brickbit.lpm.core.fixture.UserFixture;
 import be.brickbit.lpm.core.domain.Authority;
@@ -10,6 +11,7 @@ import be.brickbit.lpm.core.repository.AuthorityRepository;
 import be.brickbit.lpm.core.repository.UserRepository;
 import be.brickbit.lpm.core.service.user.dto.UserPrincipalDto;
 import be.brickbit.lpm.core.service.user.mapper.UserPrincipalDtoMapper;
+import com.google.common.collect.Lists;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -22,6 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.math.BigDecimal;
 import java.util.Optional;
 
+import static be.brickbit.lpm.core.util.RandomValueUtil.randomEmail;
 import static be.brickbit.lpm.core.util.RandomValueUtil.randomLong;
 import static be.brickbit.lpm.core.util.RandomValueUtil.randomString;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -76,6 +79,52 @@ public class UserServiceImplTest {
         assertThat(user.isCredentialsNonExpired()).isTrue();
         assertThat(user.getMood()).isEqualTo("Hello LPM.");
         assertThat(user.getWallet()).isEqualTo(BigDecimal.ZERO);
+    }
+
+    @Test
+    public void updateUserAccountDetails() throws Exception {
+        UpdateAccountDetailsCommand command = new UpdateAccountDetailsCommand(
+                randomString(),
+                randomEmail(),
+                Lists.newArrayList("ROLE_USER", "ROLE_ADMIN")
+        );
+        User user = UserFixture.mutable();
+        Long userId = randomLong();
+        final Authority userRole = AuthorityFixture.user();
+        final Authority adminRole = AuthorityFixture.admin();
+
+        when(userRepository.findOne(userId)).thenReturn(user);
+        when(authorityRepository.findByAuthority("ROLE_USER")).thenReturn(userRole);
+        when(authorityRepository.findByAuthority("ROLE_ADMIN")).thenReturn(adminRole);
+
+        userService.updateAccountDetails(userId, command);
+
+        assertThat(user.getUsername()).isEqualTo(command.getUsername());
+        assertThat(user.getEmail()).isEqualTo(command.getEmail());
+        assertThat(user.getAuthorities()).containsOnly(userRole, adminRole);
+
+        verify(userRepository, times(1)).save(user);
+    }
+
+    @Test
+    public void updateUserAccountDetails__invalidRoleName() throws Exception {
+        UpdateAccountDetailsCommand command = new UpdateAccountDetailsCommand(
+                randomString(),
+                randomEmail(),
+                Lists.newArrayList("ROLE_USER", "ROLE_JAY")
+        );
+        User user = UserFixture.mutable();
+        Long userId = randomLong();
+        final Authority userRole = AuthorityFixture.user();
+
+        when(userRepository.findOne(userId)).thenReturn(user);
+        when(authorityRepository.findByAuthority("ROLE_USER")).thenReturn(userRole);
+        when(authorityRepository.findByAuthority("ROLE_JAY")).thenReturn(null);
+
+        userService.updateAccountDetails(userId, command);
+        assertThat(user.getAuthorities()).containsOnly(userRole);
+
+        verify(userRepository, times(1)).save(user);
     }
 
     @Test

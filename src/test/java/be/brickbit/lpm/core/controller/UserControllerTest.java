@@ -66,9 +66,9 @@ public class UserControllerTest {
 
 	@Test
 	public void getAdminUserOverview() throws Exception {
-        final ArrayList<AdminUserDetailsDto> adminUserDetailsDtos = new ArrayList<>();
-        when(userService.findAll(adminUserDetailsDtoMapper)).thenReturn(adminUserDetailsDtos);
+		final ArrayList<AdminUserDetailsDto> adminUserDetailsDtos = new ArrayList<>();
+		when(userService.findAll(adminUserDetailsDtoMapper)).thenReturn(adminUserDetailsDtos);
 
-        assertThat(controller.getAllUsers()).isSameAs(adminUserDetailsDtos);
+		assertThat(controller.getAllUsers()).isSameAs(adminUserDetailsDtos);
 	}
 }

@@ -2,7 +2,11 @@ package be.brickbit.lpm.core.service.user.impl;
 
 import java.math.BigDecimal;
 import java.util.Collections;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
+import be.brickbit.lpm.core.command.user.UpdateAccountDetailsCommand;
+import be.brickbit.lpm.core.domain.Authority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -102,6 +106,22 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
             user.setAccountNonLocked(true);
             userRepository.save(user);
         }
+    }
+
+    @Override
+    public void updateAccountDetails(Long id, UpdateAccountDetailsCommand command) {
+        User user = Optional.ofNullable(userRepository.findOne(id)).orElseThrow(this::getUserNotFoundException);
+
+        user.setUsername(command.getUsername());
+        user.setEmail(command.getEmail());
+        user.setAuthorities(
+                command.getAuthorities().stream()
+                        .map(authorityRepository::findByAuthority)
+                        .filter(authority -> authority != null)
+                        .collect(Collectors.toSet())
+        );
+
+        userRepository.save(user);
     }
 
     @Override
