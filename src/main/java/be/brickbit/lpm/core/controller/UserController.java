@@ -1,5 +1,6 @@
 package be.brickbit.lpm.core.controller;
 
+import be.brickbit.lpm.core.command.user.AssignSeatCommand;
 import be.brickbit.lpm.core.command.user.UpdateAccountDetailsCommand;
 import be.brickbit.lpm.core.service.security.SecurityService;
 import be.brickbit.lpm.core.service.user.UserService;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -70,6 +72,16 @@ public class UserController {
         );
     }
 
+    @PreAuthorize(value = "isAuthenticated()")
+    @RequestMapping(value = "/seat/{seatNumber}", method = RequestMethod.GET, produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public UserDetailsDto getUserDetailsBySeat(@PathVariable("seatNumber") Integer seatNumber){
+        return userService.findBySeatNumber(
+                seatNumber,
+                userDetailsDtoMapper
+        );
+    }
+
     @PreAuthorize(value = "hasRole('ADMIN')")
     @RequestMapping(value = "{id}/details", method = RequestMethod.GET, produces = MediaType
             .APPLICATION_JSON_UTF8_VALUE)
@@ -79,9 +91,16 @@ public class UserController {
     }
 
     @PreAuthorize(value = "hasRole('ADMIN')")
+    @RequestMapping(value = "{id}/seat", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void assignSeatNumber(@PathVariable("id") Long id, @RequestBody AssignSeatCommand command) {
+        userService.assignSeat(id, command.getSeatNumber());
+    }
+
+    @PreAuthorize(value = "hasRole('ADMIN')")
     @RequestMapping(value = "{id}", method = RequestMethod.PUT, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateUser(@PathVariable("id") Long id, @RequestBody UpdateAccountDetailsCommand command){
+    public void updateUser(@PathVariable("id") Long id, @RequestBody @Valid UpdateAccountDetailsCommand command){
         userService.updateAccountDetails(
                 id,
                 command

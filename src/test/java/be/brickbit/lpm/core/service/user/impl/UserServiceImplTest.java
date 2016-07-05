@@ -12,13 +12,16 @@ import be.brickbit.lpm.core.repository.UserRepository;
 import be.brickbit.lpm.core.service.user.dto.UserPrincipalDto;
 import be.brickbit.lpm.core.service.user.mapper.UserPrincipalDtoMapper;
 import com.google.common.collect.Lists;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigDecimal;
@@ -27,6 +30,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static be.brickbit.lpm.core.util.RandomValueUtil.randomEmail;
+import static be.brickbit.lpm.core.util.RandomValueUtil.randomInt;
 import static be.brickbit.lpm.core.util.RandomValueUtil.randomLong;
 import static be.brickbit.lpm.core.util.RandomValueUtil.randomString;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -53,6 +57,9 @@ public class UserServiceImplTest {
 
     @Captor
     private ArgumentCaptor<User> userArgumentCaptor;
+
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     @Test
     public void testCreateUser() throws Exception {
@@ -148,6 +155,40 @@ public class UserServiceImplTest {
         when(dtoMapper.map(user.get())).thenReturn(dto);
 
         assertThat(userService.findByUsername(username, dtoMapper)).isSameAs(dto);
+    }
+
+    @Test
+    public void findByUsername__NotFound() throws Exception {
+        expectedException.expect(UsernameNotFoundException.class);
+
+        String username = randomString();
+
+        when(userRepository.findByUsername(username)).thenReturn(Optional.empty());
+
+        userService.findByUsername(username, dtoMapper);
+    }
+
+    @Test
+    public void findBySeatNumber() throws Exception {
+        Integer seatNumber = randomInt();
+        Optional<User> user = Optional.of(UserFixture.mutable());
+        UserPrincipalDto dto = new UserPrincipalDto();
+
+        when(userRepository.findBySeatNumber(seatNumber)).thenReturn(user);
+        when(dtoMapper.map(user.get())).thenReturn(dto);
+
+        assertThat(userService.findBySeatNumber(seatNumber, dtoMapper)).isSameAs(dto);
+    }
+
+    @Test
+    public void findBySeatNumber__NotFound() throws Exception {
+        expectedException.expect(UsernameNotFoundException.class);
+
+        Integer seatNumber = randomInt();
+
+        when(userRepository.findBySeatNumber(seatNumber)).thenReturn(Optional.empty());
+
+        userService.findBySeatNumber(seatNumber, dtoMapper);
     }
 
     @Test
@@ -272,5 +313,34 @@ public class UserServiceImplTest {
         List<String> result = userService.findAllAuthorities();
 
         assertThat(result).containsOnly(authorities.get(0).getAuthority(), authorities.get(1).getAuthority());
+    }
+
+    @Test
+    public void testAssignSeatNr() throws Exception {
+        final Long randomId = randomLong();
+        final User user = UserFixture.mutable();
+        final Integer seatNr = randomInt();
+
+        when(userRepository.findBySeatNumber(seatNr)).thenReturn(Optional.empty());
+        when(userRepository.findOne(randomId)).thenReturn(user);
+
+        userService.assignSeat(randomId, seatNr);
+
+        assertThat(user.getSeatNumber()).isEqualTo(seatNr);
+        verify(userRepository, times(1)).save(user);
+    }
+
+    @Test
+    public void testAssignSeatNr_AlreadyAssigned() throws Exception {
+        expectedException.expect(RuntimeException.class);
+        expectedException.expectMessage("Seat Number already assigned to another user");
+
+        final Long randomId = randomLong();
+        final User user = UserFixture.mutable();
+        final Integer seatNr = randomInt();
+
+        when(userRepository.findBySeatNumber(seatNr)).thenReturn(Optional.of(user));
+
+        userService.assignSeat(randomId, seatNr);
     }
 }

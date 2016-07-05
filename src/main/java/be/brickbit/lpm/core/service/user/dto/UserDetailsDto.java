@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 public class UserDetailsDto {
     private String username;
     private Long age;
+    private Integer seatNumber;
     private BigDecimal wallet;
     private String mood;
     private String firstName;

@@ -12,10 +12,12 @@ import java.util.List;
 public interface UserService extends UserDetailsService, Service<User> {
     void createUser(NewUserCommand userCommand);
     <T> T findByUsername(String username, UserMapper<T> dtoMapper);
+    <T> T findBySeatNumber(Integer seatNumber, UserMapper<T> dtoMapper);
     void enableUser(Long id);
     void disableUser(Long id);
     void lockUser(Long id);
     void unlockUser(Long id);
     void updateAccountDetails(Long id, UpdateAccountDetailsCommand command);
     List<String> findAllAuthorities();
+    void assignSeat(Long id, Integer seatNr);
 }

@@ -13,8 +13,9 @@ public class AdminUserDetailsDtoMapper implements UserMapper<AdminUserDetailsDto
 	@Override
     public AdminUserDetailsDto map(User user) {
         return new AdminUserDetailsDto(
-              user.getId(),
+                user.getId(),
                 user.getUsername(),
+                user.getSeatNumber(),
                 user.getFirstName(),
                 user.getLastName(),
                 user.getEmail(),

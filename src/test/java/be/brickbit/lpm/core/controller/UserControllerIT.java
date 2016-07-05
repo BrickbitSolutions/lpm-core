@@ -67,6 +67,24 @@ public class UserControllerIT extends AbstractControllerIT {
     }
 
     @Test
+    public void testGetUserDetailsBySeat() throws Exception {
+        User user = UserFixture.mutable();
+        user.setBirthDate(LocalDate.of(1991, 5, 4));
+
+        insert(user);
+
+        performGet("/user/seat/" + user.getSeatNumber())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.username", is(user.getUsername())))
+                .andExpect(jsonPath("$.age", is((int) user.getBirthDate().until(LocalDate.now(), ChronoUnit.YEARS))))
+                .andExpect(jsonPath("$.wallet", is(user.getWallet())))
+                .andExpect(jsonPath("$.mood", is(user.getMood())))
+                .andExpect(jsonPath("$.firstName", is(user.getFirstName())))
+                .andExpect(jsonPath("$.lastName", is(user.getLastName())))
+                .andExpect(jsonPath("$.email", is(user.getEmail())));
+    }
+
+    @Test
     public void testGetAdminUserDetails() throws Exception {
         User user = UserFixture.mutable();
 

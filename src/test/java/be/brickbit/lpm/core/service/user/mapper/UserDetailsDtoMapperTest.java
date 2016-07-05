@@ -30,6 +30,7 @@ public class UserDetailsDtoMapperTest {
         assertThat(result.getLastName()).isEqualTo(user.getLastName());
         assertThat(result.getEmail()).isEqualTo(user.getEmail());
         assertThat(result.getMood()).isEqualTo(user.getMood());
+        assertThat(result.getSeatNumber()).isEqualTo(user.getSeatNumber());
         assertThat(result.getWallet()).isEqualTo(user.getWallet());
         assertThat(result.getAge()).isEqualTo(18);
     }

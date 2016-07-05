@@ -1,6 +1,7 @@
 package be.brickbit.lpm.core.fixture;
 
 import static be.brickbit.lpm.core.util.RandomValueUtil.randomDecimal;
+import static be.brickbit.lpm.core.util.RandomValueUtil.randomInt;
 import static be.brickbit.lpm.core.util.RandomValueUtil.randomLong;
 import static be.brickbit.lpm.core.util.RandomValueUtil.randomString;
 
@@ -11,6 +12,7 @@ public class UserDetailsDtoFixture {
         return new UserDetailsDto(
                 randomString(),
                 randomLong(),
+                randomInt(),
                 randomDecimal(),
                 randomString(),
                 randomString(),

@@ -1,5 +1,6 @@
 package be.brickbit.lpm.core.controller;
 
+import static be.brickbit.lpm.core.util.RandomValueUtil.randomInt;
 import static be.brickbit.lpm.core.util.RandomValueUtil.randomLong;
 import static be.brickbit.lpm.core.util.RandomValueUtil.randomString;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -71,6 +72,15 @@ public class UserControllerTest {
 
 		assertThat(controller.getUserDetails(id)).isSameAs(dto);
 	}
+
+    @Test
+    public void getUserDetailsBySeatNumber() throws Exception {
+        Integer seatNumber = randomInt();
+        UserDetailsDto dto = UserDetailsDtoFixture.mutable();
+        when(userService.findBySeatNumber(seatNumber, userDetailsDtoMapper)).thenReturn(dto);
+
+        assertThat(controller.getUserDetailsBySeat(seatNumber)).isSameAs(dto);
+    }
 
     @Test
     public void getAdminUserDetails() throws Exception {

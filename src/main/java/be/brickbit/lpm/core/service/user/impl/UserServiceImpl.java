@@ -75,6 +75,13 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     }
 
     @Override
+    public <T> T findBySeatNumber(Integer seatNumber, UserMapper<T> dtoMapper) {
+        return dtoMapper.map(
+                getRepository().findBySeatNumber(seatNumber).orElseThrow(this::getUserNotFoundException)
+        );
+    }
+
+    @Override
     public void enableUser(Long id) {
         User user = userRepository.findOne(id);
         if(!user.isEnabled()){
@@ -127,8 +134,22 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<String> findAllAuthorities() {
         return authorityRepository.findAll().stream().map(Authority::getAuthority).collect(Collectors.toList());
+    }
+
+    @Override
+    public void assignSeat(Long id, Integer seatNr) {
+        if(userRepository.findBySeatNumber(seatNr).isPresent()){
+            throw new RuntimeException("Seat Number already assigned to another user");
+        }
+
+        User user = Optional.ofNullable(userRepository.findOne(id)).orElseThrow(this::getUserNotFoundException);
+
+        user.setSeatNumber(seatNr);
+
+        userRepository.save(user);
     }
 
     @Override

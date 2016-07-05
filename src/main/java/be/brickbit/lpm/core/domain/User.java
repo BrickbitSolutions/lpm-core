@@ -38,6 +38,8 @@ public @Data class User implements UserDetails {
 	private LocalDate birthDate;
 	@Column(name = "EMAIL")
 	private String email;
+    @Column(name = "SEAT_NUMBER")
+    private Integer seatNumber;
 	@Column(name = "WALLET")
 	private BigDecimal wallet;
 	@Column(name = "MOOD")

@@ -13,6 +13,7 @@ import java.util.List;
 public class AdminUserDetailsDto {
     private Long id;
     private String username;
+    private Integer seatNumber;
     private String firstName;
     private String lastName;
     private String email;
