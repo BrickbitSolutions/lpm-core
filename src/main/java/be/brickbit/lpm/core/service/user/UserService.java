@@ -7,6 +7,8 @@ import be.brickbit.lpm.core.service.user.mapper.UserMapper;
 import be.brickbit.lpm.infrastructure.Service;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import java.util.List;
+
 public interface UserService extends UserDetailsService, Service<User> {
     void createUser(NewUserCommand userCommand);
     <T> T findByUsername(String username, UserMapper<T> dtoMapper);
@@ -15,4 +17,5 @@ public interface UserService extends UserDetailsService, Service<User> {
     void lockUser(Long id);
     void unlockUser(Long id);
     void updateAccountDetails(Long id, UpdateAccountDetailsCommand command);
+    List<String> findAllAuthorities();
 }

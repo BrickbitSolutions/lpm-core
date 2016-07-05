@@ -22,6 +22,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static be.brickbit.lpm.core.util.RandomValueUtil.randomEmail;
@@ -257,5 +259,18 @@ public class UserServiceImplTest {
 
         verify(userRepository, times(0)).save(user);
         assertThat(user.isAccountNonLocked()).isTrue();
+    }
+
+    @Test
+    public void findAllAuthorities() throws Exception {
+        final ArrayList<Authority> authorities = Lists.newArrayList(
+                AuthorityFixture.admin(),
+                AuthorityFixture.user()
+        );
+        when(authorityRepository.findAll()).thenReturn(authorities);
+
+        List<String> result = userService.findAllAuthorities();
+
+        assertThat(result).containsOnly(authorities.get(0).getAuthority(), authorities.get(1).getAuthority());
     }
 }

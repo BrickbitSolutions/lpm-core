@@ -44,6 +44,14 @@ public class UserControllerTest {
 	@InjectMocks
 	private UserController controller;
 
+    @Test
+    public void findAllAuthorities() throws Exception {
+        final ArrayList<String> authorities = new ArrayList<>();
+        when(userService.findAllAuthorities()).thenReturn(authorities);
+
+        assertThat(controller.findAllAuthorities()).isSameAs(authorities);
+    }
+
 	@Test
 	public void getUserPrincipal() throws Exception {
 		String username = randomString();
@@ -63,6 +71,15 @@ public class UserControllerTest {
 
 		assertThat(controller.getUserDetails(id)).isSameAs(dto);
 	}
+
+    @Test
+    public void getAdminUserDetails() throws Exception {
+        Long id = randomLong();
+        AdminUserDetailsDto dto = new AdminUserDetailsDto();
+        when(userService.findOne(id, adminUserDetailsDtoMapper)).thenReturn(dto);
+
+        assertThat(controller.getAdminUserDetails(id)).isSameAs(dto);
+    }
 
 	@Test
 	public void getAdminUserOverview() throws Exception {

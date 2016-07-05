@@ -42,6 +42,14 @@ public class UserController {
     @Autowired
     private SecurityService securityService;
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @RequestMapping(value = "/authorities", method = RequestMethod.GET, produces = MediaType
+            .APPLICATION_JSON_UTF8_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public List<String> findAllAuthorities() {
+        return userService.findAllAuthorities();
+    }
+
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "principal", method = RequestMethod.GET, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
@@ -60,6 +68,14 @@ public class UserController {
                 id,
                 userDetailsDtoMapper
         );
+    }
+
+    @PreAuthorize(value = "hasRole('ADMIN')")
+    @RequestMapping(value = "{id}/details", method = RequestMethod.GET, produces = MediaType
+            .APPLICATION_JSON_UTF8_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public AdminUserDetailsDto getAdminUserDetails(@PathVariable("id") Long id) {
+        return userService.findOne(id, adminUserDetailsDtoMapper);
     }
 
     @PreAuthorize(value = "hasRole('ADMIN')")

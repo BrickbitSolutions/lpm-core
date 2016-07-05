@@ -3,6 +3,7 @@ package be.brickbit.lpm.core.controller;
 import static be.brickbit.lpm.core.util.RandomValueUtil.randomEmail;
 import static be.brickbit.lpm.core.util.RandomValueUtil.randomString;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.arrayWithSize;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -26,6 +27,18 @@ import be.brickbit.lpm.core.fixture.AuthorityFixture;
 import be.brickbit.lpm.core.fixture.UserFixture;
 
 public class UserControllerIT extends AbstractControllerIT {
+    @Test
+    public void testFindAllAuthorities() throws Exception {
+        performGet("/user/authorities")
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", containsInAnyOrder(
+                        "ROLE_USER",
+                        "ROLE_ADMIN",
+                        "ROLE_CATERING_ADMIN",
+                        "ROLE_CATERING_CREW"
+                )));
+    }
+
     @Test
     public void testGetUserPrincipal() throws Exception {
         performGet("/user/principal")
@@ -51,6 +64,25 @@ public class UserControllerIT extends AbstractControllerIT {
                 .andExpect(jsonPath("$.firstName", is(user.getFirstName())))
                 .andExpect(jsonPath("$.lastName", is(user.getLastName())))
                 .andExpect(jsonPath("$.email", is(user.getEmail())));
+    }
+
+    @Test
+    public void testGetAdminUserDetails() throws Exception {
+        User user = UserFixture.mutable();
+
+        insert(user);
+
+        performGet("/user/" + user.getId() + "/details")
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(user.getId().intValue())))
+                .andExpect(jsonPath("$.username", is(user.getUsername())))
+                .andExpect(jsonPath("$.firstName", is(user.getFirstName())))
+                .andExpect(jsonPath("$.lastName", is(user.getLastName())))
+                .andExpect(jsonPath("$.email", is(user.getEmail())))
+                .andExpect(jsonPath("$.birthDate", is(user.getBirthDate().format(DateTimeFormatter.ISO_DATE))))
+                .andExpect(jsonPath("$.enabled", is(user.isEnabled())))
+                .andExpect(jsonPath("$.locked", is(!user.isAccountNonLocked())))
+                .andExpect(jsonPath("$.authorities", notNullValue()));
     }
 
     @Test
