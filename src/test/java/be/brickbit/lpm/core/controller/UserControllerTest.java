@@ -1,8 +1,6 @@
 package be.brickbit.lpm.core.controller;
 
-import static be.brickbit.lpm.core.util.RandomValueUtil.randomInt;
-import static be.brickbit.lpm.core.util.RandomValueUtil.randomLong;
-import static be.brickbit.lpm.core.util.RandomValueUtil.randomString;
+import static be.brickbit.lpm.core.util.RandomValueUtil.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 

@@ -1,16 +1,17 @@
 package be.brickbit.lpm.core.validation.annotation;
 
-import be.brickbit.lpm.core.validation.validator.FieldMatchValidator;
+import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import javax.validation.Constraint;
-import javax.validation.Payload;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import javax.validation.Constraint;
+import javax.validation.Payload;
+
+import be.brickbit.lpm.core.validation.validator.FieldMatchValidator;
 
 
 @Target({TYPE, ANNOTATION_TYPE})

@@ -1,12 +1,13 @@
 package be.brickbit.lpm.infrastructure;
 
-import be.brickbit.lpm.infrastructure.mapper.Extractor;
-import be.brickbit.lpm.infrastructure.mapper.Mapper;
-import org.springframework.data.domain.Sort;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.function.BiConsumer;
+
+import org.springframework.data.domain.Sort;
+
+import be.brickbit.lpm.infrastructure.mapper.Extractor;
+import be.brickbit.lpm.infrastructure.mapper.Mapper;
 
 public interface TypeService<Entity, Type extends Serializable> {
 

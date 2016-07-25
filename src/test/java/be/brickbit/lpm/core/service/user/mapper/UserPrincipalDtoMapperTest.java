@@ -1,12 +1,13 @@
 package be.brickbit.lpm.core.service.user.mapper;
 
-import be.brickbit.lpm.core.domain.User;
-import be.brickbit.lpm.core.fixture.UserFixture;
-import be.brickbit.lpm.core.service.user.dto.UserPrincipalDto;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import be.brickbit.lpm.core.domain.User;
+import be.brickbit.lpm.core.fixture.UserFixture;
+import be.brickbit.lpm.core.service.user.dto.UserPrincipalDto;
 
 public class UserPrincipalDtoMapperTest {
 

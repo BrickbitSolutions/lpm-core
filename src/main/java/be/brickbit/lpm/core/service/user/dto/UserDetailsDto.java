@@ -1,10 +1,10 @@
 package be.brickbit.lpm.core.service.user.dto;
 
+import java.math.BigDecimal;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.math.BigDecimal;
 
 @AllArgsConstructor
 @NoArgsConstructor

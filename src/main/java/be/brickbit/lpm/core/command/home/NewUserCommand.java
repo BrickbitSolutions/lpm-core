@@ -7,6 +7,15 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class NewUserCommand {
 	@NotBlank(message = "Username may not be empty")
 	private String username;
@@ -21,58 +30,4 @@ public class NewUserCommand {
 	private String email;
 	@NotNull(message = "Birthdate may not be empty")
 	private LocalDate birthDate;
-
-	public String getUsername() {
-		return username;
-	}
-
-	public NewUserCommand setUsername(String username) {
-		this.username = username;
-		return this;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public NewUserCommand setPassword(String password) {
-		this.password = password;
-		return this;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public NewUserCommand setFirstName(String firstName) {
-		this.firstName = firstName;
-		return this;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public NewUserCommand setLastName(String lastName) {
-		this.lastName = lastName;
-		return this;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public NewUserCommand setEmail(String email) {
-		this.email = email;
-		return this;
-	}
-
-	public LocalDate getBirthDate() {
-		return birthDate;
-	}
-
-	public NewUserCommand setBirthDate(LocalDate birthDate) {
-		this.birthDate = birthDate;
-		return this;
-	}
 }

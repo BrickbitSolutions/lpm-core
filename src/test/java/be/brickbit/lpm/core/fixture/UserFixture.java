@@ -1,16 +1,13 @@
 package be.brickbit.lpm.core.fixture;
 
-import static be.brickbit.lpm.core.util.RandomValueUtil.randomDecimal;
-import static be.brickbit.lpm.core.util.RandomValueUtil.randomEmail;
-import static be.brickbit.lpm.core.util.RandomValueUtil.randomInt;
-import static be.brickbit.lpm.core.util.RandomValueUtil.randomLocalDate;
-import static be.brickbit.lpm.core.util.RandomValueUtil.randomString;
+import static be.brickbit.lpm.core.util.RandomValueUtil.*;
 
 import java.time.LocalDate;
 import java.util.HashSet;
 
-import be.brickbit.lpm.core.domain.User;
 import com.google.common.collect.Sets;
+
+import be.brickbit.lpm.core.domain.User;
 
 public class UserFixture {
 	public static User mutable() {

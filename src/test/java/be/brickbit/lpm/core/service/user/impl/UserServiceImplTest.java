@@ -1,17 +1,16 @@
 package be.brickbit.lpm.core.service.user.impl;
 
-import be.brickbit.lpm.core.command.home.NewUserCommand;
-import be.brickbit.lpm.core.command.user.UpdateAccountDetailsCommand;
-import be.brickbit.lpm.core.fixture.AuthorityFixture;
-import be.brickbit.lpm.core.fixture.UserFixture;
-import be.brickbit.lpm.core.domain.Authority;
-import be.brickbit.lpm.core.domain.User;
-import be.brickbit.lpm.core.fixture.command.NewUserCommandFixture;
-import be.brickbit.lpm.core.repository.AuthorityRepository;
-import be.brickbit.lpm.core.repository.UserRepository;
-import be.brickbit.lpm.core.service.user.dto.UserPrincipalDto;
-import be.brickbit.lpm.core.service.user.mapper.UserPrincipalDtoMapper;
-import com.google.common.collect.Lists;
+import static be.brickbit.lpm.core.util.RandomValueUtil.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.internal.verification.VerificationModeFactory.times;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -24,19 +23,19 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import com.google.common.collect.Lists;
 
-import static be.brickbit.lpm.core.util.RandomValueUtil.randomEmail;
-import static be.brickbit.lpm.core.util.RandomValueUtil.randomInt;
-import static be.brickbit.lpm.core.util.RandomValueUtil.randomLong;
-import static be.brickbit.lpm.core.util.RandomValueUtil.randomString;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.internal.verification.VerificationModeFactory.times;
+import be.brickbit.lpm.core.command.home.NewUserCommand;
+import be.brickbit.lpm.core.command.user.UpdateAccountDetailsCommand;
+import be.brickbit.lpm.core.domain.Authority;
+import be.brickbit.lpm.core.domain.User;
+import be.brickbit.lpm.core.fixture.AuthorityFixture;
+import be.brickbit.lpm.core.fixture.UserFixture;
+import be.brickbit.lpm.core.fixture.command.NewUserCommandFixture;
+import be.brickbit.lpm.core.repository.AuthorityRepository;
+import be.brickbit.lpm.core.repository.UserRepository;
+import be.brickbit.lpm.core.service.user.dto.UserPrincipalDto;
+import be.brickbit.lpm.core.service.user.mapper.UserPrincipalDtoMapper;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceImplTest {

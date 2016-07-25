@@ -1,5 +1,9 @@
 package be.brickbit.lpm.core.config;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -12,18 +16,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.UnsatisfiedServletRequestParameterException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.NoHandlerFoundException;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @ControllerAdvice
 public class DefaultExceptionHandler {
@@ -92,16 +86,6 @@ public class DefaultExceptionHandler {
                 validationErrors.put("global", objectError.getDefaultMessage());
             }
         }
-        // TODO: 01/07/16 : user ValidationError Object again (easy fix for progress in angular)
-        /*List<ValidationError> validationErrors = new ArrayList<>();
-        for (ObjectError objectError : ex.getBindingResult().getAllErrors()) {
-            if (objectError instanceof FieldError) {
-                FieldError fieldError = (FieldError) objectError;
-                validationErrors.add(new ValidationError(fieldError.getField(), fieldError.getDefaultMessage()));
-            } else {
-                validationErrors.add(new ValidationError("global", objectError.getDefaultMessage()));
-            }
-        }*/
         map.put("validationMessages", validationErrors);
         return map;
     }

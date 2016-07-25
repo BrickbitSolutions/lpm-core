@@ -4,13 +4,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Optional;
 
-import be.brickbit.lpm.core.domain.Authority;
-import be.brickbit.lpm.core.domain.QAuthority;
-import com.mysema.query.jpa.impl.JPAQuery;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.mysema.query.jpa.impl.JPAQuery;
+
 import be.brickbit.lpm.core.AbstractRepoIT;
+import be.brickbit.lpm.core.domain.Authority;
+import be.brickbit.lpm.core.domain.QAuthority;
 import be.brickbit.lpm.core.domain.User;
 import be.brickbit.lpm.core.fixture.UserFixture;
 

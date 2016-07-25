@@ -3,11 +3,7 @@ package be.brickbit.lpm.core.controller;
 import static be.brickbit.lpm.core.util.RandomValueUtil.randomEmail;
 import static be.brickbit.lpm.core.util.RandomValueUtil.randomString;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.arrayWithSize;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -15,7 +11,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
-import be.brickbit.lpm.core.domain.Authority;
 import org.junit.Test;
 
 import com.google.common.collect.Lists;
@@ -23,7 +18,6 @@ import com.google.common.collect.Lists;
 import be.brickbit.lpm.core.AbstractControllerIT;
 import be.brickbit.lpm.core.command.user.UpdateAccountDetailsCommand;
 import be.brickbit.lpm.core.domain.User;
-import be.brickbit.lpm.core.fixture.AuthorityFixture;
 import be.brickbit.lpm.core.fixture.UserFixture;
 
 public class UserControllerIT extends AbstractControllerIT {

@@ -6,9 +6,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import be.brickbit.lpm.core.command.user.UpdateAccountDetailsCommand;
-import be.brickbit.lpm.core.domain.Authority;
-import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import be.brickbit.lpm.core.auth.exceptions.UserExistsException;
 import be.brickbit.lpm.core.command.home.NewUserCommand;
+import be.brickbit.lpm.core.command.user.UpdateAccountDetailsCommand;
+import be.brickbit.lpm.core.domain.Authority;
 import be.brickbit.lpm.core.domain.User;
 import be.brickbit.lpm.core.repository.AuthorityRepository;
 import be.brickbit.lpm.core.repository.UserRepository;
