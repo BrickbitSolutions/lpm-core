@@ -1,0 +1,47 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.0.RELEASE")
+    }
+}
+
+apply plugin: 'spring-boot'
+apply plugin: 'java'
+
+group = 'be.brickbit'
+version = '1.0-SNAPSHOT'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    //Spring
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.boot:spring-boot-starter-actuator'
+    compile 'org.springframework.boot:spring-boot-starter-security'
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    //Database
+    compile 'org.hibernate:hibernate-java8'
+    compile 'org.postgresql:postgresql'
+    compile 'com.h2database:h2'
+    compile 'org.flywaydb:flyway-core'
+    compile 'com.mysema.querydsl:querydsl-jpa:3.6.9'
+    compile 'com.mysema.querydsl:querydsl-apt:3.6.9:jpa'
+    // Utils
+    compile 'commons-beanutils:commons-beanutils'
+    compile 'org.apache.commons:commons-lang3:3.4'
+    compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    compile 'org.projectlombok:lombok'
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
+    testCompile 'org.assertj:assertj-core'
+    testCompile 'org.easytesting:fest-reflect:1.4.1'
+    testCompile 'com.jayway.jsonpath:json-path'
+    testCompile 'com.jayway.jsonpath:json-path-assert'
+}
