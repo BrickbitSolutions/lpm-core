@@ -45,3 +45,7 @@ dependencies {
     testCompile 'com.jayway.jsonpath:json-path'
     testCompile 'com.jayway.jsonpath:json-path-assert'
 }
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.14.1'
+}
