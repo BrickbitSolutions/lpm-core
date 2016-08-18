@@ -27,6 +27,7 @@ import com.google.common.collect.Lists;
 
 import be.brickbit.lpm.core.command.home.NewUserCommand;
 import be.brickbit.lpm.core.command.user.UpdateAccountDetailsCommand;
+import be.brickbit.lpm.core.command.user.UpdateUserProfileCommand;
 import be.brickbit.lpm.core.domain.Authority;
 import be.brickbit.lpm.core.domain.User;
 import be.brickbit.lpm.core.fixture.AuthorityFixture;
@@ -341,5 +342,26 @@ public class UserServiceImplTest {
         when(userRepository.findBySeatNumber(seatNr)).thenReturn(Optional.of(user));
 
         userService.assignSeat(randomId, seatNr);
+    }
+
+    @Test
+    public void updatesUserProfile() throws Exception {
+        UpdateUserProfileCommand command = new UpdateUserProfileCommand(
+                randomString(),
+                randomEmail(),
+                randomString()
+        );
+        User user = UserFixture.mutable();
+        Long userId = randomLong();
+
+        when(userRepository.findOne(userId)).thenReturn(user);
+
+        userService.updateUserProfile(userId, command);
+
+        assertThat(user.getUsername()).isEqualTo(command.getUsername());
+        assertThat(user.getEmail()).isEqualTo(command.getEmail());
+        assertThat(user.getMood()).isEqualTo(command.getMood());
+
+        verify(userRepository, times(1)).save(user);
     }
 }
