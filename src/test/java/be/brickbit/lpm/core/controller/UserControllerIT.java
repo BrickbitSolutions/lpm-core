@@ -17,6 +17,7 @@ import com.google.common.collect.Lists;
 
 import be.brickbit.lpm.core.AbstractControllerIT;
 import be.brickbit.lpm.core.command.user.UpdateAccountDetailsCommand;
+import be.brickbit.lpm.core.command.user.UpdateUserProfileCommand;
 import be.brickbit.lpm.core.domain.User;
 import be.brickbit.lpm.core.fixture.UserFixture;
 
@@ -186,5 +187,22 @@ public class UserControllerIT extends AbstractControllerIT {
         assertThat(user.getUsername()).isEqualTo(command.getUsername());
         assertThat(user.getEmail()).isEqualTo(command.getEmail());
         assertThat(user.getAuthorities()).hasSize(2);
+    }
+
+    @Test
+    public void updateUserProfile() throws Exception {
+        User user = getEntityManager().find(User.class, 1L);
+        UpdateUserProfileCommand command = new UpdateUserProfileCommand(
+                randomString(),
+                randomEmail(),
+                randomString()
+        );
+
+        performPut("/user/profile", command)
+                .andExpect(status().isNoContent());
+
+        assertThat(user.getUsername()).isEqualTo(command.getUsername());
+        assertThat(user.getEmail()).isEqualTo(command.getEmail());
+        assertThat(user.getMood()).isEqualTo(command.getMood());
     }
 }

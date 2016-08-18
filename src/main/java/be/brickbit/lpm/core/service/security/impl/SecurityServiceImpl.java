@@ -5,6 +5,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import be.brickbit.lpm.core.auth.exceptions.SecurityException;
+import be.brickbit.lpm.core.domain.User;
 import be.brickbit.lpm.core.service.security.SecurityService;
 
 @Service
@@ -22,5 +23,10 @@ public class SecurityServiceImpl implements SecurityService {
         }else{
             throw new SecurityException("No SecurityContext found.");
         }
+    }
+
+    @Override
+    public User getAuthenticatedUser() {
+        return(User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }
