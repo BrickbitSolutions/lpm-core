@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import be.brickbit.lpm.core.auth.exceptions.UserExistsException;
 import be.brickbit.lpm.core.command.home.NewUserCommand;
 import be.brickbit.lpm.core.command.user.UpdateAccountDetailsCommand;
+import be.brickbit.lpm.core.command.user.UpdateUserProfileCommand;
 import be.brickbit.lpm.core.domain.Authority;
 import be.brickbit.lpm.core.domain.User;
 import be.brickbit.lpm.core.repository.AuthorityRepository;
@@ -118,7 +119,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 
     @Override
     public void updateAccountDetails(Long id, UpdateAccountDetailsCommand command) {
-        User user = Optional.ofNullable(userRepository.findOne(id)).orElseThrow(this::getUserNotFoundException);
+        User user = getUser(id);
 
         user.setUsername(command.getUsername());
         user.setEmail(command.getEmail());
@@ -144,11 +145,26 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
             throw new RuntimeException("Seat Number already assigned to another user");
         }
 
-        User user = Optional.ofNullable(userRepository.findOne(id)).orElseThrow(this::getUserNotFoundException);
+        User user = getUser(id);
 
         user.setSeatNumber(seatNr);
 
         userRepository.save(user);
+    }
+
+    @Override
+    public void updateUserProfile(Long id, UpdateUserProfileCommand command) {
+        User user = getUser(id);
+
+        user.setUsername(command.getUsername());
+        user.setEmail(command.getEmail());
+        user.setMood(command.getMood());
+
+        userRepository.save(user);
+    }
+
+    private User getUser(Long id) {
+        return Optional.ofNullable(userRepository.findOne(id)).orElseThrow(this::getUserNotFoundException);
     }
 
     @Override

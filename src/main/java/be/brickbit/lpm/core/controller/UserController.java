@@ -10,10 +10,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import be.brickbit.lpm.core.command.user.AssignSeatCommand;
 import be.brickbit.lpm.core.command.user.UpdateAccountDetailsCommand;
+import be.brickbit.lpm.core.command.user.UpdateUserProfileCommand;
+import be.brickbit.lpm.core.domain.User;
 import be.brickbit.lpm.core.service.security.SecurityService;
 import be.brickbit.lpm.core.service.user.UserService;
 import be.brickbit.lpm.core.service.user.dto.AdminUserDetailsDto;
@@ -92,6 +99,14 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void assignSeatNumber(@PathVariable("id") Long id, @RequestBody AssignSeatCommand command) {
         userService.assignSeat(id, command.getSeatNumber());
+    }
+
+    @PreAuthorize(value = "isAuthenticated()")
+    @RequestMapping(value = "/profile", method = RequestMethod.PUT, produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateUserProfile(@RequestBody @Valid UpdateUserProfileCommand command){
+        User user = securityService.getAuthenticatedUser();
+        userService.updateUserProfile(user.getId(), command);
     }
 
     @PreAuthorize(value = "hasRole('ADMIN')")
