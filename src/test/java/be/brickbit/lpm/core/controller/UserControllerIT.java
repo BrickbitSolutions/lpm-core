@@ -20,6 +20,7 @@ import be.brickbit.lpm.core.command.user.UpdateAccountDetailsCommand;
 import be.brickbit.lpm.core.command.user.UpdateUserProfileCommand;
 import be.brickbit.lpm.core.domain.User;
 import be.brickbit.lpm.core.fixture.UserFixture;
+import org.springframework.security.test.context.support.WithMockUser;
 
 public class UserControllerIT extends AbstractControllerIT {
     @Test
@@ -36,7 +37,7 @@ public class UserControllerIT extends AbstractControllerIT {
 
     @Test
     public void testGetUserPrincipal() throws Exception {
-        performGet("/user/principal")
+        performGet("/user/me")
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.username", is("admin")))
                 .andExpect(jsonPath("$.mood", is("Hello LPM")))

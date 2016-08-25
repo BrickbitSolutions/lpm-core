@@ -62,7 +62,7 @@ public class UserControllerTest {
 		UserPrincipalDto dto = new UserPrincipalDto();
 		when(userService.findByUsername(username, userPrincipalDtoMapper)).thenReturn(dto);
 
-		assertThat(controller.getUserPrincipal()).isSameAs(dto);
+		assertThat(controller.getCurrentUserDetails()).isSameAs(dto);
 	}
 
 	@Test

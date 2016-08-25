@@ -2,6 +2,7 @@ package be.brickbit.lpm.core.controller;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -57,13 +58,20 @@ public class UserController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value = "principal", method = RequestMethod.GET, produces = APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "me", method = RequestMethod.GET, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public UserPrincipalDto getUserPrincipal(){
+    public UserPrincipalDto getCurrentUserDetails(){
         return userService.findByUsername(
                 securityService.getAuthenticatedUsername(),
                 userPrincipalDtoMapper
         );
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = "", method = RequestMethod.GET, produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public Principal getUserPrincipal(Principal principal){
+        return principal;
     }
 
     @PreAuthorize(value = "isAuthenticated()")
@@ -126,24 +134,28 @@ public class UserController {
         return userService.findAll(adminUserDetailsDtoMapper);
     }
 
+    @PreAuthorize(value = "hasRole('ADMIN')")
     @RequestMapping(value = "{id}/enable", method = RequestMethod.PUT, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void enableUser(@PathVariable("id") Long id){
         userService.enableUser(id);
     }
 
+    @PreAuthorize(value = "hasRole('ADMIN')")
     @RequestMapping(value = "{id}/disable", method = RequestMethod.PUT, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void disableUser(@PathVariable("id") Long id){
         userService.disableUser(id);
     }
 
+    @PreAuthorize(value = "hasRole('ADMIN')")
     @RequestMapping(value = "{id}/lock", method = RequestMethod.PUT, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void lockUser(@PathVariable("id") Long id){
         userService.lockUser(id);
     }
 
+    @PreAuthorize(value = "hasRole('ADMIN')")
     @RequestMapping(value = "{id}/unlock", method = RequestMethod.PUT, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void unlockUser(@PathVariable("id") Long id){

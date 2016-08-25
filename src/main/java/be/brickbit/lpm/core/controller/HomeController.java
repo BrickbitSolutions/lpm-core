@@ -22,7 +22,6 @@ public class HomeController {
         return "{\"status\":\"UP\"}";
     }
 
-    @PreAuthorize("permitAll")
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public void postRegisterForm(@RequestBody @Valid NewUserCommand newUserCommand) {
