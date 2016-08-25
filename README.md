@@ -4,9 +4,9 @@
 
 This module handles the user magament of LPM.
 
-###Build Status
+###Build Status & Code Quality
 
-[![CircleCI](https://circleci.com/gh/BrickbitSolutions/lpm-core/tree/develop.svg?style=svg)](https://circleci.com/gh/BrickbitSolutions/lpm-core/tree/develop)
+[![CircleCI](https://circleci.com/gh/BrickbitSolutions/lpm-core/tree/develop.svg?style=svg)](https://circleci.com/gh/BrickbitSolutions/lpm-core/tree/develop) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/43cd9de7535549d4ad03cf4892855af3)](https://www.codacy.com/app/soulscammer/lpm-core?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=BrickbitSolutions/lpm-core&amp;utm_campaign=Badge_Grade)
 
 ###Installation
 
