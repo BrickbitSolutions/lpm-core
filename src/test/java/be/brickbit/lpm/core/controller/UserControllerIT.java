@@ -12,16 +12,22 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.google.common.collect.Lists;
 
 import be.brickbit.lpm.core.AbstractControllerIT;
 import be.brickbit.lpm.core.command.user.UpdateAccountDetailsCommand;
+import be.brickbit.lpm.core.command.user.UpdateUserPasswordCommand;
 import be.brickbit.lpm.core.command.user.UpdateUserProfileCommand;
 import be.brickbit.lpm.core.domain.User;
 import be.brickbit.lpm.core.fixture.UserFixture;
 
 public class UserControllerIT extends AbstractControllerIT {
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Test
     public void testFindAllAuthorities() throws Exception {
         performGet("/user/authorities")
@@ -204,5 +210,16 @@ public class UserControllerIT extends AbstractControllerIT {
         assertThat(user.getUsername()).isEqualTo(command.getUsername());
         assertThat(user.getEmail()).isEqualTo(command.getEmail());
         assertThat(user.getMood()).isEqualTo(command.getMood());
+    }
+
+    @Test
+    public void updateUserPassword() throws Exception {
+        User user = getEntityManager().find(User.class, 1L);
+        UpdateUserPasswordCommand command = new UpdateUserPasswordCommand(randomString());
+
+        performPut("/user/password", command)
+                .andExpect(status().isNoContent());
+
+        assertThat(passwordEncoder.matches(command.getPassword(), user.getPassword())).isTrue();
     }
 }

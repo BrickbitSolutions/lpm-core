@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import be.brickbit.lpm.core.command.user.AssignSeatCommand;
 import be.brickbit.lpm.core.command.user.UpdateAccountDetailsCommand;
+import be.brickbit.lpm.core.command.user.UpdateUserPasswordCommand;
 import be.brickbit.lpm.core.command.user.UpdateUserProfileCommand;
 import be.brickbit.lpm.core.domain.User;
 import be.brickbit.lpm.core.service.security.SecurityService;
@@ -107,6 +108,14 @@ public class UserController {
     public void updateUserProfile(@RequestBody @Valid UpdateUserProfileCommand command){
         User user = securityService.getAuthenticatedUser();
         userService.updateUserProfile(user.getId(), command);
+    }
+
+    @PreAuthorize(value = "isAuthenticated()")
+    @RequestMapping(value = "/password", method = RequestMethod.PUT, produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateUserPassword(@RequestBody @Valid UpdateUserPasswordCommand command){
+        User user = securityService.getAuthenticatedUser();
+        userService.updateUserPassword(user.getId(), command);
     }
 
     @PreAuthorize(value = "hasRole('ADMIN')")

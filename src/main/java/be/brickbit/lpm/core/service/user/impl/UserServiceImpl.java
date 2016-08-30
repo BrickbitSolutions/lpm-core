@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import be.brickbit.lpm.core.auth.exceptions.UserExistsException;
 import be.brickbit.lpm.core.command.home.NewUserCommand;
 import be.brickbit.lpm.core.command.user.UpdateAccountDetailsCommand;
+import be.brickbit.lpm.core.command.user.UpdateUserPasswordCommand;
 import be.brickbit.lpm.core.command.user.UpdateUserProfileCommand;
 import be.brickbit.lpm.core.domain.Authority;
 import be.brickbit.lpm.core.domain.User;
@@ -163,6 +164,14 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         userRepository.save(user);
     }
 
+    @Override
+    public void updateUserPassword(Long id, UpdateUserPasswordCommand updateUserPasswordCommand) {
+        User user = getUser(id);
+        user.setPassword(passwordEncoder.encode(updateUserPasswordCommand.getPassword()));
+
+        userRepository.save(user);
+    }
+
     private User getUser(Long id) {
         return Optional.ofNullable(userRepository.findOne(id)).orElseThrow(this::getUserNotFoundException);
     }
@@ -182,4 +191,6 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     protected UserRepository getRepository() {
         return userRepository;
     }
+
+
 }
