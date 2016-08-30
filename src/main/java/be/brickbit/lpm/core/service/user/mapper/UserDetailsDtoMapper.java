@@ -15,6 +15,7 @@ public class UserDetailsDtoMapper implements UserMapper<UserDetailsDto> {
     public UserDetailsDto map(User user) {
         if(user != null) {
             return new UserDetailsDto(
+                    user.getId(),
                     user.getUsername(),
                     user.getBirthDate().until(LocalDate.now(), ChronoUnit.YEARS),
                     user.getSeatNumber(),

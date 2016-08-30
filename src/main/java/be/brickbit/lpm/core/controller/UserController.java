@@ -67,13 +67,6 @@ public class UserController {
         );
     }
 
-    @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value = "", method = RequestMethod.GET, produces = APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public Principal getUserPrincipal(Principal principal){
-        return principal;
-    }
-
     @PreAuthorize(value = "isAuthenticated()")
     @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)

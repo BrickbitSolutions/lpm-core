@@ -26,6 +26,7 @@ public class UserDetailsDtoMapperTest {
 
         UserDetailsDto result = mapper.map(user);
 
+        assertThat(result.getId()).isEqualTo(user.getId());
         assertThat(result.getUsername()).isEqualTo(user.getUsername());
         assertThat(result.getFirstName()).isEqualTo(user.getFirstName());
         assertThat(result.getLastName()).isEqualTo(user.getLastName());
@@ -35,5 +36,4 @@ public class UserDetailsDtoMapperTest {
         assertThat(result.getWallet()).isEqualTo(user.getWallet());
         assertThat(result.getAge()).isEqualTo(18);
     }
-
 }

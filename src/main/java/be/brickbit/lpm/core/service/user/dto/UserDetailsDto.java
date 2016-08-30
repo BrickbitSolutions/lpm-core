@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class UserDetailsDto {
+    private Long id;
     private String username;
     private Long age;
     private Integer seatNumber;
