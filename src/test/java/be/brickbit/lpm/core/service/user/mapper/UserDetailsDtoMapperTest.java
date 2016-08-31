@@ -1,15 +1,14 @@
 package be.brickbit.lpm.core.service.user.mapper;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.time.LocalDate;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import be.brickbit.lpm.core.domain.User;
 import be.brickbit.lpm.core.fixture.UserFixture;
 import be.brickbit.lpm.core.service.user.dto.UserDetailsDto;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.time.LocalDate;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserDetailsDtoMapperTest {
     private UserDetailsDtoMapper mapper;

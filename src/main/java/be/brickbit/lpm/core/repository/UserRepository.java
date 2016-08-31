@@ -1,10 +1,9 @@
 package be.brickbit.lpm.core.repository;
 
-import java.util.Optional;
-
+import be.brickbit.lpm.core.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import be.brickbit.lpm.core.domain.User;
+import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUsername(String username);

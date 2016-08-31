@@ -1,12 +1,11 @@
 package be.brickbit.lpm.core.validation.validator;
 
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-
+import be.brickbit.lpm.core.validation.annotation.FieldMatch;
 import org.apache.commons.beanutils.BeanUtils;
 
-import be.brickbit.lpm.core.validation.annotation.FieldMatch;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 
 public class FieldMatchValidator implements ConstraintValidator<FieldMatch, Object>
 {

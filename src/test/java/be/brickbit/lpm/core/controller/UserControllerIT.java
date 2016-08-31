@@ -1,26 +1,23 @@
 package be.brickbit.lpm.core.controller;
 
+import be.brickbit.lpm.core.AbstractControllerIT;
+import be.brickbit.lpm.core.command.user.UpdateAccountDetailsCommand;
+import be.brickbit.lpm.core.command.user.UpdateUserProfileCommand;
+import be.brickbit.lpm.core.domain.User;
+import be.brickbit.lpm.core.fixture.UserFixture;
+import com.google.common.collect.Lists;
+import org.junit.Test;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+
 import static be.brickbit.lpm.core.util.RandomValueUtil.randomEmail;
 import static be.brickbit.lpm.core.util.RandomValueUtil.randomString;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
-
-import org.junit.Test;
-
-import com.google.common.collect.Lists;
-
-import be.brickbit.lpm.core.AbstractControllerIT;
-import be.brickbit.lpm.core.command.user.UpdateAccountDetailsCommand;
-import be.brickbit.lpm.core.command.user.UpdateUserProfileCommand;
-import be.brickbit.lpm.core.domain.User;
-import be.brickbit.lpm.core.fixture.UserFixture;
-import org.springframework.security.test.context.support.WithMockUser;
 
 public class UserControllerIT extends AbstractControllerIT {
     @Test

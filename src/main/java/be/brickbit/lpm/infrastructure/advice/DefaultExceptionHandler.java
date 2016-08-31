@@ -1,9 +1,9 @@
 package be.brickbit.lpm.infrastructure.advice;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
+import be.brickbit.lpm.infrastructure.advice.model.ExceptionResponse;
+import be.brickbit.lpm.infrastructure.advice.model.UnsupportedMediaExceptionResponse;
+import be.brickbit.lpm.infrastructure.advice.model.ValidationExceptionResponse;
+import be.brickbit.lpm.infrastructure.exception.ServiceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
@@ -21,10 +21,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-import be.brickbit.lpm.infrastructure.advice.model.ExceptionResponse;
-import be.brickbit.lpm.infrastructure.advice.model.UnsupportedMediaExceptionResponse;
-import be.brickbit.lpm.infrastructure.advice.model.ValidationExceptionResponse;
-import be.brickbit.lpm.infrastructure.exception.ServiceException;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @ControllerAdvice
 @ResponseBody

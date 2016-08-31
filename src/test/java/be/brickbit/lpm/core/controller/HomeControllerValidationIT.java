@@ -1,14 +1,13 @@
 package be.brickbit.lpm.core.controller;
 
+import be.brickbit.lpm.core.AbstractControllerIT;
+import be.brickbit.lpm.core.command.home.NewUserCommand;
+import org.junit.Test;
+
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import org.junit.Test;
-
-import be.brickbit.lpm.core.AbstractControllerIT;
-import be.brickbit.lpm.core.command.home.NewUserCommand;
 
 public class HomeControllerValidationIT extends AbstractControllerIT {
 

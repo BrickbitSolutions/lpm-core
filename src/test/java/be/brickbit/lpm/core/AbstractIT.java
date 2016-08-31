@@ -1,9 +1,9 @@
 package be.brickbit.lpm.core;
 
-import javax.persistence.EntityManager;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
 
 @Transactional
 public abstract class AbstractIT {

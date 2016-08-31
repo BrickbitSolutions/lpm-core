@@ -1,16 +1,15 @@
 package be.brickbit.lpm.core.service.user.mapper;
 
-import static be.brickbit.lpm.core.util.RandomValueUtil.randomLong;
-import static org.assertj.core.api.Assertions.assertThat;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import be.brickbit.lpm.core.domain.User;
 import be.brickbit.lpm.core.fixture.UserFixture;
 import be.brickbit.lpm.core.service.user.dto.UserPrincipalDto;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.time.LocalDate;
+
+import static be.brickbit.lpm.core.util.RandomValueUtil.randomLong;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserPrincipalDtoMapperTest {
 
