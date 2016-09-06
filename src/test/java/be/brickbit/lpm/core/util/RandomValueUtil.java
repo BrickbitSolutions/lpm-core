@@ -1,10 +1,10 @@
 package be.brickbit.lpm.core.util;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 public class RandomValueUtil {
 	public static String randomString(int length) {

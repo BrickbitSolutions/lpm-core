@@ -1,5 +1,17 @@
 package be.brickbit.lpm.core.controller;
 
+import be.brickbit.lpm.core.AbstractControllerIT;
+import be.brickbit.lpm.core.command.user.UpdateAccountDetailsCommand;
+import be.brickbit.lpm.core.command.user.UpdateUserProfileCommand;
+import be.brickbit.lpm.core.domain.User;
+import be.brickbit.lpm.core.fixture.UserFixture;
+import com.google.common.collect.Lists;
+import org.junit.Test;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+
 import static be.brickbit.lpm.core.util.RandomValueUtil.randomEmail;
 import static be.brickbit.lpm.core.util.RandomValueUtil.randomString;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -42,7 +54,7 @@ public class UserControllerIT extends AbstractControllerIT {
 
     @Test
     public void testGetUserPrincipal() throws Exception {
-        performGet("/user/principal")
+        performGet("/user/me")
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.username", is("admin")))
                 .andExpect(jsonPath("$.mood", is("Hello LPM")))

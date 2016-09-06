@@ -1,13 +1,12 @@
 package be.brickbit.lpm.core.fixture;
 
-import static be.brickbit.lpm.core.util.RandomValueUtil.*;
+import be.brickbit.lpm.core.domain.User;
+import com.google.common.collect.Sets;
 
 import java.time.LocalDate;
 import java.util.HashSet;
 
-import com.google.common.collect.Sets;
-
-import be.brickbit.lpm.core.domain.User;
+import static be.brickbit.lpm.core.util.RandomValueUtil.*;
 
 public class UserFixture {
 	public static User mutable() {

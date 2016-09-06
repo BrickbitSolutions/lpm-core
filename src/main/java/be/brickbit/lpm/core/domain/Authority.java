@@ -1,10 +1,9 @@
 package be.brickbit.lpm.core.domain;
 
-import javax.persistence.*;
-
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 
-import lombok.Data;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "AUTHORITY")

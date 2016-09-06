@@ -1,12 +1,11 @@
 package be.brickbit.lpm.core.service.user.mapper;
 
-import java.util.stream.Collectors;
-
-import org.springframework.stereotype.Component;
-
 import be.brickbit.lpm.core.domain.Authority;
 import be.brickbit.lpm.core.domain.User;
 import be.brickbit.lpm.core.service.user.dto.AdminUserDetailsDto;
+import org.springframework.stereotype.Component;
+
+import java.util.stream.Collectors;
 
 @Component
 public class AdminUserDetailsDtoMapper implements UserMapper<AdminUserDetailsDto> {

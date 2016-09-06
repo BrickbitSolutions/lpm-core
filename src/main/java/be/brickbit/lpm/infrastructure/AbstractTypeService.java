@@ -1,17 +1,16 @@
 package be.brickbit.lpm.infrastructure;
 
+import be.brickbit.lpm.infrastructure.mapper.Extractor;
+import be.brickbit.lpm.infrastructure.mapper.Mapper;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
-
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.transaction.annotation.Transactional;
-
-import be.brickbit.lpm.infrastructure.mapper.Extractor;
-import be.brickbit.lpm.infrastructure.mapper.Mapper;
 
 public abstract class AbstractTypeService<Entity, Type extends Serializable> implements TypeService<Entity, Type> {
 

@@ -1,14 +1,12 @@
 package be.brickbit.lpm.core.domain;
 
+import lombok.Data;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Set;
-
-import javax.persistence.*;
-
-import org.springframework.security.core.userdetails.UserDetails;
-
-import lombok.Data;
 
 @Entity
 @Table(name = "LPM_USER")

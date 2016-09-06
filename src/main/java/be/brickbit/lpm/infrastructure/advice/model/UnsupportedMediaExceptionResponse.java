@@ -1,11 +1,10 @@
 package be.brickbit.lpm.infrastructure.advice.model;
 
-import java.util.List;
-
-import org.springframework.http.MediaType;
-
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.http.MediaType;
+
+import java.util.List;
 
 @Getter
 @Setter

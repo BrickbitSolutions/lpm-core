@@ -1,18 +1,5 @@
 package be.brickbit.lpm.core.controller;
 
-import static be.brickbit.lpm.core.util.RandomValueUtil.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
 import be.brickbit.lpm.core.command.user.UpdateUserProfileCommand;
 import be.brickbit.lpm.core.command.user.UpdateUserPasswordCommand;
 import be.brickbit.lpm.core.domain.User;
@@ -25,6 +12,18 @@ import be.brickbit.lpm.core.service.user.dto.UserPrincipalDto;
 import be.brickbit.lpm.core.service.user.mapper.AdminUserDetailsDtoMapper;
 import be.brickbit.lpm.core.service.user.mapper.UserDetailsDtoMapper;
 import be.brickbit.lpm.core.service.user.mapper.UserPrincipalDtoMapper;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.ArrayList;
+
+import static be.brickbit.lpm.core.util.RandomValueUtil.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserControllerTest {
@@ -63,7 +62,7 @@ public class UserControllerTest {
 		UserPrincipalDto dto = new UserPrincipalDto();
 		when(userService.findByUsername(username, userPrincipalDtoMapper)).thenReturn(dto);
 
-		assertThat(controller.getUserPrincipal()).isSameAs(dto);
+		assertThat(controller.getCurrentUserDetails()).isSameAs(dto);
 	}
 
 	@Test

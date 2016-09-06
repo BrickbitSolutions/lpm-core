@@ -1,15 +1,13 @@
 package be.brickbit.lpm.core.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.mysema.query.jpa.impl.JPAQuery;
-
 import be.brickbit.lpm.core.AbstractRepoIT;
 import be.brickbit.lpm.core.domain.Authority;
 import be.brickbit.lpm.core.domain.QAuthority;
+import com.mysema.query.jpa.impl.JPAQuery;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class AuthorityRepositoryIT extends AbstractRepoIT{
 

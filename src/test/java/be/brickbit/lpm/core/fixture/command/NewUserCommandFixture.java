@@ -1,8 +1,8 @@
 package be.brickbit.lpm.core.fixture.command;
 
-import static be.brickbit.lpm.core.util.RandomValueUtil.*;
-
 import be.brickbit.lpm.core.command.home.NewUserCommand;
+
+import static be.brickbit.lpm.core.util.RandomValueUtil.*;
 
 public class NewUserCommandFixture {
 	public static NewUserCommand mutable() {
