@@ -2,6 +2,7 @@ package be.brickbit.lpm.core.service.user;
 
 import be.brickbit.lpm.core.command.home.NewUserCommand;
 import be.brickbit.lpm.core.command.user.UpdateAccountDetailsCommand;
+import be.brickbit.lpm.core.command.user.UpdateUserPasswordCommand;
 import be.brickbit.lpm.core.command.user.UpdateUserProfileCommand;
 import be.brickbit.lpm.core.domain.User;
 import be.brickbit.lpm.core.service.user.mapper.UserMapper;
@@ -22,4 +23,5 @@ public interface UserService extends UserDetailsService, Service<User> {
     List<String> findAllAuthorities();
     void assignSeat(Long id, Integer seatNr);
     void updateUserProfile(Long id, UpdateUserProfileCommand updateUserProfileCommand);
+    void updateUserPassword(Long id, UpdateUserPasswordCommand updateUserPasswordCommand);
 }

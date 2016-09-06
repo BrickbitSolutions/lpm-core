@@ -2,6 +2,7 @@ package be.brickbit.lpm.core.service.user.impl;
 
 import be.brickbit.lpm.core.command.home.NewUserCommand;
 import be.brickbit.lpm.core.command.user.UpdateAccountDetailsCommand;
+import be.brickbit.lpm.core.command.user.UpdateUserPasswordCommand;
 import be.brickbit.lpm.core.command.user.UpdateUserProfileCommand;
 import be.brickbit.lpm.core.domain.Authority;
 import be.brickbit.lpm.core.domain.User;
@@ -359,6 +360,23 @@ public class UserServiceImplTest {
         assertThat(user.getUsername()).isEqualTo(command.getUsername());
         assertThat(user.getEmail()).isEqualTo(command.getEmail());
         assertThat(user.getMood()).isEqualTo(command.getMood());
+
+        verify(userRepository, times(1)).save(user);
+    }
+
+    @Test
+    public void updatesUserPassword() throws Exception {
+        UpdateUserPasswordCommand command = new UpdateUserPasswordCommand(randomString());
+        User user = UserFixture.mutable();
+        Long userId = randomLong();
+        String hashedPassword = randomString();
+
+        when(passwordEncoder.encode(command.getPassword())).thenReturn(hashedPassword);
+        when(userRepository.findOne(userId)).thenReturn(user);
+
+        userService.updateUserPassword(userId, command);
+
+        assertThat(user.getPassword()).isEqualTo(hashedPassword);
 
         verify(userRepository, times(1)).save(user);
     }

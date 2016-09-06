@@ -1,6 +1,7 @@
 package be.brickbit.lpm.core.controller;
 
 import be.brickbit.lpm.core.command.user.UpdateUserProfileCommand;
+import be.brickbit.lpm.core.command.user.UpdateUserPasswordCommand;
 import be.brickbit.lpm.core.domain.User;
 import be.brickbit.lpm.core.fixture.UserDetailsDtoFixture;
 import be.brickbit.lpm.core.service.security.SecurityService;
@@ -109,5 +110,17 @@ public class UserControllerTest {
 		controller.updateUserProfile(updateUserProfileCommand);
 
 		verify(userService).updateUserProfile(user.getId(), updateUserProfileCommand);
+	}
+
+	@Test
+	public void updatesUserPassword() throws Exception {
+		User user = new User();
+		user.setId(randomLong());
+		UpdateUserPasswordCommand updateUserPasswordCommand = new UpdateUserPasswordCommand();
+
+		when(securityService.getAuthenticatedUser()).thenReturn(user);
+		controller.updateUserPassword(updateUserPasswordCommand);
+
+		verify(userService).updateUserPassword(user.getId(), updateUserPasswordCommand);
 	}
 }

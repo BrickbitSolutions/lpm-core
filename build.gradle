@@ -10,6 +10,7 @@ buildscript {
 
 apply plugin: 'spring-boot'
 apply plugin: 'java'
+apply plugin: 'jacoco'
 
 group = 'be.brickbit'
 version = '1.0-SNAPSHOT'
@@ -46,6 +47,12 @@ dependencies {
     testCompile 'org.easytesting:fest-reflect:1.4.1'
     testCompile 'com.jayway.jsonpath:json-path'
     testCompile 'com.jayway.jsonpath:json-path-assert'
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+    }
 }
 
 task wrapper(type: Wrapper) {
