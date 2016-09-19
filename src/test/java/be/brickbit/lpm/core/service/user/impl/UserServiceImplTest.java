@@ -86,7 +86,6 @@ public class UserServiceImplTest {
         assertThat(user.isAccountNonLocked()).isTrue();
         assertThat(user.isCredentialsNonExpired()).isTrue();
         assertThat(user.getMood()).isEqualTo("Hello LPM.");
-        assertThat(user.getWallet()).isEqualTo(BigDecimal.ZERO);
     }
 
     @Test

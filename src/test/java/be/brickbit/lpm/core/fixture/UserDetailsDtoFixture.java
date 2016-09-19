@@ -11,7 +11,6 @@ public class UserDetailsDtoFixture {
                 randomString(),
                 randomLong(),
                 randomInt(),
-                randomDecimal(),
                 randomString(),
                 randomString(),
                 randomString(),

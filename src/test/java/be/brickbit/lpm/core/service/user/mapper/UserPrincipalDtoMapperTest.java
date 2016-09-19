@@ -34,7 +34,6 @@ public class UserPrincipalDtoMapperTest {
         assertThat(result.getEmail()).isEqualTo(user.getEmail());
         assertThat(result.getMood()).isEqualTo(user.getMood());
         assertThat(result.getSeatNumber()).isEqualTo(user.getSeatNumber());
-        assertThat(result.getWallet()).isEqualTo(user.getWallet());
         assertThat(result.getAge()).isEqualTo(18);
         assertThat(result.getAuthorities()).hasSize(user.getAuthorities().size());
     }

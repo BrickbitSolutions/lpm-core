@@ -24,7 +24,6 @@ public class UserFixture {
 		user.setCredentialsNonExpired(true);
 		user.setEnabled(true);
 		user.setMood(randomString(50));
-		user.setWallet(randomDecimal());
 		user.setAuthorities(new HashSet<>());
 
 		return user;
@@ -44,7 +43,6 @@ public class UserFixture {
         user.setCredentialsNonExpired(true);
         user.setEnabled(true);
         user.setMood(randomString(50));
-        user.setWallet(randomDecimal());
         user.setAuthorities(Sets.newHashSet(AuthorityFixture.admin(), AuthorityFixture.user()));
 
         return user;

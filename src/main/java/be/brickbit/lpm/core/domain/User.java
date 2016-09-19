@@ -29,8 +29,6 @@ public @Data class User implements UserDetails {
 	private String email;
     @Column(name = "SEAT_NUMBER")
     private Integer seatNumber;
-	@Column(name = "WALLET")
-	private BigDecimal wallet;
 	@Column(name = "MOOD")
 	private String mood;
 	@ManyToMany(fetch = FetchType.EAGER)

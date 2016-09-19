@@ -11,8 +11,8 @@ import java.util.List;
 public class UserPrincipalDto extends UserDetailsDto{
     private List<String> authorities;
 
-    public UserPrincipalDto(Long id, String username, Long age, Integer seatNumber, BigDecimal wallet, String mood, String firstName, String lastName, String email, List<String> authorities) {
-        super(id, username, age, seatNumber, wallet, mood, firstName, lastName, email);
+    public UserPrincipalDto(Long id, String username, Long age, Integer seatNumber, String mood, String firstName, String lastName, String email, List<String> authorities) {
+        super(id, username, age, seatNumber, mood, firstName, lastName, email);
         this.authorities = authorities;
     }
 }

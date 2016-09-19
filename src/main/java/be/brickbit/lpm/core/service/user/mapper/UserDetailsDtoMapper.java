@@ -18,7 +18,6 @@ public class UserDetailsDtoMapper implements UserMapper<UserDetailsDto> {
                     user.getUsername(),
                     user.getBirthDate().until(LocalDate.now(), ChronoUnit.YEARS),
                     user.getSeatNumber(),
-                    user.getWallet(),
                     user.getMood(),
                     user.getFirstName(),
                     user.getLastName(),

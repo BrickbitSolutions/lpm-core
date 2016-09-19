@@ -60,7 +60,6 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         user.setCredentialsNonExpired(true);
         user.setEnabled(false);
         user.setMood("Hello LPM.");
-        user.setWallet(BigDecimal.ZERO);
         user.setAuthorities(Collections.singleton(authorityRepository.findByAuthority("ROLE_USER")));
 
         userRepository.save(user);
