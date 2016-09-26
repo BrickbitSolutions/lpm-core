@@ -1,12 +1,15 @@
 package be.brickbit.lpm.core.controller;
 
 import be.brickbit.lpm.core.AbstractControllerIT;
-import be.brickbit.lpm.core.command.user.UpdateAccountDetailsCommand;
-import be.brickbit.lpm.core.command.user.UpdateUserProfileCommand;
+import be.brickbit.lpm.core.controller.command.user.UpdateAccountDetailsCommand;
+import be.brickbit.lpm.core.controller.command.user.UpdateUserPasswordCommand;
+import be.brickbit.lpm.core.controller.command.user.UpdateUserProfileCommand;
 import be.brickbit.lpm.core.domain.User;
 import be.brickbit.lpm.core.fixture.UserFixture;
 import com.google.common.collect.Lists;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -18,23 +21,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
-
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import com.google.common.collect.Lists;
-
-import be.brickbit.lpm.core.AbstractControllerIT;
-import be.brickbit.lpm.core.command.user.UpdateAccountDetailsCommand;
-import be.brickbit.lpm.core.command.user.UpdateUserPasswordCommand;
-import be.brickbit.lpm.core.command.user.UpdateUserProfileCommand;
-import be.brickbit.lpm.core.domain.User;
-import be.brickbit.lpm.core.fixture.UserFixture;
 
 public class UserControllerIT extends AbstractControllerIT {
     @Autowired

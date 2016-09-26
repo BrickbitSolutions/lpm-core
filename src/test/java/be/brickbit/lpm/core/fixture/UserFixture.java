@@ -9,25 +9,25 @@ import java.util.HashSet;
 import static be.brickbit.lpm.core.util.RandomValueUtil.*;
 
 public class UserFixture {
-	public static User mutable() {
-		User user = new User();
+    public static User mutable() {
+        User user = new User();
 
         user.setSeatNumber(randomInt());
-		user.setEmail(randomEmail());
-		user.setUsername(randomString());
-		user.setPassword(randomString());
-		user.setFirstName(randomString());
-		user.setLastName(randomString());
-		user.setBirthDate(randomLocalDate());
-		user.setAccountNonExpired(true);
-		user.setAccountNonLocked(true);
-		user.setCredentialsNonExpired(true);
-		user.setEnabled(true);
-		user.setMood(randomString(50));
-		user.setAuthorities(new HashSet<>());
+        user.setEmail(randomEmail());
+        user.setUsername(randomString());
+        user.setPassword(randomString());
+        user.setFirstName(randomString());
+        user.setLastName(randomString());
+        user.setBirthDate(randomLocalDate());
+        user.setAccountNonExpired(true);
+        user.setAccountNonLocked(true);
+        user.setCredentialsNonExpired(true);
+        user.setEnabled(true);
+        user.setMood(randomString(50));
+        user.setAuthorities(new HashSet<>());
 
-		return user;
-	}
+        return user;
+    }
 
     public static User testUser() {
         User user = new User();

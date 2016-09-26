@@ -7,24 +7,24 @@ import javax.persistence.EntityManager;
 
 @Transactional
 public abstract class AbstractIT {
-	@Autowired
-	private EntityManager entityManager;
+    @Autowired
+    private EntityManager entityManager;
 
-	protected void insert(Object... entities) throws Exception {
-		for (Object entity : entities) {
-			save(entity);
-		}
-	}
+    protected void insert(Object... entities) throws Exception {
+        for (Object entity : entities) {
+            save(entity);
+        }
+    }
 
-	private void save(Object object) {
-		if (entityManager.contains(object)) {
-			entityManager.merge(object);
-		} else {
-			entityManager.persist(object);
-		}
-	}
+    private void save(Object object) {
+        if (entityManager.contains(object)) {
+            entityManager.merge(object);
+        } else {
+            entityManager.persist(object);
+        }
+    }
 
-	protected EntityManager getEntityManager() {
-		return entityManager;
-	}
+    protected EntityManager getEntityManager() {
+        return entityManager;
+    }
 }

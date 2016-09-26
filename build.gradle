@@ -11,6 +11,7 @@ buildscript {
 apply plugin: 'spring-boot'
 apply plugin: 'java'
 apply plugin: 'jacoco'
+apply plugin: 'idea'
 
 group = 'be.brickbit'
 version = '1.0-SNAPSHOT'
@@ -52,6 +53,12 @@ dependencies {
 jacocoTestReport {
     reports {
         xml.enabled true
+    }
+}
+
+idea {
+    module {
+        sourceDirs += file('src/main/generated/')
     }
 }
 

@@ -5,6 +5,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -18,14 +19,20 @@ public class SimpleCORSFilter implements Filter {
     @Override
     public void doFilter(ServletRequest someServletRequest, ServletResponse someServletResponse,
                          FilterChain someFilterChain) throws IOException, ServletException {
+        HttpServletRequest request = (HttpServletRequest) someServletRequest;
         HttpServletResponse response = (HttpServletResponse) someServletResponse;
 
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers", "Content-Type,X-Requested-With,Origin,"
-                + "Access-Control-Request-Method,Access-Control-Request-Headers,Authorization, Accept");
-        someFilterChain.doFilter(someServletRequest, someServletResponse);
+                + "Access-Control-Request-Method,Access-Control-Request-Headers,Authorization,Accept");
+
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            response.setStatus(HttpServletResponse.SC_OK);
+        } else {
+            someFilterChain.doFilter(someServletRequest, someServletResponse);
+        }
     }
 
     @Override

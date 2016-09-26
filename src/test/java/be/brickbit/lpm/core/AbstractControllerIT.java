@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -50,7 +51,7 @@ public abstract class AbstractControllerIT extends AbstractIT {
     }
 
     protected ResultActions performGet(String url) throws Exception {
-        return mvc().perform(
+        return mvc.perform(
                 get(url)
                         .with(defaultUser)
                         .accept(MediaType.APPLICATION_JSON))
@@ -58,25 +59,31 @@ public abstract class AbstractControllerIT extends AbstractIT {
     }
 
     protected ResultActions performPost(String url, Object command) throws Exception {
-        return mvc().perform(
+        return mvc.perform(
                 post(url)
                         .with(defaultUser)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(convertToJson(command)));
+                        .content(convertToJson(command)))
+                .andDo(print());
     }
 
     protected ResultActions performPut(String url, Object command) throws Exception {
-        return mvc().perform(
+        return mvc.perform(
                 put(url)
                         .with(defaultUser)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(convertToJson(command)));
+                        .content(convertToJson(command)))
+                .andDo(print());
     }
 
-    protected MockMvc mvc() {
-        return mvc;
+    protected ResultActions performDelete(String url) throws Exception {
+        return mvc.perform(
+                delete(url)
+                        .with(defaultUser)
+                        .accept(APPLICATION_JSON))
+                .andDo(print());
     }
 
     private RequestPostProcessor token(String username, String... authorities) {

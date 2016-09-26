@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 public class UnsupportedMediaExceptionResponse extends ExceptionResponse {
-	private List<MediaType> supportedMediaTypes;
+    private List<MediaType> supportedMediaTypes;
 
     public UnsupportedMediaExceptionResponse() {
     }

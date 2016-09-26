@@ -7,9 +7,11 @@ import com.mysema.query.jpa.impl.JPAQuery;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class AuthorityRepositoryIT extends AbstractRepoIT{
+public class AuthorityRepositoryIT extends AbstractRepoIT {
 
     @Autowired
     private AuthorityRepository authorityRepository;
@@ -17,11 +19,13 @@ public class AuthorityRepositoryIT extends AbstractRepoIT{
     @Test
     public void testFindByAuthority() throws Exception {
         String role_admin = "ROLE_ADMIN";
-        Authority authority = authorityRepository.findByAuthority(role_admin);
-        assertThat(authority).isEqualTo(getAuthority(role_admin));
+        Optional<Authority> authority = authorityRepository.findByAuthority(role_admin);
+
+        assertThat(authority.isPresent());
+        assertThat(authority.get()).isEqualTo(getAuthority(role_admin));
     }
 
-    private Authority getAuthority(String roleName){
+    private Authority getAuthority(String roleName) {
         QAuthority authority = QAuthority.authority1;
         return new JPAQuery(getEntityManager())
                 .from(authority)

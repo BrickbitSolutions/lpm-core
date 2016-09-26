@@ -1,6 +1,6 @@
 package be.brickbit.lpm.core.config;
 
-import be.brickbit.lpm.core.service.user.UserService;
+import be.brickbit.lpm.core.service.api.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;

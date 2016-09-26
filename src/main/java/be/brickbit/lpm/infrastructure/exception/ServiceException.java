@@ -1,6 +1,9 @@
 package be.brickbit.lpm.infrastructure.exception;
 
 public class ServiceException extends RuntimeException {
+    public ServiceException() {
+    }
+
     public ServiceException(String message) {
         super(message);
     }

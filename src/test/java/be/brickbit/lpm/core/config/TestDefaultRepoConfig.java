@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @Configuration
 @EnableJpaRepositories(basePackages = "be.brickbit.lpm.core.repository")
 @EntityScan(basePackages = "be.brickbit.lpm.core.domain")
-@Import({ DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class, FlywayAutoConfiguration.class})
+@Import({DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class, FlywayAutoConfiguration.class})
 public class TestDefaultRepoConfig {
 
 }

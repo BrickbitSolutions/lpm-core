@@ -9,15 +9,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class HomeControllerIT extends AbstractControllerIT {
-	@Test
-	public void getHello() throws Exception {
+    @Test
+    public void getHello() throws Exception {
         performGet("/")
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status", is("UP")));
-	}
+    }
 
-	@Test
-	public void getRegister() throws Exception {
+    @Test
+    public void getRegister() throws Exception {
         performPost("/register", NewUserCommandFixture.mutable())
                 .andExpect(status().isCreated());
     }

@@ -12,10 +12,10 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = TestDefaultRepoConfig.class)
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
-		DirtiesContextTestExecutionListener.class,
-		TransactionalTestExecutionListener.class })
+@TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
+        DirtiesContextTestExecutionListener.class,
+        TransactionalTestExecutionListener.class})
 @ActiveProfiles("test")
-public abstract class AbstractRepoIT extends AbstractIT{
+public abstract class AbstractRepoIT extends AbstractIT {
 
 }

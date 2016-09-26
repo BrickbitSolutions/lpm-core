@@ -7,16 +7,18 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "AUTHORITY")
-public @Data class Authority implements GrantedAuthority {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ID")
-	private Long id;
-	@Column(name = "AUTHORITY")
-	private String authority;
+public
+@Data
+class Authority implements GrantedAuthority {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
+    private Long id;
+    @Column(name = "AUTHORITY")
+    private String authority;
 
-	@Override
-	public String getAuthority() {
-		return authority;
-	}
+    @Override
+    public String getAuthority() {
+        return authority;
+    }
 }
