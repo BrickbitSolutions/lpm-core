@@ -1,16 +1,22 @@
 package be.brickbit.lpm.core.service.user.impl;
 
 import be.brickbit.lpm.core.controller.dto.BadgeDto;
+import be.brickbit.lpm.core.controller.dto.UserDetailsDto;
 import be.brickbit.lpm.core.controller.mapper.BadgeDtoMapperImpl;
 import be.brickbit.lpm.core.domain.Badge;
 import be.brickbit.lpm.core.domain.User;
 import be.brickbit.lpm.core.fixture.BadgeFixture;
+import be.brickbit.lpm.core.fixture.UserDetailsDtoFixture;
 import be.brickbit.lpm.core.fixture.UserFixture;
+import be.brickbit.lpm.core.service.api.user.UserDtoMapper;
 import be.brickbit.lpm.core.service.impl.BadgeServiceImpl;
 import be.brickbit.lpm.core.service.impl.internal.api.InternalBadgeService;
 import be.brickbit.lpm.core.service.impl.internal.api.InternalUserService;
+import be.brickbit.lpm.infrastructure.exception.ServiceException;
 import com.google.common.collect.Lists;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -37,11 +43,17 @@ public class BadgeServiceImplTest {
     @Mock
     private BadgeDtoMapperImpl dtoMapper;
 
+    @Mock
+    private UserDtoMapper userDtoMapper;
+
     @InjectMocks
     private BadgeServiceImpl badgeService;
 
     @Captor
     private ArgumentCaptor<Badge> badgeArgumentCaptor;
+
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     @Test
     public void createsNewBadge() throws Exception {
@@ -102,5 +114,31 @@ public class BadgeServiceImplTest {
         List<BadgeDto> result = badgeService.findAllBadges(userId, dtoMapper);
 
         assertThat(result).containsExactly(badgeDto);
+    }
+
+    @Test
+    public void findsAssociatedUser() throws Exception {
+        Badge badge = BadgeFixture.mutable();
+        UserDetailsDto userDetailsDto = UserDetailsDtoFixture.mutable();
+
+        when(internalBadgeService.findByToken(badge.getToken())).thenReturn(badge);
+        when(userDtoMapper.map(badge.getUser())).thenReturn(userDetailsDto);
+
+        UserDetailsDto result = (UserDetailsDto) badgeService.findAssociatedUser(badge.getToken(), userDtoMapper);
+
+        assertThat(result).isSameAs(userDetailsDto);
+    }
+
+    @Test
+    public void shouldThrownServiceExceptionWhenBadgeIsDisabled() throws Exception {
+        Badge badge = BadgeFixture.mutable();
+        badge.setEnabled(false);
+
+        expectedException.expect(ServiceException.class);
+        expectedException.expectMessage(String.format("Badge '%s' is disabled", badge.getToken()));
+
+        when(internalBadgeService.findByToken(badge.getToken())).thenReturn(badge);
+
+        badgeService.findAssociatedUser(badge.getToken(), userDtoMapper);
     }
 }

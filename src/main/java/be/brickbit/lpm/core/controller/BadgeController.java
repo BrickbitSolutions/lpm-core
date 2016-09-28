@@ -2,7 +2,9 @@ package be.brickbit.lpm.core.controller;
 
 import be.brickbit.lpm.core.controller.command.NewBadgeCommand;
 import be.brickbit.lpm.core.controller.dto.BadgeDto;
+import be.brickbit.lpm.core.controller.dto.UserDetailsDto;
 import be.brickbit.lpm.core.controller.mapper.BadgeDtoMapperImpl;
+import be.brickbit.lpm.core.controller.mapper.UserDetailsDtoMapper;
 import be.brickbit.lpm.core.service.api.badge.BadgeService;
 import be.brickbit.lpm.infrastructure.AbstractController;
 import be.brickbit.lpm.infrastructure.exception.ServiceException;
@@ -22,11 +24,13 @@ import java.util.UUID;
 public class BadgeController extends AbstractController {
     private final BadgeService badgeService;
     private final BadgeDtoMapperImpl badgeDtoMapper;
+    private final UserDetailsDtoMapper userDetailsDtoMapper;
 
     @Autowired
-    public BadgeController(BadgeService badgeService, BadgeDtoMapperImpl badgeDtoMapper) {
+    public BadgeController(BadgeService badgeService, BadgeDtoMapperImpl badgeDtoMapper, UserDetailsDtoMapper userDetailsDtoMapper) {
         this.badgeService = badgeService;
         this.badgeDtoMapper = badgeDtoMapper;
+        this.userDetailsDtoMapper = userDetailsDtoMapper;
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -67,5 +71,11 @@ public class BadgeController extends AbstractController {
         badgeService.createNewBadge(uuid, command.getUserId());
 
         return new BadgeDto(uuid, true);
+    }
+
+    @RequestMapping(value = "/{token}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public UserDetailsDto getUserByBadge(@PathVariable("token") String token) {
+        return badgeService.findAssociatedUser(token, userDetailsDtoMapper);
     }
 }

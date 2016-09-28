@@ -3,8 +3,10 @@ package be.brickbit.lpm.core.service.impl;
 import be.brickbit.lpm.core.domain.Badge;
 import be.brickbit.lpm.core.service.api.badge.BadgeDtoMapper;
 import be.brickbit.lpm.core.service.api.badge.BadgeService;
+import be.brickbit.lpm.core.service.api.user.UserDtoMapper;
 import be.brickbit.lpm.core.service.impl.internal.api.InternalBadgeService;
 import be.brickbit.lpm.core.service.impl.internal.api.InternalUserService;
+import be.brickbit.lpm.infrastructure.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,5 +55,16 @@ public class BadgeServiceImpl implements BadgeService {
         return internalBadgeService.findAllByUser(internalUserService.findOne(userId)).stream().map(dtoMapper::map).collect
                 (Collectors
                         .toList());
+    }
+
+    @Override
+    public <T> T findAssociatedUser(String token, UserDtoMapper<T> dtoMapper) {
+        Badge badge = internalBadgeService.findByToken(token);
+
+        if(badge.getEnabled()){
+            return dtoMapper.map(badge.getUser());
+        }else{
+            throw new ServiceException(String.format("Badge '%s' is disabled", token));
+        }
     }
 }

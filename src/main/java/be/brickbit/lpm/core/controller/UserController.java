@@ -52,7 +52,6 @@ public class UserController extends AbstractController {
         return authorityService.findAll(authorityNameMapper);
     }
 
-    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "me", method = RequestMethod.GET, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public UserPrincipalDto getCurrentUserDetails() {
@@ -62,7 +61,6 @@ public class UserController extends AbstractController {
         );
     }
 
-    @PreAuthorize(value = "isAuthenticated()")
     @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public UserDetailsDto getUserDetails(@PathVariable("id") Long id) {
@@ -72,7 +70,6 @@ public class UserController extends AbstractController {
         );
     }
 
-    @PreAuthorize(value = "isAuthenticated()")
     @RequestMapping(value = "/seat/{seatNumber}", method = RequestMethod.GET, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public UserDetailsDto getUserDetailsBySeat(@PathVariable("seatNumber") Integer seatNumber) {
@@ -97,14 +94,12 @@ public class UserController extends AbstractController {
         userService.assignSeat(id, command.getSeatNumber());
     }
 
-    @PreAuthorize(value = "isAuthenticated()")
     @RequestMapping(value = "/profile", method = RequestMethod.PUT, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateUserProfile(@RequestBody @Valid UpdateUserProfileCommand command) {
         userService.updateUserProfile(getAuthenticatedUser().getId(), command);
     }
 
-    @PreAuthorize(value = "isAuthenticated()")
     @RequestMapping(value = "/password", method = RequestMethod.PUT, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateUserPassword(@RequestBody @Valid UpdateUserPasswordCommand command) {

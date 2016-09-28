@@ -138,4 +138,17 @@ public class BadgeControllerIT extends AbstractControllerIT {
         assertThat(result).isNotNull();
         assertThat(result.getToken()).isNotNull();
     }
+
+    @Test
+    public void findsAssociatedUser() throws Exception {
+        Badge badge = BadgeFixture.mutable();
+
+        insert(
+                badge.getUser(),
+                badge
+        );
+
+        performGet("/user/badge/" + badge.getToken())
+                .andExpect(status().isOk());
+    }
 }
