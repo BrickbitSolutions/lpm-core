@@ -1,7 +1,8 @@
 package be.brickbit.lpm.core.service.api.user;
 
+import be.brickbit.lpm.core.controller.command.UpdateUserEmailCommand;
 import be.brickbit.lpm.core.controller.command.home.NewUserCommand;
-import be.brickbit.lpm.core.controller.command.user.UpdateAccountDetailsCommand;
+import be.brickbit.lpm.core.controller.command.user.UpdateAuthoritiesCommand;
 import be.brickbit.lpm.core.controller.command.user.UpdateUserPasswordCommand;
 import be.brickbit.lpm.core.controller.command.user.UpdateUserProfileCommand;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -27,11 +28,13 @@ public interface UserService extends UserDetailsService {
 
     void unlockUser(Long id);
 
-    void updateAccountDetails(Long id, UpdateAccountDetailsCommand command);
+    void updateAuthorities(Long id, UpdateAuthoritiesCommand command);
 
     void assignSeat(Long id, Integer seatNr);
 
     void updateUserProfile(Long id, UpdateUserProfileCommand updateUserProfileCommand);
 
     void updateUserPassword(Long id, UpdateUserPasswordCommand updateUserPasswordCommand);
+
+    void updateUserEmail(Long id, UpdateUserEmailCommand updateUserPasswordCommand);
 }

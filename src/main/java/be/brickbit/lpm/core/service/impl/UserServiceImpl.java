@@ -1,7 +1,8 @@
 package be.brickbit.lpm.core.service.impl;
 
+import be.brickbit.lpm.core.controller.command.UpdateUserEmailCommand;
 import be.brickbit.lpm.core.controller.command.home.NewUserCommand;
-import be.brickbit.lpm.core.controller.command.user.UpdateAccountDetailsCommand;
+import be.brickbit.lpm.core.controller.command.user.UpdateAuthoritiesCommand;
 import be.brickbit.lpm.core.controller.command.user.UpdateUserPasswordCommand;
 import be.brickbit.lpm.core.controller.command.user.UpdateUserProfileCommand;
 import be.brickbit.lpm.core.domain.User;
@@ -10,6 +11,8 @@ import be.brickbit.lpm.core.service.api.user.UserService;
 import be.brickbit.lpm.core.service.impl.internal.api.InternalAuthorityService;
 import be.brickbit.lpm.core.service.impl.internal.api.InternalUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -60,6 +63,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Cacheable("usersByUsername")
     public <T> T findByUsername(String username, UserDtoMapper<T> dtoMapper) {
         return dtoMapper.map(
                 internalUserService.findByUsername(username)
@@ -106,11 +110,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateAccountDetails(Long id, UpdateAccountDetailsCommand command) {
+    @CacheEvict({"usersByUsername"})
+    public void updateAuthorities(Long id, UpdateAuthoritiesCommand command) {
         User user = getUser(id);
-
-        user.setUsername(command.getUsername());
-        user.setEmail(command.getEmail());
         user.setAuthorities(
                 command.getAuthorities().stream()
                         .map(internalAuthorityService::findByAuthority)
@@ -125,12 +127,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @CacheEvict({"usersByUsername"})
     public void updateUserProfile(Long id, UpdateUserProfileCommand command) {
         User user = getUser(id);
 
-        user.setUsername(command.getUsername());
-        user.setEmail(command.getEmail());
         user.setMood(command.getMood());
+        user.setMobileNr(command.getMobileNr());
     }
 
     @Override
@@ -139,8 +141,14 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(updateUserPasswordCommand.getPassword()));
     }
 
+    @Override
+    public void updateUserEmail(Long id, UpdateUserEmailCommand updateUserPasswordCommand) {
+        User user = getUser(id);
+        user.setEmail(updateUserPasswordCommand.getEmail());
+    }
+
     private User getUser(Long id) {
-        return Optional.ofNullable(internalUserService.findOne(id)).orElseThrow(EntityNotFoundException::new);
+        return internalUserService.findOne(id);
     }
 
     @Override

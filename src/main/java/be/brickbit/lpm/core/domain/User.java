@@ -24,6 +24,8 @@ class User implements UserDetails {
     private String firstName;
     @Column(name = "LASTNAME")
     private String lastName;
+    @Column(name = "MOBILE_NR")
+    private String mobileNr;
     @Column(name = "BIRTHDATE")
     private LocalDate birthDate;
     @Column(name = "EMAIL")

@@ -1,7 +1,8 @@
 package be.brickbit.lpm.core.controller;
 
 import be.brickbit.lpm.core.AbstractControllerIT;
-import be.brickbit.lpm.core.controller.command.user.UpdateAccountDetailsCommand;
+import be.brickbit.lpm.core.controller.command.UpdateUserEmailCommand;
+import be.brickbit.lpm.core.controller.command.user.UpdateAuthoritiesCommand;
 import be.brickbit.lpm.core.controller.command.user.UpdateUserPasswordCommand;
 import be.brickbit.lpm.core.controller.command.user.UpdateUserProfileCommand;
 import be.brickbit.lpm.core.domain.User;
@@ -27,23 +28,13 @@ public class UserControllerIT extends AbstractControllerIT {
     private PasswordEncoder passwordEncoder;
 
     @Test
-    public void testFindAllAuthorities() throws Exception {
-        performGet("/user/authorities")
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", containsInAnyOrder(
-                        "ROLE_USER",
-                        "ROLE_ADMIN",
-                        "ROLE_CATERING_ADMIN",
-                        "ROLE_CATERING_CREW"
-                )));
-    }
-
-    @Test
     public void testGetUserPrincipal() throws Exception {
+        User user = UserFixture.testUser();
+
         performGet("/user/me")
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.username", is("admin")))
-                .andExpect(jsonPath("$.mood", is("Hello LPM")))
+                .andExpect(jsonPath("$.username", is(user.getUsername())))
+                .andExpect(jsonPath("$.mood", is(user.getMood())))
                 .andExpect(jsonPath("$.authorities", containsInAnyOrder("ROLE_USER", "ROLE_ADMIN")));
     }
 
@@ -59,9 +50,23 @@ public class UserControllerIT extends AbstractControllerIT {
                 .andExpect(jsonPath("$.username", is(user.getUsername())))
                 .andExpect(jsonPath("$.age", is((int) user.getBirthDate().until(LocalDate.now(), ChronoUnit.YEARS))))
                 .andExpect(jsonPath("$.mood", is(user.getMood())))
+                .andExpect(jsonPath("$.seatNumber", is(user.getSeatNumber())));
+    }
+
+    @Test
+    public void getsUserProfile() throws Exception {
+        User user = UserFixture.testUser();
+
+        performGet("/user/profile")
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.username", is(user.getUsername())))
+                .andExpect(jsonPath("$.seatNumber", is(user.getSeatNumber())))
+                .andExpect(jsonPath("$.mood", is(user.getMood())))
                 .andExpect(jsonPath("$.firstName", is(user.getFirstName())))
                 .andExpect(jsonPath("$.lastName", is(user.getLastName())))
-                .andExpect(jsonPath("$.email", is(user.getEmail())));
+                .andExpect(jsonPath("$.birthDate", is(user.getBirthDate().format(DateTimeFormatter.ISO_DATE))))
+                .andExpect(jsonPath("$.email", is(user.getEmail())))
+                .andExpect(jsonPath("$.mobilePhoneNr", is(user.getMobileNr())));
     }
 
     @Test
@@ -76,135 +81,21 @@ public class UserControllerIT extends AbstractControllerIT {
                 .andExpect(jsonPath("$.username", is(user.getUsername())))
                 .andExpect(jsonPath("$.age", is((int) user.getBirthDate().until(LocalDate.now(), ChronoUnit.YEARS))))
                 .andExpect(jsonPath("$.mood", is(user.getMood())))
-                .andExpect(jsonPath("$.firstName", is(user.getFirstName())))
-                .andExpect(jsonPath("$.lastName", is(user.getLastName())))
-                .andExpect(jsonPath("$.email", is(user.getEmail())));
+                .andExpect(jsonPath("$.seatNumber", is(user.getSeatNumber())));
     }
 
     @Test
-    public void testGetAdminUserDetails() throws Exception {
-        User user = UserFixture.mutable();
-
-        insert(user);
-
-        performGet("/user/" + user.getId() + "/details")
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(user.getId().intValue())))
-                .andExpect(jsonPath("$.username", is(user.getUsername())))
-                .andExpect(jsonPath("$.firstName", is(user.getFirstName())))
-                .andExpect(jsonPath("$.lastName", is(user.getLastName())))
-                .andExpect(jsonPath("$.email", is(user.getEmail())))
-                .andExpect(jsonPath("$.birthDate", is(user.getBirthDate().format(DateTimeFormatter.ISO_DATE))))
-                .andExpect(jsonPath("$.enabled", is(user.isEnabled())))
-                .andExpect(jsonPath("$.locked", is(!user.isAccountNonLocked())))
-                .andExpect(jsonPath("$.authorities", notNullValue()));
-    }
-
-    @Test
-    public void testGetAllUser() throws Exception {
-        User user = UserFixture.testUser();
-
-        performGet("/user")
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].id", notNullValue()))
-                .andExpect(jsonPath("$[0].username", is(user.getUsername())))
-                .andExpect(jsonPath("$[0].firstName", is(user.getFirstName())))
-                .andExpect(jsonPath("$[0].lastName", is(user.getLastName())))
-                .andExpect(jsonPath("$[0].email", is(user.getEmail())))
-                .andExpect(jsonPath("$[0].birthDate", is(user.getBirthDate().format(DateTimeFormatter.ISO_DATE))))
-                .andExpect(jsonPath("$[0].enabled", is(user.isEnabled())))
-                .andExpect(jsonPath("$[0].locked", is(!user.isAccountNonLocked())))
-                .andExpect(jsonPath("$[0].authorities", containsInAnyOrder("ROLE_USER", "ROLE_ADMIN")));
-    }
-
-    @Test
-    public void testEnableUser() throws Exception {
-        User user = UserFixture.mutable();
-        user.setEnabled(false);
-
-        insert(user);
-
-        performPut("/user/" + user.getId() + "/enable", null)
-                .andExpect(status().isNoContent());
-
-        assertThat(user.isEnabled()).isTrue();
-    }
-
-    @Test
-    public void testDisableUser() throws Exception {
-        User user = UserFixture.mutable();
-        user.setEnabled(true);
-
-        insert(user);
-
-        performPut("/user/" + user.getId() + "/disable", null)
-                .andExpect(status().isNoContent());
-
-        assertThat(user.isEnabled()).isFalse();
-    }
-
-    @Test
-    public void testLockUser() throws Exception {
-        User user = UserFixture.mutable();
-        user.setAccountNonLocked(true);
-
-        insert(user);
-
-        performPut("/user/" + user.getId() + "/lock", null)
-                .andExpect(status().isNoContent());
-
-        assertThat(user.isAccountNonLocked()).isFalse();
-    }
-
-    @Test
-    public void testUnlockUser() throws Exception {
-        User user = UserFixture.mutable();
-        user.setAccountNonLocked(false);
-
-        insert(user);
-
-        performPut("/user/" + user.getId() + "/unlock", null)
-                .andExpect(status().isNoContent());
-
-        assertThat(user.isAccountNonLocked()).isTrue();
-    }
-
-    @Test
-    public void updateUserAccountDetails() throws Exception {
-        User user = UserFixture.mutable();
-        UpdateAccountDetailsCommand command = new UpdateAccountDetailsCommand(
-                randomString(),
-                randomEmail(),
-                Lists.newArrayList("ROLE_USER", "ROLE_ADMIN")
-        );
-
-        insert(
-                user
-        );
-
-        performPut("/user/" + user.getId(), command)
-                .andExpect(status().isNoContent());
-
-        assertThat(user.getUsername()).isEqualTo(command.getUsername());
-        assertThat(user.getEmail()).isEqualTo(command.getEmail());
-        assertThat(user.getAuthorities()).hasSize(2);
-    }
-
-    @Test
-    public void updateUserProfile() throws Exception {
+    public void updatesUserProfile() throws Exception {
         User user = getEntityManager().find(User.class, 1L);
         UpdateUserProfileCommand command = new UpdateUserProfileCommand(
                 randomString(),
-                randomEmail(),
                 randomString()
         );
 
         performPut("/user/profile", command)
                 .andExpect(status().isNoContent());
 
-        assertThat(user.getUsername()).isEqualTo(command.getUsername());
-        assertThat(user.getEmail()).isEqualTo(command.getEmail());
+        assertThat(user.getMobileNr()).isEqualTo(command.getMobileNr());
         assertThat(user.getMood()).isEqualTo(command.getMood());
     }
 
@@ -217,5 +108,16 @@ public class UserControllerIT extends AbstractControllerIT {
                 .andExpect(status().isNoContent());
 
         assertThat(passwordEncoder.matches(command.getPassword(), user.getPassword())).isTrue();
+    }
+
+    @Test
+    public void updateUserEmail() throws Exception {
+        User user = getEntityManager().find(User.class, 1L);
+        UpdateUserEmailCommand command = new UpdateUserEmailCommand(randomEmail());
+
+        performPut("/user/email", command)
+                .andExpect(status().isNoContent());
+
+        assertThat(command.getEmail()).isEqualTo(user.getEmail());
     }
 }

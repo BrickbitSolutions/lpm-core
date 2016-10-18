@@ -25,6 +25,7 @@ public class UserFixture {
         user.setEnabled(true);
         user.setMood(randomString(50));
         user.setAuthorities(new HashSet<>());
+        user.setMobileNr(randomString());
 
         return user;
     }
@@ -42,7 +43,7 @@ public class UserFixture {
         user.setAccountNonLocked(true);
         user.setCredentialsNonExpired(true);
         user.setEnabled(true);
-        user.setMood(randomString(50));
+        user.setMood("Hello LPM");
         user.setAuthorities(Sets.newHashSet(AuthorityFixture.admin(), AuthorityFixture.user()));
 
         return user;

@@ -1,0 +1,1 @@
+ALTER TABLE oauth_access_token ADD CONSTRAINT U_OAUTH_ACCESS UNIQUE (authentication_id);

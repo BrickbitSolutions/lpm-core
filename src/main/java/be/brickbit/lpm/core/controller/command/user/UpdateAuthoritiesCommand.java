@@ -14,12 +14,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateAccountDetailsCommand {
-    @NotBlank(message = "Username may not be empty")
-    private String username;
-    @Email
-    @NotBlank(message = "Email may not be empty")
-    private String email;
+public class UpdateAuthoritiesCommand {
     @NotEmpty(message = "User must have at least 1 authority")
     private List<String> authorities;
 }

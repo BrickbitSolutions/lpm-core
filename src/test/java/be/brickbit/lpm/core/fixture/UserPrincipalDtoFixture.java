@@ -10,11 +10,6 @@ public class UserPrincipalDtoFixture {
         return new UserPrincipalDto(
                 randomLong(),
                 randomString(),
-                randomLong(),
-                randomInt(),
-                randomString(),
-                randomString(),
-                randomString(),
                 randomString(),
                 Lists.newArrayList(randomString())
         );

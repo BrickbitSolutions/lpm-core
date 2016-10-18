@@ -1,7 +1,8 @@
 package be.brickbit.lpm.core.service.user.impl;
 
+import be.brickbit.lpm.core.controller.command.UpdateUserEmailCommand;
 import be.brickbit.lpm.core.controller.command.home.NewUserCommand;
-import be.brickbit.lpm.core.controller.command.user.UpdateAccountDetailsCommand;
+import be.brickbit.lpm.core.controller.command.user.UpdateAuthoritiesCommand;
 import be.brickbit.lpm.core.controller.command.user.UpdateUserPasswordCommand;
 import be.brickbit.lpm.core.controller.command.user.UpdateUserProfileCommand;
 import be.brickbit.lpm.core.controller.dto.UserPrincipalDto;
@@ -95,9 +96,7 @@ public class UserServiceImplTest {
 
     @Test
     public void updateUserAccountDetails() throws Exception {
-        UpdateAccountDetailsCommand command = new UpdateAccountDetailsCommand(
-                randomString(),
-                randomEmail(),
+        UpdateAuthoritiesCommand command = new UpdateAuthoritiesCommand(
                 Lists.newArrayList("ROLE_USER", "ROLE_ADMIN")
         );
         User user = UserFixture.mutable();
@@ -109,19 +108,14 @@ public class UserServiceImplTest {
         when(internalAuthorityService.findByAuthority("ROLE_USER")).thenReturn(userRole);
         when(internalAuthorityService.findByAuthority("ROLE_ADMIN")).thenReturn(adminRole);
 
-        userService.updateAccountDetails(userId, command);
+        userService.updateAuthorities(userId, command);
 
-        assertThat(user.getUsername()).isEqualTo(command.getUsername());
-        assertThat(user.getEmail()).isEqualTo(command.getEmail());
         assertThat(user.getAuthorities()).containsOnly(userRole, adminRole);
-
     }
 
     @Test
     public void updateUserAccountDetails__invalidRoleName() throws Exception {
-        UpdateAccountDetailsCommand command = new UpdateAccountDetailsCommand(
-                randomString(),
-                randomEmail(),
+        UpdateAuthoritiesCommand command = new UpdateAuthoritiesCommand(
                 Lists.newArrayList("ROLE_USER", "ROLE_JAY")
         );
         User user = UserFixture.mutable();
@@ -134,7 +128,7 @@ public class UserServiceImplTest {
 
         expectedException.expect(EntityNotFoundException.class);
 
-        userService.updateAccountDetails(userId, command);
+        userService.updateAuthorities(userId, command);
     }
 
     @Test
@@ -312,7 +306,6 @@ public class UserServiceImplTest {
     public void updatesUserProfile() throws Exception {
         UpdateUserProfileCommand command = new UpdateUserProfileCommand(
                 randomString(),
-                randomEmail(),
                 randomString()
         );
         User user = UserFixture.mutable();
@@ -322,9 +315,8 @@ public class UserServiceImplTest {
 
         userService.updateUserProfile(userId, command);
 
-        assertThat(user.getUsername()).isEqualTo(command.getUsername());
-        assertThat(user.getEmail()).isEqualTo(command.getEmail());
         assertThat(user.getMood()).isEqualTo(command.getMood());
+        assertThat(user.getMobileNr()).isEqualTo(command.getMobileNr());
     }
 
     @Test
@@ -340,5 +332,18 @@ public class UserServiceImplTest {
         userService.updateUserPassword(userId, command);
 
         assertThat(user.getPassword()).isEqualTo(hashedPassword);
+    }
+
+    @Test
+    public void updatesUserEmail() throws Exception {
+        UpdateUserEmailCommand command = new UpdateUserEmailCommand(randomString());
+        User user = UserFixture.mutable();
+        Long userId = randomLong();
+
+        when(internalUserService.findOne(userId)).thenReturn(user);
+
+        userService.updateUserEmail(userId, command);
+
+        assertThat(user.getEmail()).isEqualTo(command.getEmail());
     }
 }

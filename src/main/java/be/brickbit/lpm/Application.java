@@ -2,6 +2,7 @@ package be.brickbit.lpm;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.DispatcherServlet;
 
 @SpringBootApplication
+//@EnableCaching -- TODO: Implement Caching the proper way Jay :) (Also counts for your services...)
 @EnableTransactionManagement
 public class Application {
     public static void main(String[] args) {

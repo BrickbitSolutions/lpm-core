@@ -17,12 +17,7 @@ public class UserPrincipalDtoMapper implements UserDtoMapper<UserPrincipalDto> {
         return new UserPrincipalDto(
                 user.getId(),
                 user.getUsername(),
-                user.getBirthDate().until(LocalDate.now(), ChronoUnit.YEARS),
-                user.getSeatNumber(),
                 user.getMood(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getEmail(),
                 user.getAuthorities().stream().map(Authority::getAuthority).collect(Collectors.toList())
         );
     }

@@ -1,9 +1,9 @@
 logging:
     level:
         org:
-            hibernate: TRACE
+            hibernate: debug
             springframework:
-                web: DEBUG
+                web: debug
 spring:
     jackson:
         serialization:
@@ -15,5 +15,9 @@ spring:
             ddl-auto: validate
         properties:
             hibernate:
-                format_sql: true
-        show-sql: true
+                format_sql: false
+        show-sql: false
+lpm:
+  storage:
+    images:
+      user: /tmp/images/products

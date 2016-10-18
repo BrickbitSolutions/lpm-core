@@ -19,10 +19,7 @@ public class UserDetailsDtoMapper implements UserDtoMapper<UserDetailsDto> {
                     user.getUsername(),
                     user.getBirthDate().until(LocalDate.now(), ChronoUnit.YEARS),
                     user.getSeatNumber(),
-                    user.getMood(),
-                    user.getFirstName(),
-                    user.getLastName(),
-                    user.getEmail()
+                    user.getMood()
             );
         } else {
             throw new UsernameNotFoundException("User not found.");

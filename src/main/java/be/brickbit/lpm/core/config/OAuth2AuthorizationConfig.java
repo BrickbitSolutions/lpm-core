@@ -53,6 +53,8 @@ public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdap
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-        security.passwordEncoder(passwordEncoder);
+        security
+                .passwordEncoder(passwordEncoder)
+                .checkTokenAccess("isAuthenticated()");
     }
 }
