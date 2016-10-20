@@ -93,6 +93,7 @@ public class DefaultExceptionHandler {
     }
 
     @ExceptionHandler({AccessDeniedException.class})
+    @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
     public ExceptionResponse handleUnAuthorized(Exception ex) throws IOException {
         return new ExceptionResponse(
                 "Unauthorized",

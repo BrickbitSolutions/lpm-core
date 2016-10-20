@@ -1,5 +1,6 @@
 package be.brickbit.lpm.core.util;
 
+import com.google.common.collect.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.TestingAuthenticationToken;
@@ -25,7 +26,8 @@ public class OAuthHelper {
     public RequestPostProcessor addMockBearerToken(final String username, String... authorities) {
         return mockRequest -> {
             // Create OAuth2 token
-            OAuth2Request oauth2Request = new OAuth2Request(null, "LPM", null, true, null, null, null, null, null);
+            OAuth2Request oauth2Request = new OAuth2Request(null, "LPM", null, true, Sets.newHashSet("core"),
+                    null, null, null, null);
             Authentication userauth = new TestingAuthenticationToken(username, null, authorities);
             OAuth2Authentication oauth2auth = new OAuth2Authentication(oauth2Request, userauth);
             OAuth2AccessToken token = tokenservice.createAccessToken(oauth2auth);
@@ -39,7 +41,7 @@ public class OAuthHelper {
     public RequestPostProcessor addBearerToken(final String username, String... authorities) {
         return mockRequest -> {
             // Create OAuth2 token
-            OAuth2Request oauth2Request = new OAuth2Request(null, "LPM", null, true, null, null, null, null, null);
+            OAuth2Request oauth2Request = new OAuth2Request(null, "LPM", null, true, Sets.newHashSet("core"), null, null, null, null);
             Authentication userauth = new TestingAuthenticationToken(userDetailsService.loadUserByUsername(username), null, authorities);
             OAuth2Authentication oauth2auth = new OAuth2Authentication(oauth2Request, userauth);
             OAuth2AccessToken token = tokenservice.createAccessToken(oauth2auth);
