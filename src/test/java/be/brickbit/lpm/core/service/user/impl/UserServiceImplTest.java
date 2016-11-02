@@ -27,6 +27,7 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static be.brickbit.lpm.core.util.RandomValueUtil.*;
@@ -138,6 +139,17 @@ public class UserServiceImplTest {
 
         when(internalUserService.findByUsername(username)).thenReturn(user);
         assertThat(userService.loadUserByUsername(username)).isEqualTo(user);
+    }
+
+    @Test
+    public void throwsUsernameNotFoundExceptionOnLoadByUsername() throws Exception {
+        String username = randomString();
+
+        expectedException.expect(UsernameNotFoundException.class);
+
+        when(internalUserService.findByUsername(username)).thenThrow(EntityNotFoundException.class);
+
+        userService.loadUserByUsername(username);
     }
 
     @Test
