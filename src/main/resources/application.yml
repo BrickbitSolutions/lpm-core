@@ -20,4 +20,4 @@ spring:
 lpm:
   storage:
     images:
-      user: /tmp/images/products
+      user: /tmp/images/users
