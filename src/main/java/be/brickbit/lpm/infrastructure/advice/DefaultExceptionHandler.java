@@ -5,6 +5,7 @@ import be.brickbit.lpm.infrastructure.advice.model.UnsupportedMediaExceptionResp
 import be.brickbit.lpm.infrastructure.advice.model.ValidationExceptionResponse;
 import be.brickbit.lpm.infrastructure.exception.EntityNotFoundException;
 import be.brickbit.lpm.infrastructure.exception.ServiceException;
+import be.brickbit.lpm.core.integration.exception.NoSMSServiceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
@@ -108,7 +109,7 @@ public class DefaultExceptionHandler {
                 ex.getLocalizedMessage());
     }
 
-    @ExceptionHandler({EntityNotFoundException.class})
+    @ExceptionHandler({EntityNotFoundException.class, NoSMSServiceException.class})
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public ExceptionResponse handleEntityNotFoundException(Exception ex) throws IOException {
         return new ExceptionResponse(
