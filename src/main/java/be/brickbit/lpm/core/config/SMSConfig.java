@@ -11,7 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Configuration
 public class SMSConfig {
-    @Value("${lpm.core.sms.clickatell-token}")
+    @Value("${lpm.core.sms.clickatell-token:}")
     private String clickatellToken;
 
     @Bean
