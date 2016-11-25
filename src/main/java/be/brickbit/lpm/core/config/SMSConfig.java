@@ -3,6 +3,7 @@ package be.brickbit.lpm.core.config;
 import be.brickbit.lpm.core.integration.sms.DefaultSmsTemplateImpl;
 import be.brickbit.lpm.core.integration.sms.SMSTemplate;
 import be.brickbit.lpm.core.integration.sms.clickatell.ClickatellSmsTemplateImpl;
+import be.brickbit.lpm.core.integration.sms.smsgatewayme.SmsGatewayTemplateImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +15,15 @@ public class SMSConfig {
     @Value("${lpm.core.sms.clickatell-token:}")
     private String clickatellToken;
 
+    @Value("${lpm.core.sms.smsgateway.email:}")
+    private String smsGatewayEmail;
+
+    @Value("${lpm.core.sms.smsgateway.password:}")
+    private String smsGatewayPassword;
+
+    @Value("${lpm.core.sms.smsgateway.deviceId:}")
+    private String smsGatewayDeviceId;
+
     @Bean
     public RestTemplate restTemplate(){
         return new RestTemplate();
@@ -23,6 +33,12 @@ public class SMSConfig {
     public SMSTemplate smsTemplate(){
         if(StringUtils.isNotEmpty(clickatellToken)){
             return new ClickatellSmsTemplateImpl(restTemplate(), clickatellToken);
+        }
+
+        if(StringUtils.isNotEmpty(smsGatewayEmail) &&
+                StringUtils.isNotEmpty(smsGatewayPassword) &&
+                StringUtils.isNotEmpty(smsGatewayDeviceId)){
+            return new SmsGatewayTemplateImpl(restTemplate(), smsGatewayEmail, smsGatewayPassword, smsGatewayDeviceId);
         }
 
         return new DefaultSmsTemplateImpl();
