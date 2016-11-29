@@ -73,6 +73,13 @@ public class UserAdminController {
     }
 
     @PreAuthorize(value = "hasRole('ADMIN')")
+    @RequestMapping(value = "{id}/password", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void resetPassword(@PathVariable("id") Long id){
+        userService.resetPassword(id);
+    }
+
+    @PreAuthorize(value = "hasRole('ADMIN')")
     @RequestMapping(value = "{id}/details", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public AdminUserDetailsDto getAdminUserDetails(@PathVariable("id") Long id) {

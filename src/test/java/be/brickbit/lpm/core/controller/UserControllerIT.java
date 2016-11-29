@@ -18,6 +18,7 @@ import java.time.temporal.ChronoUnit;
 
 import static be.brickbit.lpm.core.util.RandomValueUtil.randomEmail;
 import static be.brickbit.lpm.core.util.RandomValueUtil.randomString;
+import static be.brickbit.lpm.core.util.WiserAssertions.assertReceivedMessage;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;

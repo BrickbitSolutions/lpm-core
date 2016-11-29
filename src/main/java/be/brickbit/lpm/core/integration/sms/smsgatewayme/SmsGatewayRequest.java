@@ -6,7 +6,7 @@ import lombok.Value;
 public class SmsGatewayRequest {
     private String email;
     private String password;
-    private String deviceId;
+    private String device;
     private String number;
     private String message;
 }

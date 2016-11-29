@@ -4,6 +4,7 @@ import be.brickbit.lpm.core.controller.command.home.NewUserCommand;
 import be.brickbit.lpm.core.service.api.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.oauth2.provider.token.ConsumerTokenServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,6 +33,12 @@ public class HomeController {
     @ResponseStatus(HttpStatus.CREATED)
     public void postRegisterForm(@RequestBody @Valid NewUserCommand newUserCommand) {
         userService.createUser(newUserCommand);
+    }
+
+    @RequestMapping(value = "/activate/{token}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public void activateUser(@PathVariable("token") String token) {
+        userService.activateUser(token);
     }
 
     @RequestMapping(value = "/oauth/revoke", method = RequestMethod.POST)

@@ -5,12 +5,18 @@ import be.brickbit.lpm.core.controller.command.home.NewUserCommand;
 import be.brickbit.lpm.core.controller.command.user.UpdateAuthoritiesCommand;
 import be.brickbit.lpm.core.controller.command.user.UpdateUserPasswordCommand;
 import be.brickbit.lpm.core.controller.command.user.UpdateUserProfileCommand;
+import be.brickbit.lpm.core.domain.ActivationToken;
 import be.brickbit.lpm.core.domain.User;
+import be.brickbit.lpm.core.integration.mail.MailService;
+import be.brickbit.lpm.core.integration.mail.MailTemplateService;
+import be.brickbit.lpm.core.repository.ActivationTokenRepository;
 import be.brickbit.lpm.core.service.api.user.UserDtoMapper;
 import be.brickbit.lpm.core.service.api.user.UserService;
 import be.brickbit.lpm.core.service.impl.internal.api.InternalAuthorityService;
 import be.brickbit.lpm.core.service.impl.internal.api.InternalUserService;
 import be.brickbit.lpm.infrastructure.exception.EntityNotFoundException;
+import be.brickbit.lpm.infrastructure.exception.ServiceException;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -21,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,13 +35,25 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
     private final InternalUserService internalUserService;
     private final InternalAuthorityService internalAuthorityService;
+    private final ActivationTokenRepository activationTokenRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MailService mailService;
+    private final MailTemplateService mailTemplateService;
 
     @Autowired
-    public UserServiceImpl(InternalUserService internalUserService, InternalAuthorityService internalAuthorityService, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(
+            InternalUserService internalUserService,
+            InternalAuthorityService internalAuthorityService,
+            ActivationTokenRepository activationTokenRepository,
+            PasswordEncoder passwordEncoder,
+            MailService mailService,
+            MailTemplateService mailTemplateService) {
         this.internalUserService = internalUserService;
         this.internalAuthorityService = internalAuthorityService;
+        this.activationTokenRepository = activationTokenRepository;
         this.passwordEncoder = passwordEncoder;
+        this.mailService = mailService;
+        this.mailTemplateService = mailTemplateService;
     }
 
     @Override
@@ -49,6 +68,27 @@ public class UserServiceImpl implements UserService {
         user.setBirthDate(userCommand.getBirthDate());
 
         internalUserService.createUser(user);
+        saveActivationToken(user);
+    }
+
+    private void saveActivationToken(User user){
+        ActivationToken activationToken = new ActivationToken();
+
+        activationToken.setUser(user);
+        activationToken.setToken(UUID.randomUUID().toString());
+
+        activationTokenRepository.save(activationToken);
+
+        String message = mailTemplateService.createActivationMail(
+                user.getUsername(),
+                activationToken.getToken()
+        );
+
+        mailService.sendMail(
+                user.getEmail(),
+                "Account Activation",
+                message
+        );
     }
 
     @Override
@@ -74,6 +114,18 @@ public class UserServiceImpl implements UserService {
         return dtoMapper.map(
                 internalUserService.findBySeatNumber(seatNumber)
         );
+    }
+
+    @Override
+    public void activateUser(String token) {
+        ActivationToken activationToken = activationTokenRepository.findByToken(token);
+
+        if(activationToken != null) {
+            activationToken.getUser().setEnabled(true);
+            activationTokenRepository.delete(activationToken);
+        }else{
+            throw new ServiceException("Activation token is not valid or has expired.");
+        }
     }
 
     @Override
@@ -144,6 +196,23 @@ public class UserServiceImpl implements UserService {
     public void updateUserEmail(Long id, UpdateUserEmailCommand updateUserPasswordCommand) {
         User user = getUser(id);
         user.setEmail(updateUserPasswordCommand.getEmail());
+    }
+
+    @Override
+    public void resetPassword(Long id) {
+        String password = RandomStringUtils.random(24, true, true);
+
+        User user = internalUserService.findOne(id);
+        user.setPassword(passwordEncoder.encode(password));
+
+        mailService.sendMail(
+                user.getEmail(),
+                "Password Reset",
+                mailTemplateService.createPasswordResetMessage(
+                        user.getUsername(),
+                        password
+                )
+        );
     }
 
     private User getUser(Long id) {

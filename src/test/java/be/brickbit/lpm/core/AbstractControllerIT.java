@@ -4,6 +4,7 @@ import be.brickbit.lpm.Application;
 import be.brickbit.lpm.core.util.OAuthHelper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
@@ -17,6 +18,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import org.subethamail.wiser.Wiser;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -28,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @ActiveProfiles("test")
 public abstract class AbstractControllerIT extends AbstractIT {
     private MockMvc mvc;
+    private Wiser wiser;
     @Autowired
     private ObjectMapper objectMapper;
     @Autowired
@@ -40,10 +43,24 @@ public abstract class AbstractControllerIT extends AbstractIT {
     @Before
     public void setUp() throws Exception {
         defaultUser = token("admin", "ROLE_ADMIN", "ROLE_USER");
+        wiser = new Wiser();
+        wiser.setPort(9999);
+        wiser.setHostname("localhost");
+        wiser.start();
+
         MockitoAnnotations.initMocks(this);
         mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
                 .apply(springSecurity())
                 .build();
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        wiser.stop();
+    }
+
+    protected Wiser wiser(){
+        return wiser;
     }
 
     protected String convertToJson(Object object) throws JsonProcessingException {

@@ -20,6 +20,8 @@ public interface UserService extends UserDetailsService {
 
     <T> T findBySeatNumber(Integer seatNumber, UserDtoMapper<T> dtoMapper);
 
+    void activateUser(String token);
+
     void enableUser(Long id);
 
     void disableUser(Long id);
@@ -37,4 +39,6 @@ public interface UserService extends UserDetailsService {
     void updateUserPassword(Long id, UpdateUserPasswordCommand updateUserPasswordCommand);
 
     void updateUserEmail(Long id, UpdateUserEmailCommand updateUserPasswordCommand);
+
+    void resetPassword(Long id);
 }

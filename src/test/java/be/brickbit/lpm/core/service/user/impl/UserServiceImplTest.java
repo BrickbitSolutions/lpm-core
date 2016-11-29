@@ -7,12 +7,17 @@ import be.brickbit.lpm.core.controller.command.user.UpdateUserPasswordCommand;
 import be.brickbit.lpm.core.controller.command.user.UpdateUserProfileCommand;
 import be.brickbit.lpm.core.controller.dto.UserPrincipalDto;
 import be.brickbit.lpm.core.controller.mapper.UserPrincipalDtoMapper;
+import be.brickbit.lpm.core.domain.ActivationToken;
 import be.brickbit.lpm.core.domain.Authority;
 import be.brickbit.lpm.core.domain.User;
+import be.brickbit.lpm.core.fixture.ActivationTokenFixture;
 import be.brickbit.lpm.core.fixture.AuthorityFixture;
 import be.brickbit.lpm.core.fixture.UserFixture;
 import be.brickbit.lpm.core.fixture.UserPrincipalDtoFixture;
 import be.brickbit.lpm.core.fixture.command.NewUserCommandFixture;
+import be.brickbit.lpm.core.integration.mail.MailService;
+import be.brickbit.lpm.core.integration.mail.MailTemplateService;
+import be.brickbit.lpm.core.repository.ActivationTokenRepository;
 import be.brickbit.lpm.core.service.impl.UserServiceImpl;
 import be.brickbit.lpm.core.service.impl.internal.api.InternalAuthorityService;
 import be.brickbit.lpm.core.service.impl.internal.api.InternalUserService;
@@ -45,11 +50,19 @@ public class UserServiceImplTest {
     @Mock
     private PasswordEncoder passwordEncoder;
     @Mock
+    private ActivationTokenRepository activationTokenRepository;
+    @Mock
     private UserPrincipalDtoMapper dtoMapper;
+    @Mock
+    private MailService mailService;
+    @Mock
+    private MailTemplateService mailTemplateService;
     @InjectMocks
     private UserServiceImpl userService;
     @Captor
     private ArgumentCaptor<User> userArgumentCaptor;
+    @Captor
+    private ArgumentCaptor<ActivationToken> activationTokenArgumentCaptor;
 
     @Test
     public void testCreateUser() throws Exception {
@@ -61,6 +74,7 @@ public class UserServiceImplTest {
         userService.createUser(command);
 
         verify(internalUserService).createUser(userArgumentCaptor.capture());
+        verify(activationTokenRepository).save(activationTokenArgumentCaptor.capture());
 
         User user = userArgumentCaptor.getValue();
 
@@ -70,6 +84,14 @@ public class UserServiceImplTest {
         assertThat(user.getPassword()).isEqualTo(hashedPassword);
         assertThat(user.getUsername()).isEqualTo(command.getUsername());
         assertThat(user.getBirthDate()).isEqualTo(command.getBirthDate());
+
+        ActivationToken activationToken = activationTokenArgumentCaptor.getValue();
+
+        assertThat(activationToken.getToken()).isNotNull();
+        assertThat(activationToken.getUser()).isEqualTo(user);
+
+        verify(mailTemplateService, times(1)).createActivationMail(anyString(), anyString());
+        verify(mailService, times(1)).sendMail(anyString(), anyString(), anyString());
     }
 
     @Test
@@ -357,5 +379,35 @@ public class UserServiceImplTest {
         userService.updateUserEmail(userId, command);
 
         assertThat(user.getEmail()).isEqualTo(command.getEmail());
+    }
+
+    @Test
+    public void activatesUserByToken() throws Exception {
+        String token = randomString();
+        ActivationToken activationToken = ActivationTokenFixture.mutable();
+        activationToken.getUser().setEnabled(false);
+
+        when(activationTokenRepository.findByToken(token)).thenReturn(activationToken);
+
+        userService.activateUser(token);
+
+        assertThat(activationToken.getUser().isEnabled()).isTrue();
+        verify(activationTokenRepository, times(1)).delete(activationToken);
+    }
+
+    @Test
+    public void resetsPassword() throws Exception {
+        User user = UserFixture.mutable();
+        String oldPassword = randomString();
+        user.setPassword(oldPassword);
+        Long userId = randomLong();
+
+        when(internalUserService.findOne(userId)).thenReturn(user);
+
+        userService.resetPassword(userId);
+
+        assertThat(user.getPassword()).isNotEqualTo(oldPassword);
+        verify(mailTemplateService, times(1)).createPasswordResetMessage(anyString(), anyString());
+        verify(mailService, times(1)).sendMail(anyString(), anyString(), anyString());
     }
 }

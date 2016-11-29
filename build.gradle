@@ -28,6 +28,8 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-actuator'
     compile 'org.springframework.boot:spring-boot-starter-data-jpa'
     compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.boot:spring-boot-starter-freemarker'
+    compile 'org.springframework.boot:spring-boot-starter-mail'
     compile 'org.springframework.security.oauth:spring-security-oauth2'
     compile 'org.springframework.security:spring-security-jwt'
     //Database
@@ -48,6 +50,7 @@ dependencies {
     testCompile 'org.easytesting:fest-reflect:1.4.1'
     testCompile 'com.jayway.jsonpath:json-path'
     testCompile 'com.jayway.jsonpath:json-path-assert'
+    testCompile 'org.subethamail:subethasmtp-wiser:1.2'
 }
 
 jacocoTestReport {

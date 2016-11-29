@@ -16,7 +16,7 @@ public class OAuth2ResourceConfig extends ResourceServerConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/register").permitAll()
+                .antMatchers("/", "/register", "/activate/**").permitAll()
                 .anyRequest().authenticated()
                 .and().logout().logoutSuccessUrl("/").permitAll();
     }

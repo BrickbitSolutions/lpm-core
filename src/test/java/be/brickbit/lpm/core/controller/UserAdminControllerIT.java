@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import java.time.format.DateTimeFormatter;
 
+import static be.brickbit.lpm.core.util.WiserAssertions.assertReceivedMessage;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.Matchers.is;
@@ -133,5 +134,20 @@ public class UserAdminControllerIT extends AbstractControllerIT {
                 .andExpect(status().isNoContent());
 
         assertThat(user.getAuthorities()).hasSize(2);
+    }
+
+    @Test
+    public void resetsPassword() throws Exception {
+        User user = UserFixture.mutable();
+
+        insert(user);
+
+        performPut("/admin/user/" + user.getId() + "/password", null)
+                .andExpect(status().isNoContent());
+
+        assertReceivedMessage(wiser())
+                .from("me@localhost")
+                .to(user.getEmail())
+                .withSubject("[LPM] Password Reset");
     }
 }
