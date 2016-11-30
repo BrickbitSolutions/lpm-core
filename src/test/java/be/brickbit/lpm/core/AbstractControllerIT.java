@@ -44,7 +44,7 @@ public abstract class AbstractControllerIT extends AbstractIT {
     public void setUp() throws Exception {
         defaultUser = token("admin", "ROLE_ADMIN", "ROLE_USER");
         wiser = new Wiser();
-        wiser.setPort(9999);
+        wiser.setPort(8070);
         wiser.setHostname("localhost");
         wiser.start();
 
