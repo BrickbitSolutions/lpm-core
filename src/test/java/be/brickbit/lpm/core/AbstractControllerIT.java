@@ -59,6 +59,14 @@ public abstract class AbstractControllerIT extends AbstractIT {
         wiser.stop();
     }
 
+    protected MockMvc mvc(){
+        return mvc;
+    }
+
+    protected RequestPostProcessor defaultuser(){
+        return defaultUser;
+    }
+
     protected Wiser wiser(){
         return wiser;
     }
