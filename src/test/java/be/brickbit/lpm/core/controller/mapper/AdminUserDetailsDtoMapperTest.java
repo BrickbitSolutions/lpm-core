@@ -36,4 +36,23 @@ public class AdminUserDetailsDtoMapperTest {
         assertThat(result.getLocked()).isEqualTo(!user.isAccountNonLocked());
         assertThat(result.getAuthorities()).containsAll(user.getAuthorities().stream().map(Authority::getAuthority).collect(Collectors.toList()));
     }
+
+    @Test
+    public void mapsLockedUser() throws Exception {
+        User user = UserFixture.mutable();
+        user.setAccountNonLocked(false);
+
+        AdminUserDetailsDto result = mapper.map(user);
+
+        assertThat(result.getId()).isEqualTo(user.getId());
+        assertThat(result.getUsername()).isEqualTo(user.getUsername());
+        assertThat(result.getSeatNumber()).isEqualTo(user.getSeatNumber());
+        assertThat(result.getFirstName()).isEqualTo(user.getFirstName());
+        assertThat(result.getLastName()).isEqualTo(user.getLastName());
+        assertThat(result.getEmail()).isEqualTo(user.getEmail());
+        assertThat(result.getBirthDate()).isEqualTo(user.getBirthDate());
+        assertThat(result.getEnabled()).isEqualTo(user.isEnabled());
+        assertThat(result.getLocked()).isEqualTo(!user.isAccountNonLocked());
+        assertThat(result.getAuthorities()).containsAll(user.getAuthorities().stream().map(Authority::getAuthority).collect(Collectors.toList()));
+    }
 }

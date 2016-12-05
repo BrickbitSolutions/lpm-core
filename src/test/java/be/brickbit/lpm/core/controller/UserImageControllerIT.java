@@ -57,4 +57,14 @@ public class UserImageControllerIT extends AbstractControllerIT {
                 .andDo(print())
                 .andExpect(status().isOk());
     }
+
+    @Test
+    public void readsDefaultProfileImage() throws Exception {
+        mvc().perform(
+                MockMvcRequestBuilders
+                        .get("/user/100/image")
+                        .with(defaultuser()))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
 }

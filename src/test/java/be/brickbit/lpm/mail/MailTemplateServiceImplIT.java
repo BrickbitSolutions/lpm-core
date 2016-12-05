@@ -3,6 +3,7 @@ package be.brickbit.lpm.mail;
 import be.brickbit.lpm.core.AbstractControllerIT;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.TestPropertySource;
 
 import static be.brickbit.lpm.core.util.RandomValueUtil.randomString;
 import static org.assertj.core.api.Assertions.assertThat;

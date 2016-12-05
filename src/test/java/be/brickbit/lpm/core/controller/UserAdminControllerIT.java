@@ -1,6 +1,7 @@
 package be.brickbit.lpm.core.controller;
 
 import be.brickbit.lpm.core.AbstractControllerIT;
+import be.brickbit.lpm.core.controller.command.user.AssignSeatCommand;
 import be.brickbit.lpm.core.controller.command.user.UpdateAuthoritiesCommand;
 import be.brickbit.lpm.core.domain.User;
 import be.brickbit.lpm.core.fixture.UserFixture;
@@ -9,6 +10,7 @@ import org.junit.Test;
 
 import java.time.format.DateTimeFormatter;
 
+import static be.brickbit.lpm.core.util.RandomValueUtil.randomInt;
 import static be.brickbit.lpm.core.util.WiserAssertions.assertReceivedMessage;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -47,6 +49,19 @@ public class UserAdminControllerIT extends AbstractControllerIT {
                 .andExpect(jsonPath("$.enabled", is(user.isEnabled())))
                 .andExpect(jsonPath("$.locked", is(!user.isAccountNonLocked())))
                 .andExpect(jsonPath("$.authorities", notNullValue()));
+    }
+
+    @Test
+    public void assignsNewSeat() throws Exception {
+        User user = UserFixture.mutable();
+        final Integer newSeatNr = randomInt();
+
+        insert(user);
+
+        performPut("/admin/user/" + user.getId() + "/seat", new AssignSeatCommand(newSeatNr))
+                .andExpect(status().isNoContent());
+
+        assertThat(user.getSeatNumber()).isEqualTo(newSeatNr);
     }
 
     @Test
