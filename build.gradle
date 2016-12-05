@@ -51,6 +51,7 @@ dependencies {
     testCompile 'com.jayway.jsonpath:json-path'
     testCompile 'com.jayway.jsonpath:json-path-assert'
     testCompile 'org.subethamail:subethasmtp-wiser:1.2'
+    testCompile 'com.github.tomakehurst:wiremock-standalone:2.1.12'
 }
 
 jacocoTestReport {
