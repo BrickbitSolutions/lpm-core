@@ -1,4 +1,4 @@
-package be.brickbit.lpm.core.integration.exception;
+package be.brickbit.lpm.sms.exception;
 
 public class NoSMSServiceException extends RuntimeException {
     public NoSMSServiceException() {

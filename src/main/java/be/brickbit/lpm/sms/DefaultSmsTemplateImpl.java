@@ -1,7 +1,7 @@
-package be.brickbit.lpm.core.integration.sms;
+package be.brickbit.lpm.sms;
 
 
-import be.brickbit.lpm.core.integration.exception.NoSMSServiceException;
+import be.brickbit.lpm.sms.exception.NoSMSServiceException;
 
 public class DefaultSmsTemplateImpl implements SMSTemplate {
     @Override

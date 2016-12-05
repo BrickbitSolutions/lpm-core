@@ -1,4 +1,4 @@
-package be.brickbit.lpm.core.integration.sms.clickatell;
+package be.brickbit.lpm.sms.clickatell;
 
 import lombok.Value;
 

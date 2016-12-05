@@ -5,7 +5,7 @@ import be.brickbit.lpm.infrastructure.advice.model.UnsupportedMediaExceptionResp
 import be.brickbit.lpm.infrastructure.advice.model.ValidationExceptionResponse;
 import be.brickbit.lpm.infrastructure.exception.EntityNotFoundException;
 import be.brickbit.lpm.infrastructure.exception.ServiceException;
-import be.brickbit.lpm.core.integration.exception.NoSMSServiceException;
+import be.brickbit.lpm.sms.exception.NoSMSServiceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;

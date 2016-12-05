@@ -1,4 +1,4 @@
-package be.brickbit.lpm.core.integration.mail;
+package be.brickbit.lpm.mail;
 
 import be.brickbit.lpm.infrastructure.exception.ServiceException;
 import freemarker.template.Configuration;

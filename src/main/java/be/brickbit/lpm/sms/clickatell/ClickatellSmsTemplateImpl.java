@@ -1,6 +1,6 @@
-package be.brickbit.lpm.core.integration.sms.clickatell;
+package be.brickbit.lpm.sms.clickatell;
 
-import be.brickbit.lpm.core.integration.sms.SMSTemplate;
+import be.brickbit.lpm.sms.SMSTemplate;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;

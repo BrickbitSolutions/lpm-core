@@ -1,6 +1,6 @@
-package be.brickbit.lpm.core.integration.sms.smsgatewayme;
+package be.brickbit.lpm.sms.smsgatewayme;
 
-import be.brickbit.lpm.core.integration.sms.SMSTemplate;
+import be.brickbit.lpm.sms.SMSTemplate;
 import org.springframework.web.client.RestTemplate;
 
 public class SmsGatewayTemplateImpl implements SMSTemplate {

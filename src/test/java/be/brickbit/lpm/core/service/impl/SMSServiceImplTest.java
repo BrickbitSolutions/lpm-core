@@ -2,8 +2,7 @@ package be.brickbit.lpm.core.service.impl;
 
 import be.brickbit.lpm.core.domain.User;
 import be.brickbit.lpm.core.fixture.UserFixture;
-import be.brickbit.lpm.core.integration.sms.SMSTemplate;
-import be.brickbit.lpm.core.service.api.notify.SMSService;
+import be.brickbit.lpm.sms.SMSTemplate;
 import be.brickbit.lpm.core.service.impl.internal.api.InternalUserService;
 import be.brickbit.lpm.infrastructure.exception.ServiceException;
 import org.apache.commons.lang3.StringUtils;

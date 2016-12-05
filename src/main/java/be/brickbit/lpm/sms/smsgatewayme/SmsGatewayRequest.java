@@ -1,4 +1,4 @@
-package be.brickbit.lpm.core.integration.sms.smsgatewayme;
+package be.brickbit.lpm.sms.smsgatewayme;
 
 import lombok.Value;
 

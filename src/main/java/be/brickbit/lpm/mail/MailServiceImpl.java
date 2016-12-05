@@ -1,4 +1,4 @@
-package be.brickbit.lpm.core.integration.mail;
+package be.brickbit.lpm.mail;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

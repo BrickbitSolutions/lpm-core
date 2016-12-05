@@ -1,4 +1,4 @@
-package be.brickbit.lpm.core.integration.mail;
+package be.brickbit.lpm.mail;
 
 public interface MailTemplateService {
     String createGeneralMessage(String name, String message);

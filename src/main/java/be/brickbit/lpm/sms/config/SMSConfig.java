@@ -1,9 +1,10 @@
-package be.brickbit.lpm.core.config;
+package be.brickbit.lpm.sms.config;
 
-import be.brickbit.lpm.core.integration.sms.DefaultSmsTemplateImpl;
-import be.brickbit.lpm.core.integration.sms.SMSTemplate;
-import be.brickbit.lpm.core.integration.sms.clickatell.ClickatellSmsTemplateImpl;
-import be.brickbit.lpm.core.integration.sms.smsgatewayme.SmsGatewayTemplateImpl;
+
+import be.brickbit.lpm.sms.DefaultSmsTemplateImpl;
+import be.brickbit.lpm.sms.SMSTemplate;
+import be.brickbit.lpm.sms.clickatell.ClickatellSmsTemplateImpl;
+import be.brickbit.lpm.sms.smsgatewayme.SmsGatewayTemplateImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -12,16 +13,16 @@ import org.springframework.web.client.RestTemplate;
 
 @Configuration
 public class SMSConfig {
-    @Value("${lpm.core.sms.clickatell-token:}")
+    @Value("${lpm.sms.clickatell-token:}")
     private String clickatellToken;
 
-    @Value("${lpm.core.sms.smsgateway.email:}")
+    @Value("${lpm.sms.smsgateway.email:}")
     private String smsGatewayEmail;
 
-    @Value("${lpm.core.sms.smsgateway.password:}")
+    @Value("${lpm.sms.smsgateway.password:}")
     private String smsGatewayPassword;
 
-    @Value("${lpm.core.sms.smsgateway.deviceId:}")
+    @Value("${lpm.sms.smsgateway.deviceId:}")
     private String smsGatewayDeviceId;
 
     @Bean
