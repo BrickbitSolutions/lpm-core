@@ -67,8 +67,7 @@ public class BadgeControllerIT extends AbstractControllerIT {
     @Test
     public void invalidateBadgeTriggersExceptionWhenNoParametersAreGiven() throws Exception {
         performDelete("/user/badge")
-                .andExpect(status().isConflict())
-                .andExpect(jsonPath("$.cause", is("No token or userId provided")));
+                .andExpect(status().isConflict());
     }
 
     @Test
