@@ -1,0 +1,38 @@
+spring:
+  jackson:
+    serialization:
+      indent_output: true
+      WRITE_DATES_AS_TIMESTAMPS: false
+  application:
+    name: LPM Core
+  jpa:
+    generate-ddl: false
+    hibernate:
+        ddl-auto: validate
+    properties:
+        hibernate:
+            format_sql: false
+    show-sql: false
+  mail:
+    protocol: smtp
+    host: localhost
+    smtp:
+      auth: false
+      starttls:
+        enable: false
+    from: me@localhost
+    port: 8070
+security:
+  oauth2:
+    resource:
+      user-info-uri: http://localhost:9090/user/me
+lpm:
+  core:
+    url: http://localhost:8081
+  storage:
+    images:
+      user: /tmp
+logging:
+  level: debug
+server:
+  port: 9002

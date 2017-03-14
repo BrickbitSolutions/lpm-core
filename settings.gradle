@@ -1,1 +1,4 @@
 rootProject.name = 'lpm-core'
+include 'lpm-auth'
+include 'lpm-common'
+

@@ -4,4 +4,5 @@
 build/
 classes/
 .DS_Store
-/src/main/generated/
+/lpm-auth/src/main/generated
+/lpm-common/src/main/generated

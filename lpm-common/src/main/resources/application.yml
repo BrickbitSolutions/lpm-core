@@ -1,0 +1,27 @@
+logging:
+    level:
+        org:
+            hibernate: debug
+            springframework:
+                web: debug
+spring:
+    datasource:
+        password: ''
+        url: jdbc:h2:mem:lpm;DB_CLOSE_ON_EXIT=FALSE
+        username: sa
+    jackson:
+        serialization:
+            WRITE_DATES_AS_TIMESTAMPS: false
+            indent_output: true
+    jpa:
+        generate-ddl: false
+        hibernate:
+            ddl-auto: validate
+        properties:
+            hibernate:
+                format_sql: false
+        show-sql: false
+lpm:
+  storage:
+    images:
+      user: /tmp/images/users
