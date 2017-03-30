@@ -38,11 +38,11 @@ public class OAuthHelper {
         };
     }
 
-    public RequestPostProcessor addBearerToken(final String username, String... authorities) {
+    public RequestPostProcessor addBearerToken(final String email, String... authorities) {
         return mockRequest -> {
             // Create OAuth2 token
             OAuth2Request oauth2Request = new OAuth2Request(null, "LPM", null, true, Sets.newHashSet("core"), null, null, null, null);
-            Authentication userauth = new TestingAuthenticationToken(userDetailsService.loadUserByUsername(username), null, authorities);
+            Authentication userauth = new TestingAuthenticationToken(userDetailsService.loadUserByUsername(email), null, authorities);
             OAuth2Authentication oauth2auth = new OAuth2Authentication(oauth2Request, userauth);
             OAuth2AccessToken token = tokenservice.createAccessToken(oauth2auth);
 

@@ -15,5 +15,7 @@ public interface InternalUserService {
 
     User findBySeatNumber(Integer seatNumber);
 
+    User findByEmail(String email);
+
     void assignSeat(User user, Integer seatNr);
 }

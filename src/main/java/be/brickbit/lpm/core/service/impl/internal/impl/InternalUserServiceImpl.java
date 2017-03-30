@@ -80,6 +80,13 @@ public class InternalUserServiceImpl implements InternalUserService {
     }
 
     @Override
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(
+                () -> new EntityNotFoundException(String.format("No user with email '%s' found", email))
+        );
+    }
+
+    @Override
     public void assignSeat(User user, Integer seatNr) {
         if (userRepository.findBySeatNumber(seatNr).isPresent()) {
             throw new ServiceException("Seat Number already assigned to another user");

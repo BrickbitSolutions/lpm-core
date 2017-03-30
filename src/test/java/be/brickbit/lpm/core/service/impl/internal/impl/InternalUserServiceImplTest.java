@@ -164,6 +164,15 @@ public class InternalUserServiceImplTest {
     }
 
     @Test
+    public void findsByEmail() throws Exception {
+        User user = UserFixture.mutable();
+
+        when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+
+        assertThat(internalUserService.findByEmail(user.getEmail())).isSameAs(user);
+    }
+
+    @Test
     public void shouldThrowExceptionWhenSeatNrNotFound() throws Exception {
         User user = UserFixture.mutable();
         expectedException.expect(EntityNotFoundException.class);

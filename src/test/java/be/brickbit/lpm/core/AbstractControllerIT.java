@@ -43,7 +43,7 @@ public abstract class AbstractControllerIT extends AbstractIT {
 
     @Before
     public void setUp() throws Exception {
-        defaultUser = token("admin", "ROLE_ADMIN", "ROLE_USER");
+        defaultUser = token("mail@mail.be", "ROLE_ADMIN", "ROLE_USER");
         wiser = new Wiser();
         wiser.setPort(8070);
         wiser.setHostname("localhost");
