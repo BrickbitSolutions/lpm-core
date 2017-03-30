@@ -36,7 +36,6 @@ dependencies {
     compile 'org.hibernate:hibernate-java8'
     compile 'org.postgresql:postgresql'
     compile 'com.h2database:h2'
-    //compile 'org.flywaydb:flyway-core'
     // Utils
     compile 'commons-beanutils:commons-beanutils'
     compile 'org.apache.commons:commons-lang3:3.4'

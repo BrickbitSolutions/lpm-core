@@ -16,7 +16,7 @@ public class LoginConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.formLogin().loginPage("/login").permitAll()
-                .and().authorizeRequests()
+                .and().csrf().disable().authorizeRequests()
                 .antMatchers("/", "/login**", "/oauth/authorize").permitAll()
                 .anyRequest().authenticated()
                 .and()

@@ -29,8 +29,8 @@
                     <legend>Login</legend>
 
                     <div class="form-group">
-                        <label for="username">Username</label>
-                        <input id="username" type="text" name="username" placeholder="Your Username" required
+                        <label for="username">Email</label>
+                        <input id="username" type="text" name="username" placeholder="Your Email" required
                                class="form-control"/>
                     </div>
 
@@ -40,15 +40,13 @@
                                required class="form-control"/>
                     </div>
 
-                    <input type="hidden" id="csrf_token" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-
                     <div class="form-group">
                         <input type="submit" name="login" value="Login" class="btn btn-primary"/>
                     </div>
                 </fieldset>
             </form>
 
-            <div class="row text-center">
+            <!--<div class="row text-center">
                 <a href="#">No Account? Register here!</a>
             </div>
             <div class="row text-center">
@@ -56,7 +54,7 @@
             </div>
             <div class="row text-center">
                 <a href="#">Privacy Statement</a>
-            </div>
+            </div>-->
         </div>
     </div>
 </div>

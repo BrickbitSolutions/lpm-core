@@ -1,7 +1,6 @@
 package be.brickbit.lpm.auth.domain;
 
 import lombok.Data;
-import lombok.Setter;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -19,6 +18,8 @@ public class User implements UserDetails {
     private String username;
     @Column(name = "PASSWORD")
     private String password;
+    @Column(name = "EMAIL")
+    private String email;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "USER_AUTHORITY", joinColumns = {
             @JoinColumn(name = "lpm_user_id", nullable = false),
