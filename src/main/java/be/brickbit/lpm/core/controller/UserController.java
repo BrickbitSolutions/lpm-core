@@ -38,7 +38,7 @@ public class UserController extends AbstractController {
         this.userProfileDtoMapper = userProfileDtoMapper;
     }
 
-    @RequestMapping(value = "me", method = RequestMethod.GET, produces = APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.GET, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public UserPrincipalDto getCurrentUserDetails() {
         return userService.findByUsername(

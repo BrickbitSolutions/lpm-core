@@ -38,7 +38,7 @@ public class UserAdminControllerIT extends AbstractControllerIT {
 
         insert(user);
 
-        performGet("/admin/user/" + user.getId() + "/details")
+        performGet("/admin/user/" + user.getId())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(user.getId().intValue())))
                 .andExpect(jsonPath("$.username", is(user.getUsername())))

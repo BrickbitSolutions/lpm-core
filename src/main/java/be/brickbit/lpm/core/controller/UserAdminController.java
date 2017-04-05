@@ -45,6 +45,13 @@ public class UserAdminController {
     }
 
     @PreAuthorize(value = "hasRole('ADMIN')")
+    @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public AdminUserDetailsDto getAdminUserDetails(@PathVariable("id") Long id) {
+        return userService.findOne(id, adminUserDetailsDtoMapper);
+    }
+
+    @PreAuthorize(value = "hasRole('ADMIN')")
     @RequestMapping(value = "{id}/enable", method = RequestMethod.PUT, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void enableUser(@PathVariable("id") Long id) {
@@ -77,13 +84,6 @@ public class UserAdminController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void resetPassword(@PathVariable("id") Long id){
         userService.resetPassword(id);
-    }
-
-    @PreAuthorize(value = "hasRole('ADMIN')")
-    @RequestMapping(value = "{id}/details", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public AdminUserDetailsDto getAdminUserDetails(@PathVariable("id") Long id) {
-        return userService.findOne(id, adminUserDetailsDtoMapper);
     }
 
     @PreAuthorize(value = "hasRole('ADMIN')")

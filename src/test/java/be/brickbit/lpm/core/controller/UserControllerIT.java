@@ -32,7 +32,7 @@ public class UserControllerIT extends AbstractControllerIT {
     public void testGetUserPrincipal() throws Exception {
         User user = UserFixture.testUser();
 
-        performGet("/user/me")
+        performGet("/user")
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.username", is(user.getUsername())))
                 .andExpect(jsonPath("$.mood", is(user.getMood())))

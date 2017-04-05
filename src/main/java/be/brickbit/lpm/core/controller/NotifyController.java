@@ -31,7 +31,7 @@ public class NotifyController {
     }
 
     @PreAuthorize(value = "hasAnyRole('ADMIN')")
-    @RequestMapping(value = "/mail/test", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/mail/test", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public void testMail(@RequestParam(name = "mail") String email) throws MessagingException {
         mailService.sendMail(email, "Test Mail", "This is a LPM Test Mail.");

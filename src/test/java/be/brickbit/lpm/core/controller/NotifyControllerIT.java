@@ -15,7 +15,7 @@ public class NotifyControllerIT extends AbstractControllerIT {
     public void sendsTestMail() throws Exception {
         String mail = "knights@ni.co.uk";
 
-        performGet("/notify/mail/test?mail=" + mail)
+        performPut("/notify/mail/test?mail=" + mail, null)
                 .andExpect(status().isOk());
 
         assertReceivedMessage(wiser())

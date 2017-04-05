@@ -74,7 +74,7 @@ public class MailTemplateServiceImpl implements MailTemplateService {
     private Template loadTemplate(String templateName) {
         try {
             if (StringUtils.isEmpty(templateLocation)) {
-                freemarkerConfiguration.setClassForTemplateLoading(this.getClass(), "/mail/templates");
+                freemarkerConfiguration.setClassForTemplateLoading(this.getClass(), "/templates/mail");
             } else {
                 freemarkerConfiguration.setDirectoryForTemplateLoading(new File(templateLocation));
             }
