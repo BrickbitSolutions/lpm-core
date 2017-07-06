@@ -6,7 +6,6 @@ import be.brickbit.lpm.core.controller.command.user.UpdateAuthoritiesCommand;
 import be.brickbit.lpm.core.controller.command.user.UpdateUserPasswordCommand;
 import be.brickbit.lpm.core.controller.command.user.UpdateUserProfileCommand;
 import be.brickbit.lpm.core.domain.User;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;

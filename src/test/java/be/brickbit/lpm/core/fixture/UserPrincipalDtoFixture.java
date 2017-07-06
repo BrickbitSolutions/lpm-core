@@ -3,7 +3,8 @@ package be.brickbit.lpm.core.fixture;
 import be.brickbit.lpm.core.controller.dto.UserPrincipalDto;
 import com.google.common.collect.Lists;
 
-import static be.brickbit.lpm.core.util.RandomValueUtil.*;
+import static be.brickbit.lpm.core.util.RandomValueUtil.randomLong;
+import static be.brickbit.lpm.core.util.RandomValueUtil.randomString;
 
 public class UserPrincipalDtoFixture {
     public static UserPrincipalDto mutable() {

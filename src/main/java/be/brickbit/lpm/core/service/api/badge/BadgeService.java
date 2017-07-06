@@ -2,7 +2,6 @@ package be.brickbit.lpm.core.service.api.badge;
 
 import be.brickbit.lpm.core.domain.Badge;
 import be.brickbit.lpm.core.domain.User;
-import be.brickbit.lpm.core.service.api.user.UserDtoMapper;
 
 import java.util.List;
 

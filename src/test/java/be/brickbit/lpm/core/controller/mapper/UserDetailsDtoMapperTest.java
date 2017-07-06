@@ -14,10 +14,9 @@ import java.time.LocalDate;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserDetailsDtoMapperTest {
-    private UserDetailsDtoMapper mapper;
-
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
+    private UserDetailsDtoMapper mapper;
 
     @Before
     public void setUp() throws Exception {

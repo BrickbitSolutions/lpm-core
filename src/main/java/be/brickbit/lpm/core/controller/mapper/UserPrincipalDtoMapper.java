@@ -6,8 +6,6 @@ import be.brickbit.lpm.core.domain.User;
 import be.brickbit.lpm.core.service.api.user.UserDtoMapper;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.stream.Collectors;
 
 @Component

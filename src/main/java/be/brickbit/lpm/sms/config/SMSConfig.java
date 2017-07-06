@@ -26,19 +26,19 @@ public class SMSConfig {
     private String smsGatewayDeviceId;
 
     @Bean
-    public RestTemplate restTemplate(){
+    public RestTemplate restTemplate() {
         return new RestTemplate();
     }
 
     @Bean
-    public SMSTemplate smsTemplate(){
-        if(StringUtils.isNotEmpty(clickatellToken)){
+    public SMSTemplate smsTemplate() {
+        if (StringUtils.isNotEmpty(clickatellToken)) {
             return new ClickatellSmsTemplateImpl(restTemplate(), clickatellToken);
         }
 
-        if(StringUtils.isNotEmpty(smsGatewayEmail) &&
+        if (StringUtils.isNotEmpty(smsGatewayEmail) &&
                 StringUtils.isNotEmpty(smsGatewayPassword) &&
-                StringUtils.isNotEmpty(smsGatewayDeviceId)){
+                StringUtils.isNotEmpty(smsGatewayDeviceId)) {
             return new SmsGatewayTemplateImpl(restTemplate(), smsGatewayEmail, smsGatewayPassword, smsGatewayDeviceId);
         }
 

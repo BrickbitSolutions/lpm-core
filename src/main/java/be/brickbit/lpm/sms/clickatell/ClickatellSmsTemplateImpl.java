@@ -38,12 +38,12 @@ public class ClickatellSmsTemplateImpl implements SMSTemplate {
 
         ClickatellMessage responseMessage = response.getBody().getData().getMessage().get(0);
 
-        if(!responseMessage.getAccepted()){
+        if (!responseMessage.getAccepted()) {
             throw new RuntimeException(String.format("SMS Failed to send to: %s. Clickatell ID: %s", responseMessage.getTo(), responseMessage.getApiMessageId()));
         }
     }
 
-    private HttpHeaders getClickatellHeaders(){
+    private HttpHeaders getClickatellHeaders() {
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Version", "1");
         headers.add("Authorization", "bearer " + clickatellToken);

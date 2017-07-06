@@ -1,8 +1,8 @@
 package be.brickbit.lpm.core.controller;
 
 import be.brickbit.lpm.core.controller.command.notify.NotifyCommand;
-import be.brickbit.lpm.mail.MailService;
 import be.brickbit.lpm.core.service.api.notify.SMSService;
+import be.brickbit.lpm.mail.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
