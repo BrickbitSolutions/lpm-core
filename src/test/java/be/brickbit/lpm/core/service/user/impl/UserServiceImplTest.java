@@ -156,22 +156,22 @@ public class UserServiceImplTest {
 
     @Test
     public void testLoadUserByUsername() throws Exception {
-        String email = randomString();
+        String username = randomString();
         User user = UserFixture.mutable();
 
-        when(internalUserService.findByEmail(email)).thenReturn(user);
-        assertThat(userService.loadUserByUsername(email)).isEqualTo(user);
+        when(internalUserService.findByUsername(username)).thenReturn(user);
+        assertThat(userService.loadUserByUsername(username)).isEqualTo(user);
     }
 
     @Test
     public void throwsUsernameNotFoundExceptionOnLoadByUsername() throws Exception {
-        String email = randomString();
+        String username = randomString();
 
         expectedException.expect(UsernameNotFoundException.class);
 
-        when(internalUserService.findByEmail(email)).thenThrow(EntityNotFoundException.class);
+        when(internalUserService.findByUsername(username)).thenThrow(EntityNotFoundException.class);
 
-        userService.loadUserByUsername(email);
+        userService.loadUserByUsername(username);
     }
 
     @Test

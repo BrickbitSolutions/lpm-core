@@ -220,9 +220,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
-            return internalUserService.findByEmail(email);
+            return internalUserService.findByUsername(username);
         } catch (EntityNotFoundException ex) {
             throw new UsernameNotFoundException(ex.getMessage(), ex);
         }

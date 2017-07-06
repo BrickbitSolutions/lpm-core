@@ -35,7 +35,7 @@ public class UserImageControllerIT extends AbstractControllerIT {
                         .with(defaultuser()))
                 .andDo(print())
                 .andExpect(status().isConflict());
-        //TODO: MockMvc does not support Spring Boots ErrorController, may be solved in 1.5+
+        //TODO: MockMvc does not support Spring Boots ErrorController, may be solved in 1.5+, see https://github.com/spring-projects/spring-boot/issues/5574
 //                .andExpect(jsonPath("$", is("File format not supported.")));
     }
 
