@@ -1,6 +1,7 @@
 package be.brickbit.lpm.core.util;
 
 import com.google.common.collect.Sets;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.TestingAuthenticationToken;

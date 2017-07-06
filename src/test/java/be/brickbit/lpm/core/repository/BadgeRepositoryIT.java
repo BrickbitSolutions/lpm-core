@@ -1,15 +1,16 @@
 package be.brickbit.lpm.core.repository;
 
-import be.brickbit.lpm.core.AbstractRepoIT;
-import be.brickbit.lpm.core.domain.Badge;
-import be.brickbit.lpm.core.domain.User;
-import be.brickbit.lpm.core.fixture.BadgeFixture;
-import be.brickbit.lpm.core.fixture.UserFixture;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Optional;
+
+import be.brickbit.lpm.core.AbstractRepoIT;
+import be.brickbit.lpm.core.domain.Badge;
+import be.brickbit.lpm.core.domain.User;
+import be.brickbit.lpm.core.fixture.BadgeFixture;
+import be.brickbit.lpm.core.fixture.UserFixture;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

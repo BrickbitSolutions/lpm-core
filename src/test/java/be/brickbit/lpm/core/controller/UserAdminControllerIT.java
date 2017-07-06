@@ -1,19 +1,24 @@
 package be.brickbit.lpm.core.controller;
 
+import com.google.common.collect.Lists;
+
+import org.junit.Test;
+
+import java.time.format.DateTimeFormatter;
+
 import be.brickbit.lpm.core.AbstractControllerIT;
 import be.brickbit.lpm.core.controller.command.user.AssignSeatCommand;
 import be.brickbit.lpm.core.controller.command.user.UpdateAuthoritiesCommand;
 import be.brickbit.lpm.core.domain.User;
 import be.brickbit.lpm.core.fixture.UserFixture;
-import com.google.common.collect.Lists;
-import org.junit.Test;
-
-import java.time.format.DateTimeFormatter;
 
 import static be.brickbit.lpm.core.util.RandomValueUtil.randomInt;
 import static be.brickbit.lpm.core.util.WiserAssertions.assertReceivedMessage;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

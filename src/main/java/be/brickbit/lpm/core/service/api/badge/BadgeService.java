@@ -1,9 +1,9 @@
 package be.brickbit.lpm.core.service.api.badge;
 
+import java.util.List;
+
 import be.brickbit.lpm.core.domain.Badge;
 import be.brickbit.lpm.core.domain.User;
-
-import java.util.List;
 
 public interface BadgeService {
     void createNewBadge(String token, Long userId);

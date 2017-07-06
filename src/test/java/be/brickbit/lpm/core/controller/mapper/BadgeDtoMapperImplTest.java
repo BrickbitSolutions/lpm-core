@@ -1,10 +1,11 @@
 package be.brickbit.lpm.core.controller.mapper;
 
+import org.junit.Before;
+import org.junit.Test;
+
 import be.brickbit.lpm.core.controller.dto.BadgeDto;
 import be.brickbit.lpm.core.domain.Badge;
 import be.brickbit.lpm.core.fixture.BadgeFixture;
-import org.junit.Before;
-import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

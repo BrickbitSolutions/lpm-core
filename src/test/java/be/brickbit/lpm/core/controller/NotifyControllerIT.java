@@ -1,10 +1,11 @@
 package be.brickbit.lpm.core.controller;
 
+import org.junit.Test;
+
 import be.brickbit.lpm.core.AbstractControllerIT;
 import be.brickbit.lpm.core.controller.command.notify.NotifyCommand;
 import be.brickbit.lpm.core.domain.User;
 import be.brickbit.lpm.core.fixture.UserFixture;
-import org.junit.Test;
 
 import static be.brickbit.lpm.core.util.RandomValueUtil.randomString;
 import static be.brickbit.lpm.core.util.WiserAssertions.assertReceivedMessage;

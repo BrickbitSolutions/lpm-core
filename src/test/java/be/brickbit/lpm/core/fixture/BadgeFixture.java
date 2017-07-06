@@ -1,9 +1,9 @@
 package be.brickbit.lpm.core.fixture;
 
+import java.util.UUID;
+
 import be.brickbit.lpm.core.domain.Badge;
 import be.brickbit.lpm.core.domain.User;
-
-import java.util.UUID;
 
 public class BadgeFixture {
     public static Badge mutable() {

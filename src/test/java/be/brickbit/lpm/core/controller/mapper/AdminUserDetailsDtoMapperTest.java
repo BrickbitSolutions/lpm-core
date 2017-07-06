@@ -1,13 +1,14 @@
 package be.brickbit.lpm.core.controller.mapper;
 
-import be.brickbit.lpm.core.controller.dto.AdminUserDetailsDto;
-import be.brickbit.lpm.core.domain.Authority;
-import be.brickbit.lpm.core.domain.User;
-import be.brickbit.lpm.core.fixture.UserFixture;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.stream.Collectors;
+
+import be.brickbit.lpm.core.controller.dto.AdminUserDetailsDto;
+import be.brickbit.lpm.core.domain.Authority;
+import be.brickbit.lpm.core.domain.User;
+import be.brickbit.lpm.core.fixture.UserFixture;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -1,12 +1,13 @@
 package be.brickbit.lpm.core.controller.command.user;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.NotEmpty;
-
-import java.util.List;
 
 @Getter
 @Setter

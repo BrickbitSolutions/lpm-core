@@ -1,8 +1,8 @@
 package be.brickbit.lpm.sms.clickatell;
 
-import lombok.Value;
-
 import java.util.List;
+
+import lombok.Value;
 
 @Value
 class ClickatellRequest {

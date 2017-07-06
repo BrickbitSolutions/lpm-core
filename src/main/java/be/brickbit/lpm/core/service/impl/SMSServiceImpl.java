@@ -1,13 +1,14 @@
 package be.brickbit.lpm.core.service.impl;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import be.brickbit.lpm.core.domain.User;
 import be.brickbit.lpm.core.service.api.notify.SMSService;
 import be.brickbit.lpm.core.service.api.user.UserService;
 import be.brickbit.lpm.infrastructure.exception.ServiceException;
 import be.brickbit.lpm.sms.SMSTemplate;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class SMSServiceImpl implements SMSService {

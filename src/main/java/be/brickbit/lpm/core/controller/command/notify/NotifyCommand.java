@@ -1,12 +1,13 @@
 package be.brickbit.lpm.core.controller.command.notify;
 
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.NotNull;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.NotBlank;
-
-import javax.validation.constraints.NotNull;
 
 @NoArgsConstructor
 @AllArgsConstructor

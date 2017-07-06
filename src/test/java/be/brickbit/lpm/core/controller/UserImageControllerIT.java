@@ -1,12 +1,13 @@
 package be.brickbit.lpm.core.controller;
 
-import be.brickbit.lpm.core.AbstractControllerIT;
 import org.junit.Test;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.util.FileCopyUtils;
 
 import java.io.File;
+
+import be.brickbit.lpm.core.AbstractControllerIT;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

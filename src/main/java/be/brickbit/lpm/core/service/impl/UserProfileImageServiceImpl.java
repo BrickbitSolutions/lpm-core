@@ -1,6 +1,5 @@
 package be.brickbit.lpm.core.service.impl;
 
-import be.brickbit.lpm.core.service.api.file.UserProfileImageService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +9,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Optional;
+
+import be.brickbit.lpm.core.service.api.file.UserProfileImageService;
 
 @Service
 public class UserProfileImageServiceImpl implements UserProfileImageService {

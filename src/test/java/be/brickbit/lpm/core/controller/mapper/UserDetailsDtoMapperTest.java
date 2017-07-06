@@ -1,8 +1,5 @@
 package be.brickbit.lpm.core.controller.mapper;
 
-import be.brickbit.lpm.core.controller.dto.UserDetailsDto;
-import be.brickbit.lpm.core.domain.User;
-import be.brickbit.lpm.core.fixture.UserFixture;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -10,6 +7,10 @@ import org.junit.rules.ExpectedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.time.LocalDate;
+
+import be.brickbit.lpm.core.controller.dto.UserDetailsDto;
+import be.brickbit.lpm.core.domain.User;
+import be.brickbit.lpm.core.fixture.UserFixture;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

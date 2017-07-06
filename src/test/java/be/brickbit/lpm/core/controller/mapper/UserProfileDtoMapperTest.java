@@ -1,11 +1,12 @@
 package be.brickbit.lpm.core.controller.mapper;
 
-import be.brickbit.lpm.core.controller.dto.UserProfileDto;
-import be.brickbit.lpm.core.domain.User;
-import be.brickbit.lpm.core.fixture.UserFixture;
 import org.junit.Test;
 
 import java.time.format.DateTimeFormatter;
+
+import be.brickbit.lpm.core.controller.dto.UserProfileDto;
+import be.brickbit.lpm.core.domain.User;
+import be.brickbit.lpm.core.fixture.UserFixture;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

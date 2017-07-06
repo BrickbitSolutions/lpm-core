@@ -3,11 +3,12 @@ package be.brickbit.lpm.core.util;
 import org.subethamail.wiser.Wiser;
 import org.subethamail.wiser.WiserMessage;
 
-import javax.mail.internet.MimeMessage;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+
+import javax.mail.internet.MimeMessage;
 
 public class WiserAssertions {
 

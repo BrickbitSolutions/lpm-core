@@ -1,9 +1,10 @@
 package be.brickbit.lpm.core.controller;
 
-import be.brickbit.lpm.core.AbstractControllerIT;
-import be.brickbit.lpm.core.controller.command.home.NewUserCommand;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import be.brickbit.lpm.core.AbstractControllerIT;
+import be.brickbit.lpm.core.controller.command.home.NewUserCommand;
 
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.is;

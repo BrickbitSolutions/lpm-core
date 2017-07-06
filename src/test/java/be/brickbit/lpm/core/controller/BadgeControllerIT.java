@@ -1,5 +1,12 @@
 package be.brickbit.lpm.core.controller;
 
+import com.mysema.query.jpa.impl.JPAQuery;
+
+import org.junit.Test;
+
+import java.util.List;
+import java.util.UUID;
+
 import be.brickbit.lpm.core.AbstractControllerIT;
 import be.brickbit.lpm.core.controller.command.NewBadgeCommand;
 import be.brickbit.lpm.core.domain.Badge;
@@ -7,14 +14,12 @@ import be.brickbit.lpm.core.domain.QBadge;
 import be.brickbit.lpm.core.domain.User;
 import be.brickbit.lpm.core.fixture.BadgeFixture;
 import be.brickbit.lpm.core.fixture.UserFixture;
-import com.mysema.query.jpa.impl.JPAQuery;
-import org.junit.Test;
-
-import java.util.List;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.isEmptyOrNullString;
+import static org.hamcrest.Matchers.not;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

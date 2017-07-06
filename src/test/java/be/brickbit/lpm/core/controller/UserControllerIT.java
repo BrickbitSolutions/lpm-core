@@ -1,11 +1,5 @@
 package be.brickbit.lpm.core.controller;
 
-import be.brickbit.lpm.core.AbstractControllerIT;
-import be.brickbit.lpm.core.controller.command.UpdateUserEmailCommand;
-import be.brickbit.lpm.core.controller.command.user.UpdateUserPasswordCommand;
-import be.brickbit.lpm.core.controller.command.user.UpdateUserProfileCommand;
-import be.brickbit.lpm.core.domain.User;
-import be.brickbit.lpm.core.fixture.UserFixture;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,6 +7,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+
+import be.brickbit.lpm.core.AbstractControllerIT;
+import be.brickbit.lpm.core.controller.command.UpdateUserEmailCommand;
+import be.brickbit.lpm.core.controller.command.user.UpdateUserPasswordCommand;
+import be.brickbit.lpm.core.controller.command.user.UpdateUserProfileCommand;
+import be.brickbit.lpm.core.domain.User;
+import be.brickbit.lpm.core.fixture.UserFixture;
 
 import static be.brickbit.lpm.core.util.RandomValueUtil.randomEmail;
 import static be.brickbit.lpm.core.util.RandomValueUtil.randomString;

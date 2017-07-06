@@ -1,12 +1,13 @@
 package be.brickbit.lpm.core.controller.validation.annotation;
 
-import be.brickbit.lpm.core.controller.validation.validator.FieldMatchValidator;
-
-import javax.validation.Constraint;
-import javax.validation.Payload;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+
+import javax.validation.Constraint;
+import javax.validation.Payload;
+
+import be.brickbit.lpm.core.controller.validation.validator.FieldMatchValidator;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.TYPE;

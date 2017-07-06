@@ -1,8 +1,8 @@
 package be.brickbit.lpm.core.controller.dto;
 
-import lombok.Value;
-
 import java.util.List;
+
+import lombok.Value;
 
 @Value
 public class UserPrincipalDto {

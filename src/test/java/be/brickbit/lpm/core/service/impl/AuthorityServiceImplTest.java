@@ -1,9 +1,7 @@
 package be.brickbit.lpm.core.service.impl;
 
-import be.brickbit.lpm.core.domain.Authority;
-import be.brickbit.lpm.core.fixture.AuthorityFixture;
-import be.brickbit.lpm.core.repository.AuthorityRepository;
 import com.google.common.collect.Lists;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -12,6 +10,10 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.List;
 import java.util.Optional;
+
+import be.brickbit.lpm.core.domain.Authority;
+import be.brickbit.lpm.core.fixture.AuthorityFixture;
+import be.brickbit.lpm.core.repository.AuthorityRepository;
 
 import static be.brickbit.lpm.core.util.RandomValueUtil.randomString;
 import static org.assertj.core.api.Assertions.assertThat;

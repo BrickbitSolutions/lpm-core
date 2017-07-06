@@ -1,13 +1,7 @@
 package be.brickbit.lpm.core.service.impl;
 
-import be.brickbit.lpm.core.domain.Badge;
-import be.brickbit.lpm.core.domain.User;
-import be.brickbit.lpm.core.fixture.BadgeFixture;
-import be.brickbit.lpm.core.fixture.UserFixture;
-import be.brickbit.lpm.core.repository.BadgeRepository;
-import be.brickbit.lpm.core.service.api.user.UserService;
-import be.brickbit.lpm.infrastructure.exception.ServiceException;
 import com.google.common.collect.Lists;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -21,10 +15,20 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.List;
 import java.util.Optional;
 
+import be.brickbit.lpm.core.domain.Badge;
+import be.brickbit.lpm.core.domain.User;
+import be.brickbit.lpm.core.fixture.BadgeFixture;
+import be.brickbit.lpm.core.fixture.UserFixture;
+import be.brickbit.lpm.core.repository.BadgeRepository;
+import be.brickbit.lpm.core.service.api.user.UserService;
+import be.brickbit.lpm.infrastructure.exception.ServiceException;
+
 import static be.brickbit.lpm.core.util.RandomValueUtil.randomLong;
 import static be.brickbit.lpm.core.util.RandomValueUtil.randomString;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BadgeServiceImplTest {

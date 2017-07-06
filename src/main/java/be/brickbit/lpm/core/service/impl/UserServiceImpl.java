@@ -1,5 +1,22 @@
 package be.brickbit.lpm.core.service.impl;
 
+import com.google.common.collect.Sets;
+
+import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 import be.brickbit.lpm.core.controller.command.UpdateUserEmailCommand;
 import be.brickbit.lpm.core.controller.command.home.NewUserCommand;
 import be.brickbit.lpm.core.controller.command.user.UpdateAuthoritiesCommand;
@@ -16,21 +33,6 @@ import be.brickbit.lpm.infrastructure.exception.EntityNotFoundException;
 import be.brickbit.lpm.infrastructure.exception.ServiceException;
 import be.brickbit.lpm.mail.MailService;
 import be.brickbit.lpm.mail.MailTemplateService;
-import com.google.common.collect.Sets;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional

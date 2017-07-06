@@ -1,5 +1,9 @@
 package be.brickbit.lpm.core.controller;
 
+import com.mysema.query.jpa.impl.JPAQuery;
+
+import org.junit.Test;
+
 import be.brickbit.lpm.core.AbstractControllerIT;
 import be.brickbit.lpm.core.domain.ActivationToken;
 import be.brickbit.lpm.core.domain.QActivationToken;
@@ -7,8 +11,6 @@ import be.brickbit.lpm.core.domain.User;
 import be.brickbit.lpm.core.fixture.ActivationTokenFixture;
 import be.brickbit.lpm.core.fixture.UserFixture;
 import be.brickbit.lpm.core.fixture.command.NewUserCommandFixture;
-import com.mysema.query.jpa.impl.JPAQuery;
-import org.junit.Test;
 
 import static be.brickbit.lpm.core.util.WiserAssertions.assertReceivedMessage;
 import static org.assertj.core.api.Assertions.assertThat;

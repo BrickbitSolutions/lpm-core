@@ -1,15 +1,16 @@
 package be.brickbit.lpm.sms.config;
 
 
-import be.brickbit.lpm.sms.DefaultSmsTemplateImpl;
-import be.brickbit.lpm.sms.SMSTemplate;
-import be.brickbit.lpm.sms.clickatell.ClickatellSmsTemplateImpl;
-import be.brickbit.lpm.sms.smsgatewayme.SmsGatewayTemplateImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
+
+import be.brickbit.lpm.sms.DefaultSmsTemplateImpl;
+import be.brickbit.lpm.sms.SMSTemplate;
+import be.brickbit.lpm.sms.clickatell.ClickatellSmsTemplateImpl;
+import be.brickbit.lpm.sms.smsgatewayme.SmsGatewayTemplateImpl;
 
 @Configuration
 public class SMSConfig {

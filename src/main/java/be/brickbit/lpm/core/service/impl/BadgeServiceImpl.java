@@ -1,5 +1,11 @@
 package be.brickbit.lpm.core.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
 import be.brickbit.lpm.core.domain.Badge;
 import be.brickbit.lpm.core.domain.User;
 import be.brickbit.lpm.core.repository.BadgeRepository;
@@ -7,11 +13,6 @@ import be.brickbit.lpm.core.service.api.badge.BadgeService;
 import be.brickbit.lpm.core.service.api.user.UserService;
 import be.brickbit.lpm.infrastructure.exception.EntityNotFoundException;
 import be.brickbit.lpm.infrastructure.exception.ServiceException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @Transactional

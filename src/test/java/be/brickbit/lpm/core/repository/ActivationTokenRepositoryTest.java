@@ -1,10 +1,11 @@
 package be.brickbit.lpm.core.repository;
 
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import be.brickbit.lpm.core.AbstractRepoIT;
 import be.brickbit.lpm.core.domain.ActivationToken;
 import be.brickbit.lpm.core.fixture.ActivationTokenFixture;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

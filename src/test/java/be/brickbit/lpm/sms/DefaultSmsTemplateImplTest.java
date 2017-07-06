@@ -1,10 +1,11 @@
 package be.brickbit.lpm.sms;
 
-import be.brickbit.lpm.sms.exception.NoSMSServiceException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
+import be.brickbit.lpm.sms.exception.NoSMSServiceException;
 
 import static be.brickbit.lpm.core.util.RandomValueUtil.randomString;
 

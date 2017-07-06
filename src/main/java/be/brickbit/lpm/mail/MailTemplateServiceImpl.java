@@ -1,9 +1,9 @@
 package be.brickbit.lpm.mail;
 
-import be.brickbit.lpm.infrastructure.exception.ServiceException;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +14,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import be.brickbit.lpm.infrastructure.exception.ServiceException;
 
 @Service
 public class MailTemplateServiceImpl implements MailTemplateService {

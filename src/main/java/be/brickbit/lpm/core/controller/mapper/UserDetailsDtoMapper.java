@@ -1,13 +1,14 @@
 package be.brickbit.lpm.core.controller.mapper;
 
-import be.brickbit.lpm.core.controller.dto.UserDetailsDto;
-import be.brickbit.lpm.core.domain.User;
-import be.brickbit.lpm.core.service.api.user.UserDtoMapper;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+
+import be.brickbit.lpm.core.controller.dto.UserDetailsDto;
+import be.brickbit.lpm.core.domain.User;
+import be.brickbit.lpm.core.service.api.user.UserDtoMapper;
 
 @Component
 public class UserDetailsDtoMapper implements UserDtoMapper<UserDetailsDto> {

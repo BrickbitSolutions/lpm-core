@@ -1,5 +1,24 @@
 package be.brickbit.lpm.core.controller;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import javax.validation.Valid;
+
 import be.brickbit.lpm.core.controller.command.NewBadgeCommand;
 import be.brickbit.lpm.core.controller.dto.BadgeDto;
 import be.brickbit.lpm.core.controller.dto.UserDetailsDto;
@@ -8,17 +27,6 @@ import be.brickbit.lpm.core.controller.mapper.UserDetailsDtoMapper;
 import be.brickbit.lpm.core.service.api.badge.BadgeService;
 import be.brickbit.lpm.infrastructure.AbstractController;
 import be.brickbit.lpm.infrastructure.exception.ServiceException;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/user/badge")

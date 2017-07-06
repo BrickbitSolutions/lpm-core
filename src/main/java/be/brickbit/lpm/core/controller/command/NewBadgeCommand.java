@@ -1,8 +1,8 @@
 package be.brickbit.lpm.core.controller.command;
 
-import lombok.Value;
-
 import javax.validation.constraints.NotNull;
+
+import lombok.Value;
 
 @Value
 public class NewBadgeCommand {

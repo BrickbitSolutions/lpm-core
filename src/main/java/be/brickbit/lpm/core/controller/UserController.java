@@ -1,5 +1,18 @@
 package be.brickbit.lpm.core.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
+
 import be.brickbit.lpm.core.controller.command.UpdateUserEmailCommand;
 import be.brickbit.lpm.core.controller.command.user.UpdateUserPasswordCommand;
 import be.brickbit.lpm.core.controller.command.user.UpdateUserProfileCommand;
@@ -11,13 +24,6 @@ import be.brickbit.lpm.core.controller.mapper.UserPrincipalDtoMapper;
 import be.brickbit.lpm.core.controller.mapper.UserProfileDtoMapper;
 import be.brickbit.lpm.core.service.api.user.UserService;
 import be.brickbit.lpm.infrastructure.AbstractController;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 

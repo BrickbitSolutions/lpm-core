@@ -1,5 +1,21 @@
 package be.brickbit.lpm.core.service.impl;
 
+import com.google.common.collect.Lists;
+
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Optional;
+
 import be.brickbit.lpm.core.controller.command.UpdateUserEmailCommand;
 import be.brickbit.lpm.core.controller.command.home.NewUserCommand;
 import be.brickbit.lpm.core.controller.command.user.UpdateAuthoritiesCommand;
@@ -19,24 +35,15 @@ import be.brickbit.lpm.infrastructure.exception.EntityNotFoundException;
 import be.brickbit.lpm.infrastructure.exception.ServiceException;
 import be.brickbit.lpm.mail.MailService;
 import be.brickbit.lpm.mail.MailTemplateService;
-import com.google.common.collect.Lists;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Optional;
-
-import static be.brickbit.lpm.core.util.RandomValueUtil.*;
+import static be.brickbit.lpm.core.util.RandomValueUtil.randomInt;
+import static be.brickbit.lpm.core.util.RandomValueUtil.randomLong;
+import static be.brickbit.lpm.core.util.RandomValueUtil.randomString;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceImplTest {

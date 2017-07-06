@@ -1,9 +1,10 @@
 package be.brickbit.lpm.core.controller.mapper;
 
-import be.brickbit.lpm.core.domain.Authority;
-import be.brickbit.lpm.core.fixture.AuthorityFixture;
 import org.junit.Before;
 import org.junit.Test;
+
+import be.brickbit.lpm.core.domain.Authority;
+import be.brickbit.lpm.core.fixture.AuthorityFixture;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

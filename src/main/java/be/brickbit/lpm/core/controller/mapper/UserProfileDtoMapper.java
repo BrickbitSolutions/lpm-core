@@ -1,11 +1,12 @@
 package be.brickbit.lpm.core.controller.mapper;
 
-import be.brickbit.lpm.core.controller.dto.UserProfileDto;
-import be.brickbit.lpm.core.domain.User;
-import be.brickbit.lpm.core.service.api.user.UserDtoMapper;
 import org.springframework.stereotype.Component;
 
 import java.time.format.DateTimeFormatter;
+
+import be.brickbit.lpm.core.controller.dto.UserProfileDto;
+import be.brickbit.lpm.core.domain.User;
+import be.brickbit.lpm.core.service.api.user.UserDtoMapper;
 
 @Component
 public class UserProfileDtoMapper implements UserDtoMapper<UserProfileDto> {

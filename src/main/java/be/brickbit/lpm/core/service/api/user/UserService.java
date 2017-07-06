@@ -1,14 +1,15 @@
 package be.brickbit.lpm.core.service.api.user;
 
+import org.springframework.security.core.userdetails.UserDetailsService;
+
+import java.util.List;
+
 import be.brickbit.lpm.core.controller.command.UpdateUserEmailCommand;
 import be.brickbit.lpm.core.controller.command.home.NewUserCommand;
 import be.brickbit.lpm.core.controller.command.user.UpdateAuthoritiesCommand;
 import be.brickbit.lpm.core.controller.command.user.UpdateUserPasswordCommand;
 import be.brickbit.lpm.core.controller.command.user.UpdateUserProfileCommand;
 import be.brickbit.lpm.core.domain.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
-
-import java.util.List;
 
 public interface UserService extends UserDetailsService {
     void createUser(NewUserCommand userCommand);
