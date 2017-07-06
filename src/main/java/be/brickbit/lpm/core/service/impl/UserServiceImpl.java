@@ -6,16 +6,17 @@ import be.brickbit.lpm.core.controller.command.user.UpdateAuthoritiesCommand;
 import be.brickbit.lpm.core.controller.command.user.UpdateUserPasswordCommand;
 import be.brickbit.lpm.core.controller.command.user.UpdateUserProfileCommand;
 import be.brickbit.lpm.core.domain.ActivationToken;
+import be.brickbit.lpm.core.domain.Authority;
 import be.brickbit.lpm.core.domain.User;
-import be.brickbit.lpm.mail.MailService;
-import be.brickbit.lpm.mail.MailTemplateService;
 import be.brickbit.lpm.core.repository.ActivationTokenRepository;
-import be.brickbit.lpm.core.service.api.user.UserDtoMapper;
+import be.brickbit.lpm.core.repository.UserRepository;
+import be.brickbit.lpm.core.service.api.authority.AuthorityService;
 import be.brickbit.lpm.core.service.api.user.UserService;
-import be.brickbit.lpm.core.service.impl.internal.api.InternalAuthorityService;
-import be.brickbit.lpm.core.service.impl.internal.api.InternalUserService;
 import be.brickbit.lpm.infrastructure.exception.EntityNotFoundException;
 import be.brickbit.lpm.infrastructure.exception.ServiceException;
+import be.brickbit.lpm.mail.MailService;
+import be.brickbit.lpm.mail.MailTemplateService;
+import com.google.common.collect.Sets;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -27,14 +28,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
-    private final InternalUserService internalUserService;
-    private final InternalAuthorityService internalAuthorityService;
+    private final UserRepository userRepository;
+    private final AuthorityService authorityService;
     private final ActivationTokenRepository activationTokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final MailService mailService;
@@ -42,14 +44,14 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     public UserServiceImpl(
-            InternalUserService internalUserService,
-            InternalAuthorityService internalAuthorityService,
+            UserRepository userRepository,
+            AuthorityService authorityService,
             ActivationTokenRepository activationTokenRepository,
             PasswordEncoder passwordEncoder,
             MailService mailService,
             MailTemplateService mailTemplateService) {
-        this.internalUserService = internalUserService;
-        this.internalAuthorityService = internalAuthorityService;
+        this.userRepository = userRepository;
+        this.authorityService = authorityService;
         this.activationTokenRepository = activationTokenRepository;
         this.passwordEncoder = passwordEncoder;
         this.mailService = mailService;
@@ -60,6 +62,20 @@ public class UserServiceImpl implements UserService {
     public void createUser(NewUserCommand userCommand) {
         User user = new User();
 
+        if (userRepository.findByUsername(userCommand.getUsername()).isPresent()) {
+            throw new ServiceException(String.format("'%s' already exists.", userCommand.getUsername()));
+        }
+
+        if (userRepository.findByEmail(userCommand.getEmail()).isPresent()) {
+            throw new ServiceException(String.format("An account for '%s' already exists.", userCommand.getEmail()));
+        }
+
+        user.setAccountNonExpired(true);
+        user.setAccountNonLocked(true);
+        user.setCredentialsNonExpired(true);
+        user.setEnabled(false);
+        user.setMood("Hello LPM.");
+        user.setAuthorities(Sets.newHashSet(getDefaultRole()));
         user.setEmail(userCommand.getEmail());
         user.setUsername(userCommand.getUsername());
         user.setPassword(passwordEncoder.encode(userCommand.getPassword()));
@@ -67,11 +83,15 @@ public class UserServiceImpl implements UserService {
         user.setLastName(userCommand.getLastName());
         user.setBirthDate(userCommand.getBirthDate());
 
-        internalUserService.createUser(user);
+        userRepository.save(user);
         saveActivationToken(user);
     }
 
-    private void saveActivationToken(User user){
+    private Authority getDefaultRole() {
+        return authorityService.findByAuthority("ROLE_USER");
+    }
+
+    private void saveActivationToken(User user) {
         ActivationToken activationToken = new ActivationToken();
 
         activationToken.setUser(user);
@@ -92,27 +112,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public <T> T findOne(Long id, UserDtoMapper<T> dtoMapper) {
-        return dtoMapper.map(getUser(id));
-    }
-
-    @Override
-    public <T> List<T> findAll(UserDtoMapper<T> dtoMapper) {
-        return internalUserService.findAll().stream().map(dtoMapper::map).collect(Collectors.toList());
-    }
-
-    @Override
-    @Cacheable("usersByUsername")
-    public <T> T findByUsername(String username, UserDtoMapper<T> dtoMapper) {
-        return dtoMapper.map(
-                internalUserService.findByUsername(username)
+    public User findOne(Long id) {
+        return Optional.ofNullable(userRepository.findOne(id)).orElseThrow(
+                () -> new EntityNotFoundException(String.format("User #%d not found", id))
         );
     }
 
     @Override
-    public <T> T findBySeatNumber(Integer seatNumber, UserDtoMapper<T> dtoMapper) {
-        return dtoMapper.map(
-                internalUserService.findBySeatNumber(seatNumber)
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    @Cacheable("usersByUsername")
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username).orElseThrow(
+                () -> new EntityNotFoundException(String.format("User '%s' not found", username))
+        );
+    }
+
+    @Override
+    public User findBySeatNumber(Integer seatNumber) {
+        return userRepository.findBySeatNumber(seatNumber).orElseThrow(
+                () -> new EntityNotFoundException(String.format("No user for seat #%d found", seatNumber))
         );
     }
 
@@ -120,17 +142,17 @@ public class UserServiceImpl implements UserService {
     public void activateUser(String token) {
         ActivationToken activationToken = activationTokenRepository.findByToken(token);
 
-        if(activationToken != null) {
+        if (activationToken != null) {
             activationToken.getUser().setEnabled(true);
             activationTokenRepository.delete(activationToken);
-        }else{
+        } else {
             throw new ServiceException("Activation token is not valid or has expired.");
         }
     }
 
     @Override
     public void enableUser(Long id) {
-        User user = internalUserService.findOne(id);
+        User user = findOne(id);
         if (!user.isEnabled()) {
             user.setEnabled(true);
         }
@@ -138,7 +160,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void disableUser(Long id) {
-        User user = internalUserService.findOne(id);
+        User user = findOne(id);
         if (user.isEnabled()) {
             user.setEnabled(false);
         }
@@ -146,7 +168,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void lockUser(Long id) {
-        User user = internalUserService.findOne(id);
+        User user = findOne(id);
         if (user.isAccountNonLocked()) {
             user.setAccountNonLocked(false);
         }
@@ -154,7 +176,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void unlockUser(Long id) {
-        User user = internalUserService.findOne(id);
+        User user = findOne(id);
         if (!user.isAccountNonLocked()) {
             user.setAccountNonLocked(true);
         }
@@ -163,24 +185,29 @@ public class UserServiceImpl implements UserService {
     @Override
     @CacheEvict({"usersByUsername"})
     public void updateAuthorities(Long id, UpdateAuthoritiesCommand command) {
-        User user = getUser(id);
+        User user = findOne(id);
         user.setAuthorities(
                 command.getAuthorities().stream()
-                        .map(internalAuthorityService::findByAuthority)
+                        .map(authorityService::findByAuthority)
                         .collect(Collectors.toSet())
         );
     }
 
     @Override
     public void assignSeat(Long id, Integer seatNr) {
-        User user = internalUserService.findOne(id);
-        internalUserService.assignSeat(user, seatNr);
+        User user = findOne(id);
+
+        if (userRepository.findBySeatNumber(seatNr).isPresent()) {
+            throw new ServiceException("Seat Number already assigned to another user");
+        } else {
+            user.setSeatNumber(seatNr);
+        }
     }
 
     @Override
     @CacheEvict({"usersByUsername"})
     public void updateUserProfile(Long id, UpdateUserProfileCommand command) {
-        User user = getUser(id);
+        User user = findOne(id);
 
         user.setMood(command.getMood());
         user.setMobileNr(command.getMobileNr());
@@ -188,13 +215,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUserPassword(Long id, UpdateUserPasswordCommand updateUserPasswordCommand) {
-        User user = getUser(id);
+        User user = findOne(id);
         user.setPassword(passwordEncoder.encode(updateUserPasswordCommand.getPassword()));
     }
 
     @Override
     public void updateUserEmail(Long id, UpdateUserEmailCommand updateUserPasswordCommand) {
-        User user = getUser(id);
+        User user = findOne(id);
         user.setEmail(updateUserPasswordCommand.getEmail());
     }
 
@@ -202,7 +229,7 @@ public class UserServiceImpl implements UserService {
     public void resetPassword(Long id) {
         String password = RandomStringUtils.random(24, true, true);
 
-        User user = internalUserService.findOne(id);
+        User user = findOne(id);
         user.setPassword(passwordEncoder.encode(password));
 
         mailService.sendMail(
@@ -215,14 +242,10 @@ public class UserServiceImpl implements UserService {
         );
     }
 
-    private User getUser(Long id) {
-        return internalUserService.findOne(id);
-    }
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
-            return internalUserService.findByUsername(username);
+            return findByUsername(username);
         } catch (EntityNotFoundException ex) {
             throw new UsernameNotFoundException(ex.getMessage(), ex);
         }

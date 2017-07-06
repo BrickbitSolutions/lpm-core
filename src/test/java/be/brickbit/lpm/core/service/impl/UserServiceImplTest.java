@@ -1,27 +1,24 @@
-package be.brickbit.lpm.core.service.user.impl;
+package be.brickbit.lpm.core.service.impl;
 
 import be.brickbit.lpm.core.controller.command.UpdateUserEmailCommand;
 import be.brickbit.lpm.core.controller.command.home.NewUserCommand;
 import be.brickbit.lpm.core.controller.command.user.UpdateAuthoritiesCommand;
 import be.brickbit.lpm.core.controller.command.user.UpdateUserPasswordCommand;
 import be.brickbit.lpm.core.controller.command.user.UpdateUserProfileCommand;
-import be.brickbit.lpm.core.controller.dto.UserPrincipalDto;
-import be.brickbit.lpm.core.controller.mapper.UserPrincipalDtoMapper;
 import be.brickbit.lpm.core.domain.ActivationToken;
 import be.brickbit.lpm.core.domain.Authority;
 import be.brickbit.lpm.core.domain.User;
 import be.brickbit.lpm.core.fixture.ActivationTokenFixture;
 import be.brickbit.lpm.core.fixture.AuthorityFixture;
 import be.brickbit.lpm.core.fixture.UserFixture;
-import be.brickbit.lpm.core.fixture.UserPrincipalDtoFixture;
 import be.brickbit.lpm.core.fixture.command.NewUserCommandFixture;
+import be.brickbit.lpm.core.repository.ActivationTokenRepository;
+import be.brickbit.lpm.core.repository.UserRepository;
+import be.brickbit.lpm.core.service.api.authority.AuthorityService;
+import be.brickbit.lpm.infrastructure.exception.EntityNotFoundException;
+import be.brickbit.lpm.infrastructure.exception.ServiceException;
 import be.brickbit.lpm.mail.MailService;
 import be.brickbit.lpm.mail.MailTemplateService;
-import be.brickbit.lpm.core.repository.ActivationTokenRepository;
-import be.brickbit.lpm.core.service.impl.UserServiceImpl;
-import be.brickbit.lpm.core.service.impl.internal.api.InternalAuthorityService;
-import be.brickbit.lpm.core.service.impl.internal.api.InternalUserService;
-import be.brickbit.lpm.infrastructure.exception.EntityNotFoundException;
 import com.google.common.collect.Lists;
 import org.junit.Rule;
 import org.junit.Test;
@@ -35,6 +32,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Optional;
+
 import static be.brickbit.lpm.core.util.RandomValueUtil.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -44,15 +43,13 @@ public class UserServiceImplTest {
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
     @Mock
-    private InternalUserService internalUserService;
+    private UserRepository userRepository;
     @Mock
-    private InternalAuthorityService internalAuthorityService;
+    private AuthorityService authorityService;
     @Mock
     private PasswordEncoder passwordEncoder;
     @Mock
     private ActivationTokenRepository activationTokenRepository;
-    @Mock
-    private UserPrincipalDtoMapper dtoMapper;
     @Mock
     private MailService mailService;
     @Mock
@@ -67,13 +64,17 @@ public class UserServiceImplTest {
     @Test
     public void testCreateUser() throws Exception {
         NewUserCommand command = NewUserCommandFixture.mutable();
+        Authority authority = AuthorityFixture.user();
         String hashedPassword = randomString();
 
         when(passwordEncoder.encode(command.getPassword())).thenReturn(hashedPassword);
+        when(userRepository.findByUsername(command.getUsername())).thenReturn(Optional.empty());
+        when(userRepository.findByEmail(command.getEmail())).thenReturn(Optional.empty());
+        when(authorityService.findByAuthority("ROLE_USER")).thenReturn(authority);
 
         userService.createUser(command);
 
-        verify(internalUserService).createUser(userArgumentCaptor.capture());
+        verify(userRepository).save(userArgumentCaptor.capture());
         verify(activationTokenRepository).save(activationTokenArgumentCaptor.capture());
 
         User user = userArgumentCaptor.getValue();
@@ -84,6 +85,12 @@ public class UserServiceImplTest {
         assertThat(user.getPassword()).isEqualTo(hashedPassword);
         assertThat(user.getUsername()).isEqualTo(command.getUsername());
         assertThat(user.getBirthDate()).isEqualTo(command.getBirthDate());
+        assertThat(user.isAccountNonExpired()).isTrue();
+        assertThat(user.isAccountNonLocked()).isTrue();
+        assertThat(user.isCredentialsNonExpired()).isTrue();
+        assertThat(user.isEnabled()).isFalse();
+        assertThat(user.getMood()).isEqualTo("Hello LPM.");
+        assertThat(user.getAuthorities()).containsExactly(authority);
 
         ActivationToken activationToken = activationTokenArgumentCaptor.getValue();
 
@@ -92,29 +99,59 @@ public class UserServiceImplTest {
 
         verify(mailTemplateService, times(1)).createActivationMail(anyString(), anyString());
         verify(mailService, times(1)).sendMail(anyString(), anyString(), anyString());
+        verify(userRepository, times(1)).save(user);
     }
 
     @Test
-    public void findsOne() throws Exception {
-        UserPrincipalDto dto = UserPrincipalDtoFixture.mutable();
-        User user = UserFixture.mutable();
+    public void shouldNotSaveUserIfEmailIsAlreadyRegistered() throws Exception {
+        NewUserCommand command = NewUserCommandFixture.mutable();
+
+        expectedException.expect(ServiceException.class);
+        expectedException.expectMessage(String.format("An account for '%s' already exists.", command.getEmail()));
+
+        when(userRepository.findByUsername(command.getUsername())).thenReturn(Optional.empty());
+        when(userRepository.findByEmail(command.getEmail())).thenReturn(Optional.of(UserFixture.mutable()));
+
+        userService.createUser(command);
+    }
+
+    @Test
+    public void shouldNotSaveUserIUsernameAlreadyExists() throws Exception {
+        NewUserCommand command = NewUserCommandFixture.mutable();
+
+        expectedException.expect(ServiceException.class);
+        expectedException.expectMessage(String.format("'%s' already exists.", command.getUsername()));
+
+        when(userRepository.findByUsername(command.getUsername())).thenReturn(Optional.of(UserFixture.mutable()));
+
+        userService.createUser(command);
+    }
+
+    @Test
+    public void findsUserById() throws Exception {
         Long userId = randomLong();
+        User user = UserFixture.mutable();
 
-        when(internalUserService.findOne(userId)).thenReturn(user);
-        when(dtoMapper.map(user)).thenReturn(dto);
+        when(userRepository.findOne(userId)).thenReturn(user);
 
-        assertThat(userService.findOne(userId, dtoMapper)).isSameAs(dto);
+        assertThat(userRepository.findOne(userId)).isSameAs(user);
+    }
+
+    @Test
+    public void shouldThrowEntityNotFoundExceptionWithFindOne() throws Exception {
+        final Long userId = randomLong();
+        expectedException.expect(EntityNotFoundException.class);
+        expectedException.expectMessage(String.format("User #%d not found", userId));
+        userService.findOne(userId);
     }
 
     @Test
     public void findsAll() throws Exception {
-        UserPrincipalDto dto = UserPrincipalDtoFixture.mutable();
         User user = UserFixture.mutable();
 
-        when(internalUserService.findAll()).thenReturn(Lists.newArrayList(user));
-        when(dtoMapper.map(user)).thenReturn(dto);
+        when(userRepository.findAll()).thenReturn(Lists.newArrayList(user));
 
-        assertThat(userService.findAll(dtoMapper)).containsExactly(dto);
+        assertThat(userService.findAll()).containsExactly(user);
     }
 
     @Test
@@ -127,9 +164,9 @@ public class UserServiceImplTest {
         final Authority userRole = AuthorityFixture.user();
         final Authority adminRole = AuthorityFixture.admin();
 
-        when(internalUserService.findOne(userId)).thenReturn(user);
-        when(internalAuthorityService.findByAuthority("ROLE_USER")).thenReturn(userRole);
-        when(internalAuthorityService.findByAuthority("ROLE_ADMIN")).thenReturn(adminRole);
+        when(userRepository.findOne(userId)).thenReturn(user);
+        when(authorityService.findByAuthority("ROLE_USER")).thenReturn(userRole);
+        when(authorityService.findByAuthority("ROLE_ADMIN")).thenReturn(adminRole);
 
         userService.updateAuthorities(userId, command);
 
@@ -145,9 +182,9 @@ public class UserServiceImplTest {
         Long userId = randomLong();
         final Authority userRole = AuthorityFixture.user();
 
-        when(internalUserService.findOne(userId)).thenReturn(user);
-        when(internalAuthorityService.findByAuthority("ROLE_USER")).thenReturn(userRole);
-        when(internalAuthorityService.findByAuthority("ROLE_JAY")).thenThrow(new EntityNotFoundException());
+        when(userRepository.findOne(userId)).thenReturn(user);
+        when(authorityService.findByAuthority("ROLE_USER")).thenReturn(userRole);
+        when(authorityService.findByAuthority("ROLE_JAY")).thenThrow(new EntityNotFoundException());
 
         expectedException.expect(EntityNotFoundException.class);
 
@@ -159,8 +196,28 @@ public class UserServiceImplTest {
         String username = randomString();
         User user = UserFixture.mutable();
 
-        when(internalUserService.findByUsername(username)).thenReturn(user);
+        when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
         assertThat(userService.loadUserByUsername(username)).isEqualTo(user);
+    }
+
+    @Test
+    public void findsByUsername() throws Exception {
+        User user = UserFixture.mutable();
+
+        when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
+
+        assertThat(userService.findByUsername(user.getUsername())).isSameAs(user);
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenUsernameNotFound() throws Exception {
+        User user = UserFixture.mutable();
+        expectedException.expect(EntityNotFoundException.class);
+        expectedException.expectMessage(String.format("User '%s' not found", user.getUsername()));
+
+        when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.empty());
+
+        userService.findByUsername(user.getUsername());
     }
 
     @Test
@@ -169,55 +226,30 @@ public class UserServiceImplTest {
 
         expectedException.expect(UsernameNotFoundException.class);
 
-        when(internalUserService.findByUsername(username)).thenThrow(EntityNotFoundException.class);
+        when(userRepository.findByUsername(username)).thenReturn(Optional.empty());
 
         userService.loadUserByUsername(username);
     }
 
+
     @Test
-    public void findByUsername() throws Exception {
-        String username = randomString();
+    public void findsBySeatNumber() throws Exception {
         User user = UserFixture.mutable();
-        UserPrincipalDto dto = UserPrincipalDtoFixture.mutable();
 
-        when(internalUserService.findByUsername(username)).thenReturn(user);
-        when(dtoMapper.map(user)).thenReturn(dto);
+        when(userRepository.findBySeatNumber(user.getSeatNumber())).thenReturn(Optional.of(user));
 
-        assertThat(userService.findByUsername(username, dtoMapper)).isSameAs(dto);
+        assertThat(userService.findBySeatNumber(user.getSeatNumber())).isSameAs(user);
     }
 
     @Test
-    public void findByUsername__NotFound() throws Exception {
-        expectedException.expect(EntityNotFoundException.class);
-
-        String username = randomString();
-
-        when(internalUserService.findByUsername(username)).thenThrow(new EntityNotFoundException());
-
-        userService.findByUsername(username, dtoMapper);
-    }
-
-    @Test
-    public void findBySeatNumber() throws Exception {
-        Integer seatNumber = randomInt();
-        User user = UserFixture.mutable();
-        UserPrincipalDto dto = UserPrincipalDtoFixture.mutable();
-
-        when(internalUserService.findBySeatNumber(seatNumber)).thenReturn(user);
-        when(dtoMapper.map(user)).thenReturn(dto);
-
-        assertThat(userService.findBySeatNumber(seatNumber, dtoMapper)).isSameAs(dto);
-    }
-
-    @Test
-    public void findBySeatNumber__NotFound() throws Exception {
-        expectedException.expect(EntityNotFoundException.class);
-
+    public void throwsEntityNotFoundOnNonExistentSeatNumber() throws Exception {
         Integer seatNumber = randomInt();
 
-        when(internalUserService.findBySeatNumber(seatNumber)).thenThrow(new EntityNotFoundException());
+        expectedException.expect(EntityNotFoundException.class);
 
-        userService.findBySeatNumber(seatNumber, dtoMapper);
+        when(userRepository.findBySeatNumber(seatNumber)).thenThrow(new EntityNotFoundException());
+
+        userService.findBySeatNumber(seatNumber);
     }
 
     @Test
@@ -226,7 +258,7 @@ public class UserServiceImplTest {
         user.setId(randomLong());
         user.setEnabled(false);
 
-        when(internalUserService.findOne(user.getId())).thenReturn(user);
+        when(userRepository.findOne(user.getId())).thenReturn(user);
 
         userService.enableUser(user.getId());
 
@@ -234,12 +266,12 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void testEnableUser__userAlreadyEnabled() throws Exception {
+    public void doesNotEnableUserWhenUserIsAlreadyEnabled() throws Exception {
         User user = UserFixture.mutable();
         user.setId(randomLong());
         user.setEnabled(true);
 
-        when(internalUserService.findOne(user.getId())).thenReturn(user);
+        when(userRepository.findOne(user.getId())).thenReturn(user);
 
         userService.enableUser(user.getId());
 
@@ -251,7 +283,7 @@ public class UserServiceImplTest {
         User user = UserFixture.mutable();
         user.setId(randomLong());
 
-        when(internalUserService.findOne(user.getId())).thenReturn(user);
+        when(userRepository.findOne(user.getId())).thenReturn(user);
 
         userService.disableUser(user.getId());
 
@@ -264,7 +296,7 @@ public class UserServiceImplTest {
         user.setId(randomLong());
         user.setEnabled(false);
 
-        when(internalUserService.findOne(user.getId())).thenReturn(user);
+        when(userRepository.findOne(user.getId())).thenReturn(user);
 
         userService.disableUser(user.getId());
 
@@ -277,7 +309,7 @@ public class UserServiceImplTest {
         user.setId(randomLong());
         user.setAccountNonLocked(true);
 
-        when(internalUserService.findOne(user.getId())).thenReturn(user);
+        when(userRepository.findOne(user.getId())).thenReturn(user);
 
         userService.lockUser(user.getId());
 
@@ -285,12 +317,12 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void testLockUser__AlreadyLocked() throws Exception {
+    public void doesNotLockUserWhenUserIsAlreadyLocked() throws Exception {
         User user = UserFixture.mutable();
         user.setId(randomLong());
         user.setAccountNonLocked(false);
 
-        when(internalUserService.findOne(user.getId())).thenReturn(user);
+        when(userRepository.findOne(user.getId())).thenReturn(user);
 
         userService.lockUser(user.getId());
 
@@ -303,7 +335,7 @@ public class UserServiceImplTest {
         user.setId(randomLong());
         user.setAccountNonLocked(false);
 
-        when(internalUserService.findOne(user.getId())).thenReturn(user);
+        when(userRepository.findOne(user.getId())).thenReturn(user);
 
         userService.unlockUser(user.getId());
 
@@ -311,12 +343,12 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void testUnlockUser__AlreadyUnlocked() throws Exception {
+    public void doesNotUnlockUserWhenUserIsAlreadyUnlocked() throws Exception {
         User user = UserFixture.mutable();
         user.setId(randomLong());
         user.setAccountNonLocked(true);
 
-        when(internalUserService.findOne(user.getId())).thenReturn(user);
+        when(userRepository.findOne(user.getId())).thenReturn(user);
 
         userService.unlockUser(user.getId());
 
@@ -324,16 +356,32 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void testAssignSeatNr() throws Exception {
-        final Long randomId = randomLong();
-        final User user = UserFixture.mutable();
-        final Integer seatNr = randomInt();
+    public void assignsSeatToUser() throws Exception {
+        User user = UserFixture.mutable();
+        user.setId(randomLong());
+        Integer seatNr = randomInt();
 
-        when(internalUserService.findOne(randomId)).thenReturn(user);
+        when(userRepository.findBySeatNumber(seatNr)).thenReturn(Optional.empty());
+        when(userRepository.findOne(user.getId())).thenReturn(user);
 
-        userService.assignSeat(randomId, seatNr);
+        userService.assignSeat(user.getId(), seatNr);
 
-        verify(internalUserService, times(1)).assignSeat(user, seatNr);
+        assertThat(user.getSeatNumber()).isEqualTo(seatNr);
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenSeatIsAlreadyTaken() throws Exception {
+        expectedException.expect(ServiceException.class);
+        expectedException.expectMessage("Seat Number already assigned to another user");
+
+        User user = UserFixture.mutable();
+        user.setId(randomLong());
+        Integer seatNr = randomInt();
+
+        when(userRepository.findBySeatNumber(seatNr)).thenReturn(Optional.of(user));
+        when(userRepository.findOne(user.getId())).thenReturn(user);
+
+        userService.assignSeat(user.getId(), seatNr);
     }
 
     @Test
@@ -345,7 +393,7 @@ public class UserServiceImplTest {
         User user = UserFixture.mutable();
         Long userId = randomLong();
 
-        when(internalUserService.findOne(userId)).thenReturn(user);
+        when(userRepository.findOne(userId)).thenReturn(user);
 
         userService.updateUserProfile(userId, command);
 
@@ -361,7 +409,7 @@ public class UserServiceImplTest {
         String hashedPassword = randomString();
 
         when(passwordEncoder.encode(command.getPassword())).thenReturn(hashedPassword);
-        when(internalUserService.findOne(userId)).thenReturn(user);
+        when(userRepository.findOne(userId)).thenReturn(user);
 
         userService.updateUserPassword(userId, command);
 
@@ -374,7 +422,7 @@ public class UserServiceImplTest {
         User user = UserFixture.mutable();
         Long userId = randomLong();
 
-        when(internalUserService.findOne(userId)).thenReturn(user);
+        when(userRepository.findOne(userId)).thenReturn(user);
 
         userService.updateUserEmail(userId, command);
 
@@ -402,7 +450,7 @@ public class UserServiceImplTest {
         user.setPassword(oldPassword);
         Long userId = randomLong();
 
-        when(internalUserService.findOne(userId)).thenReturn(user);
+        when(userRepository.findOne(userId)).thenReturn(user);
 
         userService.resetPassword(userId);
 

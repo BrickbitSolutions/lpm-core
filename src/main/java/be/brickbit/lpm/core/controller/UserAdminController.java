@@ -16,8 +16,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -41,14 +41,14 @@ public class UserAdminController {
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public List<AdminUserDetailsDto> getAllUsers() {
-        return userService.findAll(adminUserDetailsDtoMapper);
+        return userService.findAll().stream().map(adminUserDetailsDtoMapper::map).collect(Collectors.toList());
     }
 
     @PreAuthorize(value = "hasRole('ADMIN')")
     @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public AdminUserDetailsDto getAdminUserDetails(@PathVariable("id") Long id) {
-        return userService.findOne(id, adminUserDetailsDtoMapper);
+        return adminUserDetailsDtoMapper.map(userService.findOne(id));
     }
 
     @PreAuthorize(value = "hasRole('ADMIN')")
@@ -82,7 +82,7 @@ public class UserAdminController {
     @PreAuthorize(value = "hasRole('ADMIN')")
     @RequestMapping(value = "{id}/password", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void resetPassword(@PathVariable("id") Long id){
+    public void resetPassword(@PathVariable("id") Long id) {
         userService.resetPassword(id);
     }
 
@@ -109,6 +109,6 @@ public class UserAdminController {
     @ResponseStatus(HttpStatus.OK)
     @Cacheable("authorities")
     public List<String> findAllAuthorities() {
-        return authorityService.findAll(authorityNameMapper);
+        return authorityService.findAll().stream().map(authorityNameMapper::map).collect(Collectors.toList());
     }
 }

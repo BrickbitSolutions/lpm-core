@@ -5,6 +5,8 @@ import be.brickbit.lpm.core.controller.command.home.NewUserCommand;
 import be.brickbit.lpm.core.controller.command.user.UpdateAuthoritiesCommand;
 import be.brickbit.lpm.core.controller.command.user.UpdateUserPasswordCommand;
 import be.brickbit.lpm.core.controller.command.user.UpdateUserProfileCommand;
+import be.brickbit.lpm.core.domain.User;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
@@ -12,13 +14,13 @@ import java.util.List;
 public interface UserService extends UserDetailsService {
     void createUser(NewUserCommand userCommand);
 
-    <T> T findOne(Long id, UserDtoMapper<T> dtoMapper);
+    User findOne(Long id);
 
-    <T> List<T> findAll(UserDtoMapper<T> dtoMapper);
+    List<User> findAll();
 
-    <T> T findByUsername(String username, UserDtoMapper<T> dtoMapper);
+    User findByUsername(String username);
 
-    <T> T findBySeatNumber(Integer seatNumber, UserDtoMapper<T> dtoMapper);
+    User findBySeatNumber(Integer seatNumberr);
 
     void activateUser(String token);
 

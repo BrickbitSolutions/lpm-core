@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -41,19 +40,13 @@ public class UserController extends AbstractController {
     @RequestMapping(method = RequestMethod.GET, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public UserPrincipalDto getCurrentUserDetails() {
-        return userService.findByUsername(
-                getAuthenticatedUsername(),
-                userPrincipalDtoMapper
-        );
+        return userPrincipalDtoMapper.map(userService.findByUsername(getAuthenticatedUsername()));
     }
 
     @RequestMapping(value = "profile", method = RequestMethod.GET, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public UserProfileDto getCurrentUserProfile(){
-        return userService.findByUsername(
-                getAuthenticatedUsername(),
-                userProfileDtoMapper
-        );
+    public UserProfileDto getCurrentUserProfile() {
+        return userProfileDtoMapper.map(userService.findByUsername(getAuthenticatedUsername()));
     }
 
     @RequestMapping(value = "profile", method = RequestMethod.PUT, produces = APPLICATION_JSON_VALUE)
@@ -79,18 +72,12 @@ public class UserController extends AbstractController {
     @ResponseStatus(HttpStatus.OK)
     @Cacheable("userDetailsBySeat")
     public UserDetailsDto getUserDetailsBySeat(@PathVariable("seatNumber") Integer seatNumber) {
-        return userService.findBySeatNumber(
-                seatNumber,
-                userDetailsDtoMapper
-        );
+        return userDetailsDtoMapper.map(userService.findBySeatNumber(seatNumber));
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public UserDetailsDto getUserDetails(@PathVariable("id") Long id) {
-        return userService.findOne(
-                id,
-                userDetailsDtoMapper
-        );
+        return userDetailsDtoMapper.map(userService.findOne(id));
     }
 }

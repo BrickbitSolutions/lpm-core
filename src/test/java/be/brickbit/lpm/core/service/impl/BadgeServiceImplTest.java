@@ -1,17 +1,11 @@
-package be.brickbit.lpm.core.service.user.impl;
+package be.brickbit.lpm.core.service.impl;
 
-import be.brickbit.lpm.core.controller.dto.BadgeDto;
-import be.brickbit.lpm.core.controller.dto.UserDetailsDto;
-import be.brickbit.lpm.core.controller.mapper.BadgeDtoMapperImpl;
 import be.brickbit.lpm.core.domain.Badge;
 import be.brickbit.lpm.core.domain.User;
 import be.brickbit.lpm.core.fixture.BadgeFixture;
-import be.brickbit.lpm.core.fixture.UserDetailsDtoFixture;
 import be.brickbit.lpm.core.fixture.UserFixture;
-import be.brickbit.lpm.core.service.api.user.UserDtoMapper;
-import be.brickbit.lpm.core.service.impl.BadgeServiceImpl;
-import be.brickbit.lpm.core.service.impl.internal.api.InternalBadgeService;
-import be.brickbit.lpm.core.service.impl.internal.api.InternalUserService;
+import be.brickbit.lpm.core.repository.BadgeRepository;
+import be.brickbit.lpm.core.service.api.user.UserService;
 import be.brickbit.lpm.infrastructure.exception.ServiceException;
 import com.google.common.collect.Lists;
 import org.junit.Rule;
@@ -25,6 +19,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.List;
+import java.util.Optional;
 
 import static be.brickbit.lpm.core.util.RandomValueUtil.randomLong;
 import static be.brickbit.lpm.core.util.RandomValueUtil.randomString;
@@ -34,26 +29,16 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class BadgeServiceImplTest {
 
-    @Mock
-    private InternalBadgeService internalBadgeService;
-
-    @Mock
-    private InternalUserService internalUserService;
-
-    @Mock
-    private BadgeDtoMapperImpl dtoMapper;
-
-    @Mock
-    private UserDtoMapper userDtoMapper;
-
-    @InjectMocks
-    private BadgeServiceImpl badgeService;
-
-    @Captor
-    private ArgumentCaptor<Badge> badgeArgumentCaptor;
-
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
+    @Mock
+    private BadgeRepository badgeRepository;
+    @Mock
+    private UserService userService;
+    @InjectMocks
+    private BadgeServiceImpl badgeService;
+    @Captor
+    private ArgumentCaptor<Badge> badgeArgumentCaptor;
 
     @Test
     public void createsNewBadge() throws Exception {
@@ -61,10 +46,10 @@ public class BadgeServiceImplTest {
         final User user = UserFixture.mutable();
         final String token = randomString();
 
-        when(internalUserService.findOne(userId)).thenReturn(user);
+        when(userService.findOne(userId)).thenReturn(user);
 
         badgeService.createNewBadge(token, userId);
-        verify(internalBadgeService, times(1)).save(badgeArgumentCaptor.capture());
+        verify(badgeRepository, times(1)).save(badgeArgumentCaptor.capture());
 
         Badge savedBadge = badgeArgumentCaptor.getValue();
 
@@ -80,8 +65,8 @@ public class BadgeServiceImplTest {
         Badge badge = BadgeFixture.mutable(user);
         badge.setEnabled(true);
 
-        when(internalUserService.findOne(userId)).thenReturn(user);
-        when(internalBadgeService.findAllByUserAndEnabledTrue(user)).thenReturn(Lists.newArrayList(badge));
+        when(userService.findOne(userId)).thenReturn(user);
+        when(badgeRepository.findAllByUserAndEnabledTrue(user)).thenReturn(Lists.newArrayList(badge));
 
         badgeService.invalidateBadges(userId);
 
@@ -89,11 +74,24 @@ public class BadgeServiceImplTest {
     }
 
     @Test
+    public void findsBadgeByToken() throws Exception {
+        Badge badge = BadgeFixture.mutable();
+        String token = randomString();
+
+        when(badgeRepository.findByToken(token)).thenReturn(Optional.of(badge));
+
+        Optional<Badge> result = badgeRepository.findByToken(token);
+
+        assertThat(result.isPresent()).isTrue();
+        assertThat(result.get()).isSameAs(badge);
+    }
+
+    @Test
     public void invalidatesBadgeByToken() throws Exception {
         Badge badge = BadgeFixture.mutable();
         badge.setEnabled(true);
 
-        when(internalBadgeService.findByToken(badge.getToken())).thenReturn(badge);
+        when(badgeRepository.findByToken(badge.getToken())).thenReturn(Optional.of(badge));
 
         badgeService.invalidateBadge(badge.getToken());
 
@@ -104,29 +102,25 @@ public class BadgeServiceImplTest {
     public void findsAllBadgesForUser() throws Exception {
         User user = UserFixture.mutable();
         Badge badge = BadgeFixture.mutable();
-        BadgeDto badgeDto = new BadgeDto(badge.getToken(), badge.getEnabled());
         Long userId = randomLong();
 
-        when(internalUserService.findOne(userId)).thenReturn(user);
-        when(internalBadgeService.findAllByUser(user)).thenReturn(Lists.newArrayList(badge));
-        when(dtoMapper.map(badge)).thenReturn(badgeDto);
+        when(userService.findOne(userId)).thenReturn(user);
+        when(badgeRepository.findAllByUser(user)).thenReturn(Lists.newArrayList(badge));
 
-        List<BadgeDto> result = badgeService.findAllBadges(userId, dtoMapper);
+        List<Badge> result = badgeService.findAllBadges(userId);
 
-        assertThat(result).containsExactly(badgeDto);
+        assertThat(result).containsExactly(badge);
     }
 
     @Test
     public void findsAssociatedUser() throws Exception {
         Badge badge = BadgeFixture.mutable();
-        UserDetailsDto userDetailsDto = UserDetailsDtoFixture.mutable();
 
-        when(internalBadgeService.findByToken(badge.getToken())).thenReturn(badge);
-        when(userDtoMapper.map(badge.getUser())).thenReturn(userDetailsDto);
+        when(badgeRepository.findByToken(badge.getToken())).thenReturn(Optional.of(badge));
 
-        UserDetailsDto result = (UserDetailsDto) badgeService.findAssociatedUser(badge.getToken(), userDtoMapper);
+        User result = badgeService.findAssociatedUser(badge.getToken());
 
-        assertThat(result).isSameAs(userDetailsDto);
+        assertThat(result).isSameAs(badge.getUser());
     }
 
     @Test
@@ -137,8 +131,8 @@ public class BadgeServiceImplTest {
         expectedException.expect(ServiceException.class);
         expectedException.expectMessage(String.format("Badge '%s' is disabled", badge.getToken()));
 
-        when(internalBadgeService.findByToken(badge.getToken())).thenReturn(badge);
+        when(badgeRepository.findByToken(badge.getToken())).thenReturn(Optional.of(badge));
 
-        badgeService.findAssociatedUser(badge.getToken(), userDtoMapper);
+        badgeService.findAssociatedUser(badge.getToken());
     }
 }
