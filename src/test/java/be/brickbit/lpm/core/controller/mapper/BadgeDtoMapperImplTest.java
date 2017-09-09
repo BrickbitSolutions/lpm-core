@@ -22,7 +22,7 @@ public class BadgeDtoMapperImplTest {
     public void mapsBadgeDto() throws Exception {
         Badge badge = BadgeFixture.mutable();
 
-        BadgeDto result = mapper.map(badge);
+        BadgeDto result = mapper.convert(badge);
 
         assertThat(result.getEnabled()).isEqualTo(badge.getEnabled());
         assertThat(result.getToken()).isEqualTo(badge.getToken());

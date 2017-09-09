@@ -1,5 +1,6 @@
 package be.brickbit.lpm.core.controller.mapper;
 
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
@@ -7,12 +8,11 @@ import java.util.stream.Collectors;
 import be.brickbit.lpm.core.controller.dto.UserPrincipalDto;
 import be.brickbit.lpm.core.domain.Authority;
 import be.brickbit.lpm.core.domain.User;
-import be.brickbit.lpm.core.service.api.user.UserDtoMapper;
 
 @Component
-public class UserPrincipalDtoMapper implements UserDtoMapper<UserPrincipalDto> {
+public class UserPrincipalDtoMapper implements Converter<User, UserPrincipalDto> {
     @Override
-    public UserPrincipalDto map(User user) {
+    public UserPrincipalDto convert(User user) {
         return new UserPrincipalDto(
                 user.getId(),
                 user.getUsername(),

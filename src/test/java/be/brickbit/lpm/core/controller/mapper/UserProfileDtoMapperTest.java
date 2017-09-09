@@ -21,7 +21,7 @@ public class UserProfileDtoMapperTest {
     public void map() throws Exception {
         User user = UserFixture.mutable();
 
-        UserProfileDto result = userProfileDtoMapper.map(user);
+        UserProfileDto result = userProfileDtoMapper.convert(user);
 
         assertThat(result.getId()).isEqualTo(user.getId());
         assertThat(result.getUsername()).isEqualTo(user.getUsername());

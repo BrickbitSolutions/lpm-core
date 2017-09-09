@@ -19,7 +19,7 @@ public class AuthorityNameMapperTest {
     @Test
     public void map() throws Exception {
         Authority authority = AuthorityFixture.user();
-        assertThat(mapper.map(authority)).isEqualTo(authority.getAuthority());
+        assertThat(mapper.convert(authority)).isEqualTo(authority.getAuthority());
     }
 
 }

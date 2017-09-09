@@ -24,7 +24,7 @@ public class AdminUserDetailsDtoMapperTest {
     public void map() throws Exception {
         User user = UserFixture.mutable();
 
-        AdminUserDetailsDto result = mapper.map(user);
+        AdminUserDetailsDto result = mapper.convert(user);
 
         assertThat(result.getId()).isEqualTo(user.getId());
         assertThat(result.getUsername()).isEqualTo(user.getUsername());
@@ -43,7 +43,7 @@ public class AdminUserDetailsDtoMapperTest {
         User user = UserFixture.mutable();
         user.setAccountNonLocked(false);
 
-        AdminUserDetailsDto result = mapper.map(user);
+        AdminUserDetailsDto result = mapper.convert(user);
 
         assertThat(result.getId()).isEqualTo(user.getId());
         assertThat(result.getUsername()).isEqualTo(user.getUsername());

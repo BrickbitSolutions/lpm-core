@@ -16,7 +16,6 @@ import static be.brickbit.lpm.core.util.RandomValueUtil.randomInt;
 import static be.brickbit.lpm.core.util.WiserAssertions.assertReceivedMessage;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -73,16 +72,16 @@ public class UserAdminControllerIT extends AbstractControllerIT {
 
         performGet("/admin/user")
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].id", notNullValue()))
-                .andExpect(jsonPath("$[0].username", is(user.getUsername())))
-                .andExpect(jsonPath("$[0].firstName", is(user.getFirstName())))
-                .andExpect(jsonPath("$[0].lastName", is(user.getLastName())))
-                .andExpect(jsonPath("$[0].email", is(user.getEmail())))
-                .andExpect(jsonPath("$[0].birthDate", is(user.getBirthDate().format(DateTimeFormatter.ISO_DATE))))
-                .andExpect(jsonPath("$[0].enabled", is(user.isEnabled())))
-                .andExpect(jsonPath("$[0].locked", is(!user.isAccountNonLocked())))
-                .andExpect(jsonPath("$[0].authorities", containsInAnyOrder("ROLE_USER", "ROLE_ADMIN")));
+                .andExpect(jsonPath("$.numberOfElements", is(1)))
+                .andExpect(jsonPath("$.content.[0].id", notNullValue()))
+                .andExpect(jsonPath("$.content.[0].username", is(user.getUsername())))
+                .andExpect(jsonPath("$.content.[0].firstName", is(user.getFirstName())))
+                .andExpect(jsonPath("$.content.[0].lastName", is(user.getLastName())))
+                .andExpect(jsonPath("$.content.[0].email", is(user.getEmail())))
+                .andExpect(jsonPath("$.content.[0].birthDate", is(user.getBirthDate().format(DateTimeFormatter.ISO_DATE))))
+                .andExpect(jsonPath("$.content.[0].enabled", is(user.isEnabled())))
+                .andExpect(jsonPath("$.content.[0].locked", is(!user.isAccountNonLocked())))
+                .andExpect(jsonPath("$.content.[0].authorities", containsInAnyOrder("ROLE_USER", "ROLE_ADMIN")));
     }
 
     @Test

@@ -3,6 +3,8 @@ package be.brickbit.lpm.core.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -47,15 +49,15 @@ public class UserAdminController {
     @PreAuthorize(value = "hasRole('ADMIN')")
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public List<AdminUserDetailsDto> getAllUsers() {
-        return userService.findAll().stream().map(adminUserDetailsDtoMapper::map).collect(Collectors.toList());
+    public Page<AdminUserDetailsDto> getAllUsers(Pageable pageRequest) {
+        return userService.findAll(pageRequest).map(adminUserDetailsDtoMapper);
     }
 
     @PreAuthorize(value = "hasRole('ADMIN')")
     @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public AdminUserDetailsDto getAdminUserDetails(@PathVariable("id") Long id) {
-        return adminUserDetailsDtoMapper.map(userService.findOne(id));
+        return adminUserDetailsDtoMapper.convert(userService.findOne(id));
     }
 
     @PreAuthorize(value = "hasRole('ADMIN')")
@@ -116,6 +118,6 @@ public class UserAdminController {
     @ResponseStatus(HttpStatus.OK)
     @Cacheable("authorities")
     public List<String> findAllAuthorities() {
-        return authorityService.findAll().stream().map(authorityNameMapper::map).collect(Collectors.toList());
+        return authorityService.findAll().stream().map(authorityNameMapper::convert).collect(Collectors.toList());
     }
 }

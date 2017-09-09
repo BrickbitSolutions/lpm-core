@@ -1,8 +1,8 @@
 package be.brickbit.lpm.core.service.api.user;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetailsService;
-
-import java.util.List;
 
 import be.brickbit.lpm.core.controller.command.UpdateUserEmailCommand;
 import be.brickbit.lpm.core.controller.command.home.NewUserCommand;
@@ -16,7 +16,7 @@ public interface UserService extends UserDetailsService {
 
     User findOne(Long id);
 
-    List<User> findAll();
+    Page<User> findAll(Pageable pageRequest);
 
     User findByUsername(String username);
 

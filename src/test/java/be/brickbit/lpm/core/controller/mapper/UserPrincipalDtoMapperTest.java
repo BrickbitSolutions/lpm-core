@@ -26,7 +26,7 @@ public class UserPrincipalDtoMapperTest {
         User user = UserFixture.mutable();
         user.setId(randomLong());
         user.setBirthDate(LocalDate.now().minusYears(18));
-        UserPrincipalDto result = mapper.map(user);
+        UserPrincipalDto result = mapper.convert(user);
 
         assertThat(result.getId()).isEqualTo(user.getId());
         assertThat(result.getUsername()).isEqualTo(user.getUsername());

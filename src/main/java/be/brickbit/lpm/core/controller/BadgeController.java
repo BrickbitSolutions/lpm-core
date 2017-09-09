@@ -46,7 +46,7 @@ public class BadgeController extends AbstractController {
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ADMIN')")
     public List<BadgeDto> getBadges(@RequestParam(value = "userId") Long userId) {
-        return badgeService.findAllBadges(userId).stream().map(badgeDtoMapper::map).collect(Collectors.toList());
+        return badgeService.findAllBadges(userId).stream().map(badgeDtoMapper::convert).collect(Collectors.toList());
     }
 
     @RequestMapping(method = RequestMethod.DELETE)
@@ -85,6 +85,6 @@ public class BadgeController extends AbstractController {
     @RequestMapping(value = "/{token}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public UserDetailsDto getUserByBadge(@PathVariable("token") String token) {
-        return userDetailsDtoMapper.map(badgeService.findAssociatedUser(token));
+        return userDetailsDtoMapper.convert(badgeService.findAssociatedUser(token));
     }
 }

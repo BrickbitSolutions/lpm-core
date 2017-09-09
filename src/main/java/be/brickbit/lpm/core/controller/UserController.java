@@ -46,13 +46,13 @@ public class UserController extends AbstractController {
     @RequestMapping(method = RequestMethod.GET, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public UserPrincipalDto getCurrentUserDetails() {
-        return userPrincipalDtoMapper.map(userService.findByUsername(getAuthenticatedUsername()));
+        return userPrincipalDtoMapper.convert(userService.findByUsername(getAuthenticatedUsername()));
     }
 
     @RequestMapping(value = "profile", method = RequestMethod.GET, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public UserProfileDto getCurrentUserProfile() {
-        return userProfileDtoMapper.map(userService.findByUsername(getAuthenticatedUsername()));
+        return userProfileDtoMapper.convert(userService.findByUsername(getAuthenticatedUsername()));
     }
 
     @RequestMapping(value = "profile", method = RequestMethod.PUT, produces = APPLICATION_JSON_VALUE)
@@ -78,12 +78,12 @@ public class UserController extends AbstractController {
     @ResponseStatus(HttpStatus.OK)
     @Cacheable("userDetailsBySeat")
     public UserDetailsDto getUserDetailsBySeat(@PathVariable("seatNumber") Integer seatNumber) {
-        return userDetailsDtoMapper.map(userService.findBySeatNumber(seatNumber));
+        return userDetailsDtoMapper.convert(userService.findBySeatNumber(seatNumber));
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public UserDetailsDto getUserDetails(@PathVariable("id") Long id) {
-        return userDetailsDtoMapper.map(userService.findOne(id));
+        return userDetailsDtoMapper.convert(userService.findOne(id));
     }
 }

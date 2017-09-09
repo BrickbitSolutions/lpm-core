@@ -11,6 +11,9 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -155,10 +158,11 @@ public class UserServiceImplTest {
     @Test
     public void findsAll() throws Exception {
         User user = UserFixture.mutable();
+        Pageable pageRequest = new PageRequest(0, 5);
 
-        when(userRepository.findAll()).thenReturn(Lists.newArrayList(user));
+        when(userRepository.findAll(pageRequest)).thenReturn(new PageImpl<>(Lists.newArrayList(user)));
 
-        assertThat(userService.findAll()).containsExactly(user);
+        assertThat(userService.findAll(pageRequest).getContent()).containsExactly(user);
     }
 
     @Test

@@ -1,5 +1,6 @@
 package be.brickbit.lpm.core.controller.mapper;
 
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
@@ -8,12 +9,11 @@ import java.time.temporal.ChronoUnit;
 
 import be.brickbit.lpm.core.controller.dto.UserDetailsDto;
 import be.brickbit.lpm.core.domain.User;
-import be.brickbit.lpm.core.service.api.user.UserDtoMapper;
 
 @Component
-public class UserDetailsDtoMapper implements UserDtoMapper<UserDetailsDto> {
+public class UserDetailsDtoMapper implements Converter<User, UserDetailsDto> {
     @Override
-    public UserDetailsDto map(User user) {
+    public UserDetailsDto convert(User user) {
         if (user != null) {
             return new UserDetailsDto(
                     user.getId(),

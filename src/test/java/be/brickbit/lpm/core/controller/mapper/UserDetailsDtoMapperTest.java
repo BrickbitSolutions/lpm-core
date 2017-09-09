@@ -29,7 +29,7 @@ public class UserDetailsDtoMapperTest {
         User user = UserFixture.mutable();
         user.setBirthDate(LocalDate.now().minusYears(18));
 
-        UserDetailsDto result = mapper.map(user);
+        UserDetailsDto result = mapper.convert(user);
 
         assertThat(result.getId()).isEqualTo(user.getId());
         assertThat(result.getUsername()).isEqualTo(user.getUsername());
@@ -43,6 +43,6 @@ public class UserDetailsDtoMapperTest {
         expectedException.expect(UsernameNotFoundException.class);
         expectedException.expectMessage("User not found.");
 
-        mapper.map(null);
+        mapper.convert(null);
     }
 }
