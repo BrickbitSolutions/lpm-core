@@ -8,6 +8,7 @@ import lombok.Value;
 public class UserPrincipalDto {
     private Long id;
     private String username;
+    private String email;
     private String mood;
     private List<String> authorities;
 }

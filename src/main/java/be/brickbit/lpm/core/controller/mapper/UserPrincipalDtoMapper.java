@@ -16,6 +16,7 @@ public class UserPrincipalDtoMapper implements Converter<User, UserPrincipalDto>
         return new UserPrincipalDto(
                 user.getId(),
                 user.getUsername(),
+                user.getEmail(),
                 user.getMood(),
                 user.getAuthorities().stream().map(Authority::getAuthority).collect(Collectors.toList())
         );

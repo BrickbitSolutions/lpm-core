@@ -33,4 +33,13 @@ public class UserPrincipalDtoMapperTest {
         assertThat(result.getMood()).isEqualTo(user.getMood());
         assertThat(result.getAuthorities()).hasSize(user.getAuthorities().size());
     }
+
+    @Test
+    public void mapsEmail() throws Exception {
+        User user = UserFixture.mutable();
+
+        UserPrincipalDto result = mapper.convert(user);
+
+        assertThat(result.getEmail()).isEqualTo(user.getEmail());
+    }
 }

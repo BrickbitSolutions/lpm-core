@@ -13,6 +13,7 @@ public class UserPrincipalDtoFixture {
                 randomLong(),
                 randomString(),
                 randomString(),
+                randomString(),
                 Lists.newArrayList(randomString())
         );
     }

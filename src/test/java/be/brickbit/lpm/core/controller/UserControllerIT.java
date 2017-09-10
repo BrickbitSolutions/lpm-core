@@ -34,6 +34,7 @@ public class UserControllerIT extends AbstractControllerIT {
         performGet("/user")
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.username", is(user.getUsername())))
+                .andExpect(jsonPath("$.email", is(user.getEmail())))
                 .andExpect(jsonPath("$.mood", is(user.getMood())))
                 .andExpect(jsonPath("$.authorities", containsInAnyOrder("ROLE_USER", "ROLE_ADMIN")));
     }
