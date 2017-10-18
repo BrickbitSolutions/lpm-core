@@ -5,3 +5,4 @@ build/
 classes/
 .DS_Store
 /src/main/generated/
+/out
